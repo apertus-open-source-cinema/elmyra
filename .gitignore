@@ -1,4 +1,5 @@
 __pycache__
 library/
+node_modules/
 visualizations/
 .tags*
