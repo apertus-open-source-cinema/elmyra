@@ -1,5 +1,8 @@
 __pycache__
-library/
-node_modules/
-visualizations/
+/lib/
+/node_modules/
+/static/css/
+/static/fonts/
+/static/js/
+/visualizations/
 .tags*

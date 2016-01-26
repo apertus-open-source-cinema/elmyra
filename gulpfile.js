@@ -2,12 +2,15 @@ var babel = require('gulp-babel'),
     concat = require('gulp-concat')
     del = require('del'),
     gulp = require('gulp'),
-    minifyCSS = require('gulp-minify-css'),
+    cssnano = require('gulp-cssnano'),
     streamqueue  = require('streamqueue'),
     stylus = require('gulp-stylus'),
     uglify = require('gulp-uglify'),
+    util = require('gulp-util'),
     watch = require('gulp-watch'),
     zip = require('gulp-zip');
+
+var release = false;
 
 gulp.task('clean', function() {
   return del([
@@ -28,8 +31,8 @@ gulp.task('css', function() {
            gulp.src('src/styl/main.styl').pipe(stylus())
          )
         .pipe(concat('styles.css'))
+        .pipe(release ? cssnano() : util.noop())
         .pipe(gulp.dest('static/css/'));
-        // .pipe(minifyCSS())
 });
 
 gulp.task('fonts', function() {
@@ -41,13 +44,14 @@ gulp.task('js', function() {
   return streamqueue(
            { objectMode: true },
            gulp.src([
-             'src/lib/jquery-2.1.4.min.js',
-             'src/lib/react-0.14.3/build/react.js',
-             'src/lib/react-0.14.3/build/react-dom.js',
+             'src/lib/jquery-2.2.0.js',
+             'src/lib/react-0.14.6/react.js',
+             'src/lib/react-0.14.6/react-dom.js',
              'src/lib/bootstrap-3.3.5/js/bootstrap.js',
-             'src/lib/moment-2.10.6/moment.js',
-             'src/lib/clipboard.js-1.5.2/dist/clipboard.js',
-             'src/lib/filesize.js-3.1.2/filesize.min.js'
+             'src/lib/moment-2.11.1/moment.js',
+             'src/lib/clipboard.js-1.5.2/clipboard.js',
+             'src/lib/filesize.js-3.1.2/filesize.min.js',
+             'src/lib/three.js-r73/three.js'
            ]),
            gulp.src([
              'src/jsx/download-button.jsx',
@@ -61,14 +65,19 @@ gulp.task('js', function() {
            gulp.src('src/js/visualization-wizard.js')
          )
         .pipe(concat('scripts.js'))
+        .pipe(release ? uglify() : util.noop())
         .pipe(gulp.dest('static/js/'));
-        // .pipe(uglify())
 });
 
 gulp.task('compile', ['css', 'fonts', 'js']);
 
 gulp.task('build', ['clean'], function() {
-  gulp.start('compile')
+  gulp.start('compile');
+});
+
+gulp.task('build-release', ['clean'], function() {
+  release = true;
+  gulp.start('compile');
 });
 
 gulp.task('default', function() {
@@ -81,7 +90,7 @@ gulp.task('watch', function() {
   });
 });
 
-gulp.task('release', ['build'], function() {
+gulp.task('release', ['build-release'], function() {
   gulp.src([
     'library/**/*',
     'static/**/*',
