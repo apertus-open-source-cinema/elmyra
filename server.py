@@ -35,11 +35,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/new")
-def new():
-    return render_template("new.html")
-
-
 @app.route("/generate", methods=["POST"])
 def generate():
     blender_call = [
@@ -54,12 +49,9 @@ def generate():
         blender_call.append("--{0}".format(key))
         blender_call.append(value)
 
-    blender_call.append("--id")
-    blender_call.append(slugify(request.form["title"]))
-
     call(blender_call)
 
-    return redirect(url_for("index"))
+    return jsonify({ "done": "true" })
 
 
 @app.route("/visualizations")

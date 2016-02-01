@@ -30,7 +30,11 @@ gulp.task('css', ['clean'], function() {
              'src/lib/octicons-3.3.0/octicons.css',
              'src/lib/featherlight-1.3.5/featherlight.min.css'
            ]),
-           gulp.src('src/styl/main.styl').pipe(stylus())
+           gulp.src([
+             'src/styl/main.styl',
+             'src/styl/navigation.styl',
+             'src/styl/wizard.styl'
+           ]).pipe(stylus())
          )
         .pipe(concat('styles.css'))
         .pipe(release ? cssnano() : util.noop())
@@ -57,16 +61,24 @@ gulp.task('js', ['clean'], function() {
              'src/lib/three.js-r73/three.js'
            ]),
            gulp.src([
-             'src/jsx/download-button.jsx',
-             'src/jsx/embed-button.jsx',
-             'src/jsx/update-button.jsx',
-             'src/jsx/processing-state.jsx',
-             'src/jsx/versions.jsx',
-             'src/jsx/visualization.jsx',
-             'src/jsx/visualizations.jsx',
-             'src/jsx/main.jsx'
-           ]).pipe(babel()),
-           gulp.src('src/js/visualization-wizard.js')
+             'src/jsx/index/download-button.jsx',
+             'src/jsx/index/embed-button.jsx',
+             'src/jsx/index/update-button.jsx',
+             'src/jsx/index/versions.jsx',
+             'src/jsx/index/visualization.jsx',
+             'src/jsx/wizard/id.jsx',
+             'src/jsx/wizard/modifier-type.jsx',
+             'src/jsx/wizard/style-type.jsx',
+             'src/jsx/wizard/camera-type.jsx',
+             'src/jsx/wizard/media-resolution.jsx',
+             'src/jsx/wizard/model.jsx',
+             'src/jsx/wizard/media-length.jsx',
+             'src/jsx/wizard/media-type.jsx',
+             'src/jsx/wizard/navigation.jsx',
+             'src/jsx/wizard/wizard.jsx',
+             'src/jsx/navigation.jsx',
+             'src/jsx/application.jsx'
+           ]).pipe(babel())
          )
         .pipe(concat('scripts.js'))
         .pipe(release ? uglify() : util.noop())

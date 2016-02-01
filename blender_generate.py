@@ -29,10 +29,8 @@ import version
 def parse_custom_args():
     parser = ArgumentParser(prog="Elmyra Generate Params")
 
-    parser.add_argument("--title", required=True)
     parser.add_argument("--id", required=True)
-    parser.add_argument("--description", default="Generated with Elmyra")
-    parser.add_argument("--models", required=True)
+    parser.add_argument("--model-url", required=True)
 
     parser.add_argument("--media-type", required=True)
     parser.add_argument("--media-width", type=int, required=True)
@@ -64,7 +62,7 @@ media.setup(args.media_type,
             args.media_height,
             args.media_length)
 
-update.generate_objects(args.models.splitlines())
+update.generate_object(args.model_url)
 
 style.setup(args.style_type)
 modifier.setup(args)

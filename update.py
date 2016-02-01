@@ -33,21 +33,20 @@ def temp_write(data, data_hash):
     return filepath
 
 
-def generate_objects(urls):
-    for url in urls:
-        stl = get_stl(url)
-        initial_hash = get_hash(stl)
+def generate_object(url):
+    stl = get_stl(url)
+    initial_hash = get_hash(stl)
 
-        stl_filepath = temp_write(stl, initial_hash)
+    stl_filepath = temp_write(stl, initial_hash)
 
-        bpy.ops.import_mesh.stl(filepath=stl_filepath)
-        bpy.ops.object.shade_smooth()
-        bpy.ops.object.modifier_add(type='EDGE_SPLIT')
+    bpy.ops.import_mesh.stl(filepath=stl_filepath)
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.modifier_add(type='EDGE_SPLIT')
 
-        bpy.context.active_object["elmyra-url"] = url
-        bpy.context.active_object["elmyra-hash"] = initial_hash
+    bpy.context.active_object["elmyra-url"] = url
+    bpy.context.active_object["elmyra-hash"] = initial_hash
 
-        remove(stl_filepath)
+    remove(stl_filepath)
 
 
 def update_object(obj):
