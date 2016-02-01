@@ -2,14 +2,14 @@
 
 A blender-based rapid iterative visualization system
 
-[![Conference presentation video thumbnail](http://fdpl.foundation/elmyra/youtube-screenshot.png)](http://www.youtube.com/watch?v=ht1hPNjQxcY "Video Title")
+[![Conference presentation video thumbnail](http://files.apertus.org/elmyra/youtube-screenshot.png)](http://www.youtube.com/watch?v=ht1hPNjQxcY "Video Title")
 
 Watch the [Blender Conference presentation on Elmyra](https://www.youtube.com/watch?v=ht1hPNjQxcY) for an introduction!
 
 ## Setting up Elmyra (User Guide)
 
 
-Download the [Elmyra Release Package](https://fdpl.foundation/elmyra/elmrya-release.zip) and unzip it to your preferred location.
+Download the [Elmyra Release Package](http://files.apertus.org/elmyra/elmrya-release.zip) and unzip it to your preferred location.
 
 Additionally, Elmyra relies on some depencies we have to meet, this is a comprehensive list of them, please go through them one by one and make sure they are all met to finish the setup procedure:
 
@@ -69,7 +69,7 @@ First, clone the repository:
 
 ### Asset library
 
-Download and unzip the [asset library](http://fdpl.foundation/elmyra/elmyra-library.zip) and put the contained `library` folder inside Elmyra's root directory.
+Download and unzip the [asset library](http://files.apertus.org/elmyra/elmyra-library.zip) and put the contained `library` folder inside Elmyra's root directory.
 
 ### Development Dependencies
 
