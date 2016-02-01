@@ -9,7 +9,7 @@ Watch the [Blender Conference presentation on Elmyra](https://www.youtube.com/wa
 ## Setting up Elmyra (User Guide)
 
 
-Download the [Elmyra Release Package](http://files.apertus.org/elmyra/elmrya-release.zip) and unzip it to your preferred location.
+Download the [Elmyra Release Package](http://files.apertus.org/elmyra/elmyra-release.zip) and unzip it to your preferred location.
 
 Additionally, Elmyra relies on some depencies we have to meet, this is a comprehensive list of them, please go through them one by one and make sure they are all met to finish the setup procedure:
 
