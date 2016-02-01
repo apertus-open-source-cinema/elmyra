@@ -92,7 +92,7 @@ gulp.task('watch', function() {
 
 gulp.task('release', ['build-release'], function() {
   gulp.src([
-    'library/**/*',
+    'lib/**/*',
     'static/**/*',
     'templates/**/*',
     'LICENSE',

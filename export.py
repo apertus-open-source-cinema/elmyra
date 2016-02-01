@@ -5,6 +5,8 @@ from os import path
 from subprocess import call, check_output
 from time import time
 
+from configuration import FFMPEG_PATH
+
 import meta
 
 
@@ -13,7 +15,7 @@ def export_still(options):
     image_directory = path.join(export_directory, "rendered_frames")
 
     ffmpeg_input_options = [
-        'ffmpeg',
+        FFMPEG_PATH,
         '-y',
         "-f", "image2",
         "-pattern_type", "glob",
@@ -100,7 +102,7 @@ def export_animation(options):
     image_directory = path.join(export_directory, "rendered_frames")
 
     ffmpeg_input_options = [
-        "ffmpeg",
+        FFMPEG_PATH,
         "-y",
         "-f", "image2",
         "-pattern_type", "glob",
@@ -225,7 +227,7 @@ def export_gif(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting GIF"})
     benchmark = time()
 
-    ffmpeg_version = check_output(["ffmpeg", "-version"]).decode().split()[2]
+    ffmpeg_version = check_output([FFMPEG_PATH, "-version"]).decode().split()[2]
     ffmpeg_version_major = int(ffmpeg_version.split(".")[0])
     ffmpeg_version_minor = int(ffmpeg_version.split(".")[1])
 
