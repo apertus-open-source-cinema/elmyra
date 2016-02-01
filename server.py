@@ -7,6 +7,8 @@ from os import path
 from slugify import slugify
 from subprocess import call
 
+from configuration import BLENDER_PATH
+
 GENERATE_SCRIPT = path.join(path.dirname(__file__), "generator-blender.py")
 UPDATE_SCRIPT = path.join(path.dirname(__file__), "updater-blender.py")
 
@@ -26,7 +28,7 @@ def new():
 @app.route("/generate", methods=["POST"])
 def generate():
     blender_call = [
-        "blender",
+        BLENDER_PATH,
         "--background",
         "--python",
         GENERATE_SCRIPT,
@@ -48,7 +50,7 @@ def generate():
 @app.route("/<visualization>/upload", methods=["POST"])
 def upload(visualization):
     blender_call = [
-        "blender",
+        BLENDER_PATH,
         "--background",
         "--python",
         UPDATE_SCRIPT,
@@ -75,7 +77,7 @@ def upload(visualization):
 @app.route("/<visualization>/update", methods=["POST"])
 def update(visualization):
     blender_call = [
-        "blender",
+        BLENDER_PATH,
         "--background",
         "--python",
         UPDATE_SCRIPT,

@@ -2,6 +2,8 @@ from glob import glob
 from os import path
 from subprocess import call
 
+from configuration import BLENDER_PATH
+
 
 RENDER_SCRIPT = path.join(path.dirname(__file__), 'renderer-blender.py')
 LOOP = True
@@ -9,7 +11,7 @@ LOOP = True
 
 def render(id):
     call([
-        "blender",
+        BLENDER_PATH,
         "--background",
         "--python", RENDER_SCRIPT,
         "--",
