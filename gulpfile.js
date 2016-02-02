@@ -10,6 +10,7 @@ var babel = require('gulp-babel'),
     watch = require('gulp-watch'),
     zip = require('gulp-zip');
 
+var platform = 'linux';
 var release = false;
 
 gulp.task('clean', function() {
@@ -72,16 +73,16 @@ gulp.task('js', function() {
 gulp.task('compile', ['css', 'fonts', 'js']);
 
 gulp.task('build', ['clean'], function() {
-  gulp.start('compile');
+  return gulp.start('compile');
 });
 
 gulp.task('build-release', ['clean'], function() {
   release = true;
-  gulp.start('compile');
+  return gulp.start('compile');
 });
 
 gulp.task('default', function() {
-  gulp.start('build');
+  return gulp.start('build');
 });
 
 gulp.task('watch', function() {
@@ -90,16 +91,39 @@ gulp.task('watch', function() {
   });
 });
 
-gulp.task('release', ['build-release'], function() {
-  gulp.src([
-    'lib/**/*',
-    'static/**/*',
-    'templates/**/*',
-    'LICENSE',
-    'README.md',
-    'requirements.txt',
-    '*.py'
-  ], { base: '.' })
-  .pipe(zip('elmyra-release.zip'))
-  .pipe(gulp.dest('.'))
+gulp.task('release', function() {
+  return streamqueue(
+           { objectMode: true },
+           gulp.src([
+             'lib/' + platform + '/configuration.py'
+           ]),
+           gulp.src([
+             'lib/elmyra/**/*',
+             'lib/' + platform + '/**/*',
+             'static/**/*',
+             'templates/**/*',
+             'LICENSE',
+             'README.md',
+             'requirements.txt',
+             '*.py',
+             '!configuration.py'
+           ], { base: '.' })
+         )
+         .pipe(zip(platform + '.zip'))
+         .pipe(gulp.dest('release/'));
+});
+
+gulp.task('release-windows', ['build-release'], function() {
+  platform = 'windows';
+  return gulp.start('release');
+});
+
+gulp.task('release-osx', ['build-release'], function() {
+  platform = 'osx';
+  return gulp.start('release');
+});
+
+gulp.task('release-linux', ['build-release'], function() {
+  platform = 'linux';
+  return gulp.start('release');
 });

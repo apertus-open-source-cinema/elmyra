@@ -1,8 +1,10 @@
 __pycache__
 /lib/
 /node_modules/
+/release/
 /static/css/
 /static/fonts/
 /static/js/
 /visualizations/
+/configuration.py
 .tags*

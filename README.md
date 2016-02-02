@@ -8,42 +8,32 @@ Watch the [Blender Conference presentation on Elmyra](https://www.youtube.com/wa
 
 ## Setting up Elmyra (User Guide)
 
+**Important:** To run Elmyra, [Python 3.4+](https://www.python.org/) needs to be installed on your system (Run `python3 --version` in a console to see if and which version is installed, if it's none or the wrong one please refer to [python.org](https://www.python.org/) for installation instructions).
 
-Download the [Elmyra Release Package](http://files.apertus.org/elmyra/elmyra-release.zip) and unzip it to your preferred location.
+Download and unzip the release package for your OS:
 
-Additionally, Elmyra relies on some depencies we have to meet, this is a comprehensive list of them, please go through them one by one and make sure they are all met to finish the setup procedure:
+- Windows (almost done - coming in a few days)
+- [OS X](http://files.apertus.org/elmyra/osx.zip)
+- [Linux](http://files.apertus.org/elmyra/linux.zip)
 
-#### [Python 3](https://www.python.org/)
+Open a terminal, navigate to elmyra's root directory, then enter:
 
-- `python3` executable available in a terminal ([Help](#checking-and-installing-python-3))
-- Packages required in **system python environment** ([Help](#installing-packages-into-the-system-python-environment))
-  - `flask`
-  - `natsort`
-  - `python-slugify`
-
-#### [Blender](http://blender.org/)
-- `blender` executable available in a terminal ([Help](#checking-and-installing-blender))
-- Packages required in **blender python environment** ([Help](#installing-packages-into-the-blender-python-environment))
-  - `certifi`
-  - `natsort`
-  - `pillow`
-  - `requests`
-
-#### [FFmpeg](http://ffmpeg.org/)
-- `ffmpeg` executable available in a terminal ([Help](#checking-and-installing-ffmpeg))
-
-*HEADS UP: This will be made simpler in the near future :)*
+    pip3 install -r requirements.txt
 
 ## Starting Elmrya
 
 ### The Server
 
 The server hosts the browser interface through which you work with Elmyra -
-it serves all media files that Elmyra produces, it creates or updates  visualizations when you order it to, and also lets you download them.
+it serves all media files that Elmyra produces, it creates or updates  visualizations when you order it to and also lets you download them.
 
 Open a terminal, navigate to elmyra's root directory, then enter:
 
      python3 server.py
+
+In your browser, you can now navigate to:
+
+    http://localhost:5000/
 
 ### The Renderer
 
@@ -55,25 +45,19 @@ Open another terminal at elmyra's root directory, then enter:
 
     python3 renderer.py
 
-### Everything ready
-
-Now open up your browser, and navigate to:
-
-    http://localhost:5000/
-
 ## Setting up Elmyra (Developer Guide)
 
-First, clone the repository:
+### Source code
 
     git clone https://github.com/apertus-open-source-cinema/elmyra.git
 
-### Asset library
+### Bundled dependencies and assets
 
-Download and unzip the [asset library](http://files.apertus.org/elmyra/elmyra-library.zip) and put the contained `library` folder inside Elmyra's root directory.
+Download and unzip the [bundled dependencies and assets](http://files.apertus.org/elmyra/lib.zip) and put the `lib` folder inside Elmyra's root directory.
 
 ### Development Dependencies
 
-In order to compile the css and javascript for the Elmyra frontend, you need to install [node.js](https://nodejs.org/) and [gulp](http://gulpjs.com/). For nodes.js please refer to the instructions on their website, for gulp and the remaining dependencies run this anywhere in a terminal:
+In order to compile the css and javascript for the Elmyra frontend, you need to install [node.js](https://nodejs.org/) and [gulp](http://gulpjs.com/). For node.js please refer to the instructions on their website, for gulp and the remaining dependencies run this anywhere in a terminal:
 
     sudo npm install -g gulp
 
@@ -81,76 +65,12 @@ And inside elmyra's root directory:
 
     npm install
 
-Now you can compile the assets either manually by running `gulp`, or let gulp watch for changes and recompile automatically by running `gulp watch`. Additionally, there's a gulp task to rudimentarily create a new release, `gulp release`, which collects all relevant files and puts them into an archive named  `elmyra-relase.zip` in elmyra's root directory.
+Now you can compile the assets either manually by running `gulp`, or let gulp watch for changes and recompile automatically by running `gulp watch`. Additionally, there are gulp tasks to create releases - `gulp release-[windows/osx/linux]` - which collect all relevant files and put them into an archive named after the platform (e.g. `windows.zip`) in the `release/` directory.
 
 ### Runtime Dependencies
 
-Elmyra relies on some depencies we have to meet, this is a comprehensive list of them, please go through them one by one and make sure they are all met to finish the setup procedure:
+To run Elmyra, [Python 3.4+](https://www.python.org/) needs to be installed on your system (Run `python3 --version` in a console to see if and which version is installed, if it's none or the wrong one please refer to [python.org](https://www.python.org/) for installation instructions).
 
-#### [Python 3](https://www.python.org/)
+To install required additional python packages, enter inside elmyra's root directory:
 
-- `python3` executable available in a terminal ([Help](#checking-and-installing-python-3))
-- Packages required in **system python environment** ([Help](#installing-packages-into-the-system-python-environment))
-  - `flask`
-  - `natsort`
-  - `python-slugify`
-
-#### [Blender](http://blender.org/)
-- `blender` executable available in a terminal ([Help](#checking-and-installing-blender))
-- Packages required in **blender python environment** ([Help](#installing-packages-into-the-blender-python-environment))
-  - `certifi`
-  - `natsort`
-  - `pillow`
-  - `requests`
-
-#### [FFmpeg](http://ffmpeg.org/)
-- `ffmpeg` executable available in a terminal ([Help](#checking-and-installing-ffmpeg))
-
-## Addendum: Setup Guides
-
-The following paragraphs contain short instructions or links on how to accomplish specific steps during the setup of Elmyra, no need to read through them unless you are struggling to install some of Elmyra's dependencies.
-
-### Checking and installing Python 3
-
-To test whether `python3` is installed simply open up a terminal and type:
-
-    python3 --version
-
-If this doesn't output the installed version, you need to install it.
-Please google for something like "install python3 [insert your operating system here]".
-
-### Installing packages into the system python environment
-
-For instance, to install flask, open a terminal and type:
-
-    pip3 install flask
-
-### Checking and installing Blender
-
-To test whether `blender` is installed and available in a terminal simply open up one and type:
-
-    blender --version
-
-If this doesn't output the installed version, you need to install it.
-You can get Blender from [blender.org](http://blender.org).
-
-If Blender is installed but not available from the terminal (Linux/Mac):
-
-    sudo ln -s /full/path/to/blender /usr/bin/blender
-
-### Installing packages into the blender python environment
-
-Take a look at the respective section in the [Blender bpy API documentation](http://www.blender.org/api/blender_python_api_2_76b_release/info_tips_and_tricks.html#bundled-python-extensions)
-
-### Checking and installing ffmpeg
-
-To test whether `ffmpeg` is installed, open up a terminal and type:
-
-    ffmpeg -version
-
-If this doesn't output the installed version, you need to install it.
-Ideally try to install it through your system package manager, otherwise you can also get it [here](http://ffmpeg.org/download.html).
-
-If ffmpeg is installed but not available from the terminal (Linux/Mac):
-
-    sudo ln -s /full/path/to/ffmpeg /usr/bin/ffmpeg
+    pip3 install -r requirements.txt
