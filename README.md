@@ -12,7 +12,7 @@ Watch the [Blender Conference presentation on Elmyra](https://www.youtube.com/wa
 
 Download and unzip the release package for your OS:
 
-- Windows (almost done - coming in a few days)
+- [Windows](http://files.apertus.org/elmyra/windows.zip)
 - [OS X](http://files.apertus.org/elmyra/osx.zip)
 - [Linux](http://files.apertus.org/elmyra/linux.zip)
 
