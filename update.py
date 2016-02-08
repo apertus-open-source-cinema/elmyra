@@ -33,8 +33,8 @@ def update_object(obj, min_interval):
 
             return False
         else:
-            # TODO: Save stl file temporarily into viz dir , not global tmp
-            stl_path = path.join("/tmp", "{0}.stl".format(new_hash))
+            viz_dir = bpy.path.abspath("//")
+            stl_path = path.join(viz_dir, ".{0}.stl".format(new_hash))
 
             with open(stl_path, "wb") as file:
                 file.write(stl)

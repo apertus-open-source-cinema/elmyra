@@ -3,9 +3,10 @@ import json
 from flask import Flask, jsonify, render_template, redirect, request, send_file, url_for
 from glob import glob
 from natsort import natsorted
-from os import path
+from os import path, remove
 from slugify import slugify
 from subprocess import call
+from time import strftime
 
 from configuration import BLENDER_PATH
 
@@ -60,16 +61,18 @@ def upload(visualization):
     blender_call.append("--id")
     blender_call.append(visualization)
 
-    # TODO: Unique temporary name
-    filename = path.join("/tmp", "scene.blend")
+    filename = path.join("visualizations",
+                         visualization,
+                         ".{0}.blend".format(strftime("%Y%m%dT%H%M%S")))
     file = request.files["blendfile"]
-    # TODO: Platform-independent temporary storage (?)
     file.save(filename)
 
     blender_call.append("--blend")
     blender_call.append(filename)
 
     call(blender_call)
+
+    remove(filename)
 
     return jsonify({"success": True}), 200, {'ContentType':'application/json'}
 

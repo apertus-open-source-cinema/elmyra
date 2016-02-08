@@ -2,7 +2,7 @@ import bpy
 
 from os import path
 
-LIBRARY_PATH = path.join(path.dirname(__file__), "lib")
+LIBRARY_PATH = path.join(path.dirname(__file__), "lib", "elmyra")
 
 
 def append_from_library(blend, directory, item):
