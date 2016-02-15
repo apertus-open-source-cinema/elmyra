@@ -2,7 +2,7 @@ import bpy
 
 from datetime import datetime
 from os import path
-from subprocess import call, check_output
+from subprocess import call
 from time import time
 
 from configuration import FFMPEG_PATH
@@ -122,16 +122,37 @@ def export_thumbnail_animation(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting Thumbnail"})
     benchmark = time()
 
-    # TODO: Use better algorithm if available like in export_gif
+    # TODO: Figure out if the scaling makes sense
+    # (480 in old vs 320 in new? applies for palette and/or result?)
+    #
+    # old call for reference:
+    # ffmpeg_call = ffmpeg_input_options + [
+    #     "-vf", "scale=480:-1",
+    #     "-gifflags", "+transdiff",
+    #     export_file
+    # ]
 
     export_file = path.join(export_directory, "thumbnail.gif")
-    ffmpeg_call = ffmpeg_input_options + [
-        "-vf", "scale=480:-1",
-        "-gifflags", "+transdiff",
+
+    # GIF encoding technique taken from
+    # http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
+
+    palette_file = path.join(export_directory, "palette.png")
+    filters = "fps=15,scale=320:-1:flags=lanczos"
+
+    ffmpeg_palette_call = ffmpeg_input_options + [
+        "-vf", "{},palettegen".format(filters),
+        palette_file
+    ]
+
+    ffmpeg_render_call = ffmpeg_input_options + [
+        "-i", palette_file,
+        "-lavfi", "{} [x]; [x][1:v] paletteuse".format(filters),
         export_file
     ]
 
-    call(ffmpeg_call)
+    call(ffmpeg_palette_call)
+    call(ffmpeg_render_call)
 
     filesize = path.getsize(export_file)
     meta.write({
@@ -227,40 +248,27 @@ def export_gif(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting GIF"})
     benchmark = time()
 
-    ffmpeg_version = check_output([FFMPEG_PATH, "-version"]).decode().split()[2]
-    ffmpeg_version_major = int(ffmpeg_version.split(".")[0])
-    ffmpeg_version_minor = int(ffmpeg_version.split(".")[1])
-
     export_file = path.join(export_directory, "animation.gif")
 
-    if ffmpeg_version_major >= 2 and ffmpeg_version_minor >= 6:
+    # GIF encoding technique taken from
+    # http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
 
-        # Only available in ffmpeg 2.6+ (eg. in Ubuntu 15.10, Fedora 22)
-        # http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
+    palette_file = path.join(export_directory, "palette.png")
+    filters = "fps=15,scale=320:-1:flags=lanczos"
 
-        palette_file = path.join(export_directory, "palette.png")
-        filters = "fps=15,scale=320:-1:flags=lanczos"
+    ffmpeg_palette_call = ffmpeg_input_options + [
+        "-vf", "{},palettegen".format(filters),
+        palette_file
+    ]
 
-        ffmpeg_palette_call = ffmpeg_input_options + [
-            "-vf", "{},palettegen".format(filters),
-            palette_file
-        ]
+    ffmpeg_render_call = ffmpeg_input_options + [
+        "-i", palette_file,
+        "-lavfi", "{} [x]; [x][1:v] paletteuse".format(filters),
+        export_file
+    ]
 
-        ffmpeg_render_call = ffmpeg_input_options + [
-            "-i", palette_file,
-            "-lavfi", "{} [x]; [x][1:v] paletteuse".format(filters),
-            export_file
-        ]
-
-        call(ffmpeg_palette_call)
-        call(ffmpeg_render_call)
-    else:
-        ffmpeg_call = ffmpeg_input_options + [
-            "-gifflags", "+transdiff",
-            export_file
-        ]
-
-        call(ffmpeg_call)
+    call(ffmpeg_palette_call)
+    call(ffmpeg_render_call)
 
     filesize = path.getsize(export_file)
     meta.write({
