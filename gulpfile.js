@@ -21,7 +21,7 @@ gulp.task('clean', function() {
   ]);
 });
 
-gulp.task('css', function() {
+gulp.task('css', ['clean'], function() {
   return streamqueue(
            { objectMode: true },
            gulp.src([
@@ -36,12 +36,12 @@ gulp.task('css', function() {
         .pipe(gulp.dest('static/css/'));
 });
 
-gulp.task('fonts', function() {
+gulp.task('fonts', ['clean'], function() {
   return gulp.src('src/lib/octicons-3.3.0/octicons.woff')
              .pipe(gulp.dest('static/fonts/'));
 });
 
-gulp.task('js', function() {
+gulp.task('js', ['clean'], function() {
   return streamqueue(
            { objectMode: true },
            gulp.src([
@@ -70,20 +70,14 @@ gulp.task('js', function() {
         .pipe(gulp.dest('static/js/'));
 });
 
-gulp.task('compile', ['css', 'fonts', 'js']);
+gulp.task('build', ['css', 'fonts', 'js']);
 
-gulp.task('build', ['clean'], function() {
-  return gulp.start('compile');
-});
-
-gulp.task('build-release', ['clean'], function() {
+gulp.task('build-release', function() {
   release = true;
-  return gulp.start('compile');
-});
-
-gulp.task('default', function() {
   return gulp.start('build');
 });
+
+gulp.task('default', ['build']);
 
 gulp.task('watch', function() {
   watch('src/**/*', function() {
@@ -91,7 +85,7 @@ gulp.task('watch', function() {
   });
 });
 
-gulp.task('release', function() {
+gulp.task('release', ['build-release'], function() {
   return streamqueue(
            { objectMode: true },
            gulp.src([
@@ -113,17 +107,17 @@ gulp.task('release', function() {
          .pipe(gulp.dest('release/'));
 });
 
-gulp.task('release-windows', ['build-release'], function() {
+gulp.task('release-windows', function() {
   platform = 'windows';
   return gulp.start('release');
 });
 
-gulp.task('release-osx', ['build-release'], function() {
+gulp.task('release-osx', function() {
   platform = 'osx';
   return gulp.start('release');
 });
 
-gulp.task('release-linux', ['build-release'], function() {
+gulp.task('release-linux', function() {
   platform = 'linux';
   return gulp.start('release');
 });
