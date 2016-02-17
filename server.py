@@ -159,6 +159,23 @@ def jpg(visualization, version):
                          attachment_filename="{}.jpg".format(visualization))
 
 
+@app.route("/<visualization>/<version>/svg")
+def svg(visualization, version):
+    visualization_path = path.join("visualizations", visualization)
+
+    if version == "latest":
+        versions = natsorted(glob(path.join(visualization_path, "*")))
+        file = path.join(versions[-1], "still.svg")
+    else:
+        file = path.join(visualization_path, version, "still.svg")
+
+    if path.exists(file):
+        return send_file(file,
+                         mimetype="image/svg",
+                         as_attachment=True,
+                         attachment_filename="{}.svg".format(visualization))
+
+
 @app.route("/<visualization>/<version>/mp4")
 def mp4(visualization, version):
     visualization_path = path.join("visualizations", visualization)
@@ -227,21 +244,38 @@ def gif(visualization, version):
                          attachment_filename="{}.gif".format(visualization))
 
 
-@app.route("/<visualization>/<version>/zip")
-def zip(visualization, version):
+@app.route("/<visualization>/<version>/png-sequence")
+def png_sequence(visualization, version):
     visualization_path = path.join("visualizations", visualization)
 
     if version == "latest":
         versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "animation.zip")
+        file = path.join(versions[-1], "animation.png.zip")
     else:
-        file = path.join(visualization_path, version, "animation.zip")
+        file = path.join(visualization_path, version, "animation.png.zip")
 
     if path.exists(file):
         return send_file(file,
                          mimetype="application/zip",
                          as_attachment=True,
-                         attachment_filename="{}.zip".format(visualization))
+                         attachment_filename="{}.png.zip".format(visualization))
+
+
+@app.route("/<visualization>/<version>/svg-sequence")
+def svg_sequence(visualization, version):
+    visualization_path = path.join("visualizations", visualization)
+
+    if version == "latest":
+        versions = natsorted(glob(path.join(visualization_path, "*")))
+        file = path.join(versions[-1], "animation.svg.zip")
+    else:
+        file = path.join(visualization_path, version, "animation.svg.zip")
+
+    if path.exists(file):
+        return send_file(file,
+                         mimetype="application/zip",
+                         as_attachment=True,
+                         attachment_filename="{}.svg.zip".format(visualization))
 
 
 @app.route("/<visualization>/<version>/thumbnail")

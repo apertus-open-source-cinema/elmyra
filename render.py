@@ -29,6 +29,9 @@ def render_frame(render_directory,
     bpy.context.scene.frame_current = frame
     bpy.context.scene.cycles.samples = additional_samples
 
+    if bpy.context.scene.render.use_freestyle:
+        bpy.context.scene.svg_export.use_svg_export = True
+
     cache_filename = ".render-cache.png"
     cache_filepath = path.join(render_directory, cache_filename)
 
@@ -63,9 +66,7 @@ def render_frame(render_directory,
 
         rename(cache_filepath, rename_filepath)
 
-    if (bpy.context.scene.render.use_freestyle and
-        bpy.context.scene.svg_export.use_svg_export):
-
+    if bpy.context.scene.render.use_freestyle:
         svg_old_filepath = path.join(render_directory,
                                      "{0}{1:04}.svg".format(cache_filename, frame))
         svg_new_filepath = path.join(render_directory,

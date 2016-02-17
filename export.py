@@ -1,9 +1,12 @@
 import bpy
 
 from datetime import datetime
+from glob import glob
 from os import path
+from shutil import copy
 from subprocess import call
 from time import time
+from zipfile import ZipFile
 
 from configuration import FFMPEG_PATH
 
@@ -13,6 +16,7 @@ import meta
 def export_still(options):
     export_directory = bpy.path.abspath("//")
     image_directory = path.join(export_directory, "rendered_frames")
+
 
     ffmpeg_input_options = [
         FFMPEG_PATH,
@@ -26,6 +30,7 @@ def export_still(options):
     export_thumbnail_still(ffmpeg_input_options, export_directory)
     export_png(ffmpeg_input_options, export_directory)
     export_jpg(ffmpeg_input_options, export_directory)
+    export_svg(image_directory, export_directory)
 
 
 def export_thumbnail_still(ffmpeg_input_options, export_directory):
@@ -94,10 +99,30 @@ def export_png(ffmpeg_input_options, export_directory):
     })
 
 
+def export_svg(image_directory, export_directory):
+    vector_input_files = glob(path.join(image_directory, "*.svg"))
+
+    if len(vector_input_files) > 0:
+        meta.write({"processing": "Exporting SVG"})
+        benchmark = time()
+
+        export_file = path.join(export_directory, "still.svg")
+
+        copy(vector_input_files[0], export_file)
+
+        filesize = path.getsize(export_file)
+        meta.write({
+            "processing": False,
+            "svg": {
+                "filePath": "still.svg",
+                "exported": datetime.now().isoformat(),
+                "processingTime": time() - benchmark,
+                "fileSize": filesize
+            }
+        })
+
+
 def export_animation(options):
-
-    # TODO: Properly model separation between thumbnail and final exporting ?
-
     export_directory = bpy.path.abspath("//")
     image_directory = path.join(export_directory, "rendered_frames")
 
@@ -115,7 +140,8 @@ def export_animation(options):
     export_ogv(ffmpeg_input_options, export_directory)
     export_webm(ffmpeg_input_options, export_directory)
     export_gif(ffmpeg_input_options, export_directory)
-    export_zip(image_directory, export_directory)
+    export_png_sequence(image_directory, export_directory)
+    export_svg_sequence(image_directory, export_directory)
 
 
 def export_thumbnail_animation(ffmpeg_input_options, export_directory):
@@ -282,30 +308,54 @@ def export_gif(ffmpeg_input_options, export_directory):
     })
 
 
-def export_zip(image_directory, export_directory):
-    meta.write({"processing": "Exporting ZIP"})
+def export_png_sequence(image_directory, export_directory):
+    meta.write({"processing": "Exporting PNG Sequence"})
     benchmark = time()
 
-    export_file = path.join(export_directory, "animation.zip")
-    zip_call = [
-        "zip",
-        "-r9",
-        export_file,
-        path.join(image_directory, "")
-    ]
+    raster_input_files = glob(path.join(image_directory, "*.png"))
+    export_file = path.join(export_directory, "animation.png.zip")
 
-    call(zip_call)
+    zip_file = ZipFile(export_file, 'w')
+
+    for frame in raster_input_files:
+        zip_file.write(frame, path.basename(frame))
 
     filesize = path.getsize(export_file)
     meta.write({
         "processing": False,
-        "zip": {
-            "filePath": "animation.zip",
+        "png-sequence": {
+            "filePath": "animation.png.zip",
             "exported": datetime.now().isoformat(),
             "processingTime": time() - benchmark,
             "fileSize": filesize
         }
     })
+
+
+def export_svg_sequence(image_directory, export_directory):
+    vector_input_files = glob(path.join(image_directory, "*.svg"))
+
+    if len(vector_input_files) > 0:
+        meta.write({"processing": "Exporting SVG Sequence"})
+        benchmark = time()
+
+        export_file = path.join(export_directory, "animation.svg.zip")
+
+        zip_file = ZipFile(export_file, 'w')
+
+        for frame in vector_input_files:
+            zip_file.write(frame, path.basename(frame))
+
+        filesize = path.getsize(export_file)
+        meta.write({
+            "processing": False,
+            "svg-sequence": {
+                "filePath": "animation.svg.zip",
+                "exported": datetime.now().isoformat(),
+                "processingTime": time() - benchmark,
+                "fileSize": filesize
+            }
+        })
 
 
 def export(options):

@@ -5,7 +5,9 @@ var MediaFormatIcon = React.createClass({
       classes = 'octicon octicon-triangle-right';
     } else if(['jpg', 'png', 'gif'].indexOf(this.props.format) > -1) {
       classes = 'octicon octicon-file-media';
-    } else if(['zip'].indexOf(this.props.format) > -1) {
+    } else if(['svg'].indexOf(this.props.format) > -1) {
+      classes = 'octicon octicon-file-code';
+    } else if(['png-sequence', 'svg-sequence'].indexOf(this.props.format) > -1) {
       classes = 'octicon octicon-file-zip';
     } else {
       classes = 'octicon octicon-file';
@@ -54,13 +56,15 @@ var DownloadButton = React.createClass({
         <DownloadOption {... this.props} format="ogv" />
         <DownloadOption {... this.props} format="webm" />
         <DownloadOption {... this.props} format="gif" />
-        <DownloadOption {... this.props} format="zip" />
+        <DownloadOption {... this.props} format="png-sequence" />
+        <DownloadOption {... this.props} format="svg-sequence" />
       </ul>;
     } else {
       defaultDownload = '/' + this.props.title + '/' + this.props.currentVersionID + '/png';
       downloadOptions = <ul className="dropdown-menu">
         <DownloadOption {... this.props} format="png" />
         <DownloadOption {... this.props} format="jpg" />
+        <DownloadOption {... this.props} format="svg" />
       </ul>;
     }
 
