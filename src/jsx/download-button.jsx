@@ -33,8 +33,10 @@ var DownloadOption = React.createClass({
         );
     } else {
       return(
-        <li>
-          No downloadable data yet.
+        <li className="disabled">
+          <a title="Not available (yet)">
+            <MediaFormatIcon format={this.props.format} /> {this.props.format}
+            </a>
         </li>
       );
     }
