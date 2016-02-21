@@ -3,9 +3,11 @@ import bpy
 from glob import glob
 from datetime import datetime
 from natsort import natsorted
-from os import makedirs, path, remove
-from PIL import Image
+from os import makedirs, path, remove, rename
+from subprocess import call
 from time import time
+
+from configuration import FFMPEG_PATH
 
 import meta
 
@@ -17,50 +19,70 @@ SAMPLES_CAP = 3200
 QUALITY_PREVIEW = 32
 QUALITY_PRODUCTION = 320
 
-
-def render_frame(render_directory, frame, samples, sample_step, stack_frame=None):
+def render_frame(render_directory,
+                 frame,
+                 existing_samples,
+                 additional_samples,
+                 existing_frame=None):
     benchmark = time()
 
     bpy.context.scene.frame_current = frame
-    bpy.context.scene.cycles.samples = sample_step
+    bpy.context.scene.cycles.samples = additional_samples
 
-    if stack_frame:
-        filepath = path.join("//rendered_frames", ".render-cache.png")
-        bpy.context.scene.render.filepath = filepath
-        bpy.ops.render.render(write_still=True)
+    cache_filename = ".render-cache.png"
+    cache_filepath = path.join(render_directory, cache_filename)
 
-        stack_image = Image.open(stack_frame)
-        stack_samples = samples
+    bpy.context.scene.render.filepath = cache_filepath
+    bpy.ops.render.render(write_still=True)
 
-        blend_image = Image.open(path.join(render_directory, ".render-cache.png"))
-        blend_samples = sample_step
+    if existing_frame:
+        alpha = float(existing_samples) / float(existing_samples + additional_samples)
 
-        alpha = float(stack_samples) / float(stack_samples + blend_samples)
+        merge_samples = existing_samples + additional_samples
+        merge_filename = "{0:06}.{1}.png".format(frame, merge_samples)
+        merge_filepath = path.join(render_directory, merge_filename)
 
-        stack_image = Image.blend(blend_image, stack_image, alpha)
-        stack_samples = stack_samples + blend_samples
+        ffmpeg_call = [
+            FFMPEG_PATH,
+            "-y",
+            "-i", existing_frame,
+            "-i", cache_filepath,
+            "-filter_complex",
+            "[1:v][0:v]blend=all_expr='A*{0}+B*{1}'".format(alpha, 1 - alpha),
+            merge_filepath
+        ]
 
-        blend_image.close()
-        remove(path.join(render_directory, ".render-cache.png"))
+        call(ffmpeg_call)
 
-        stack_filename = "{0:06}.{1}.png".format(frame, stack_samples)
-        stack_image.save(path.join(render_directory, stack_filename))
-
-        stack_image.close()
-        remove(stack_frame)
+        remove(existing_frame)
+        remove(cache_filepath)
 
     else:
-        filename = "{0:06}.{1}.png".format(frame, sample_step)
-        filepath = path.join("//rendered_frames", filename)
-        bpy.context.scene.render.filepath = filepath
-        bpy.ops.render.render(write_still=True)
+        rename_filename = "{0:06}.{1}.png".format(frame, additional_samples)
+        rename_filepath = path.join(render_directory, rename_filename)
+
+        rename(cache_filepath, rename_filepath)
+
+    if (bpy.context.scene.render.use_freestyle and
+        bpy.context.scene.svg_export.use_svg_export):
+
+        svg_old_filepath = path.join(render_directory,
+                                     "{0}{1:04}.svg".format(cache_filename, frame))
+        svg_new_filepath = path.join(render_directory,
+                                     "{0:06}.svg".format(frame))
+
+        if existing_frame:
+            remove(svg_new_filepath)
+
+        rename(svg_old_filepath, svg_new_filepath)
+
 
     meta.write({
         "renderDevice": bpy.context.scene.cycles.device,
         "lastRenderedFrame": frame,
         "lastRenderDuration": time() - benchmark,
         "lastRender": datetime.now().isoformat(),
-        "lastRenderedSamples": sample_step
+        "lastRenderedSamples": additional_samples
     })
 
 def render(abandon_after=60, device="GPU"):
@@ -78,7 +100,7 @@ def render(abandon_after=60, device="GPU"):
     last = bpy.context.scene.frame_end
     total_frames = last - first + 1
 
-    rendered_frames = natsorted(glob(path.join(render_directory, "*")))
+    rendered_frames = natsorted(glob(path.join(render_directory, "*.png")))
     requested_frames = []
 
     if len(rendered_frames) < total_frames:
