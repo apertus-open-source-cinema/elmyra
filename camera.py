@@ -1,8 +1,7 @@
 import bpy
 
-from common import append_from_library, remove_object
+from common import append_from_library
 from functools import reduce
-from math import radians
 from mathutils import Vector
 
 
