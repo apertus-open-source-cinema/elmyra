@@ -2,23 +2,29 @@
 
 A blender-based rapid iterative visualization system
 
-[![Conference presentation video thumbnail](http://files.apertus.org/elmyra/youtube-screenshot.png)](http://www.youtube.com/watch?v=ht1hPNjQxcY "Video Title")
+[![Conference presentation video thumbnail](http://files.apertus.org/elmyra/youtube-screenshot.png)](https://youtu.be/ht1hPNjQxcY?t=24s)
 
-Watch the [Blender Conference presentation on Elmyra](https://www.youtube.com/watch?v=ht1hPNjQxcY) for an introduction!
+Watch the [Blender Conference presentation on Elmyra](https://youtu.be/ht1hPNjQxcY?t=24s) for an introduction!
 
-## Setting up Elmyra (User Guide)
+## Setting up Elmyra
 
-**Important:** To run Elmyra, [Python 3.4+](https://www.python.org/) needs to be installed on your system (Run `python3 --version` in a console to see if and which version is installed, if it's none or the wrong one please refer to [python.org](https://www.python.org/) for installation instructions).
+**Heads up: This is a preview (alpha) release** - but don't be afraid! Give it a try and post a report if you encounter problems, we're eager to fix them and get Elmyra production ready as soon as possible!
 
-Download and unzip the release package for your OS:
+### One single requirement
 
-- [Windows](http://files.apertus.org/elmyra/windows.zip)
-- [OS X](http://files.apertus.org/elmyra/osx.zip)
-- [Linux](http://files.apertus.org/elmyra/linux.zip)
+[Python 3.4+](https://www.python.org/) needs to be installed on your system (Run `python3 --version` in a console to see if and which version is installed, if it's none or the wrong one please refer to [python.org](https://www.python.org/) for installation instructions).
 
-Open a terminal, navigate to elmyra's root directory, then enter:
+(Note: Although Elmyra is heavily based on Blender, you don't need to have Blender installed - it comes bundled with Elmyra already!)
 
-    pip3 install -r requirements.txt
+### Setup
+
+- Download the release package: &nbsp;[`Windows`](http://files.apertus.org/elmyra/windows.zip)
+ &nbsp;[`OS X`](http://files.apertus.org/elmyra/osx.zip)
+ &nbsp;[`Linux`](http://files.apertus.org/elmyra/linux.zip)
+
+- Unzip it anywhere, open a terminal, navigate to Elmyra's root directory and enter:
+
+          pip3 install -r requirements.txt
 
 ## Starting Elmrya
 
@@ -31,9 +37,7 @@ Open a terminal, navigate to elmyra's root directory, then enter:
 
      python3 server.py
 
-In your browser, you can now navigate to:
-
-    http://localhost:5000/
+In your browser, you can now navigate to `http://localhost:5000/`
 
 ### The Renderer
 
@@ -45,7 +49,7 @@ Open another terminal at elmyra's root directory, then enter:
 
     python3 renderer.py
 
-## Setting up Elmyra (Developer Guide)
+## Setting up Elmyra for Development
 
 ### Source code
 
