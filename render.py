@@ -153,7 +153,7 @@ def render(abandon_after=60, device="GPU"):
                 requested_frames.append({
                     "number": frame_number,
                     "available_samples": min_samples,
-                    "requested_samples": min_samples * SAMPLES_MULTIPLIER,
+                    "requested_samples": int(min_samples * SAMPLES_MULTIPLIER),
                     "available_frame": frame
                 })
 
