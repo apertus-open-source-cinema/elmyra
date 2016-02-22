@@ -70,6 +70,26 @@ gulp.task('js', ['clean'], function() {
         .pipe(gulp.dest('static/js/'));
 });
 
+gulp.task('configure', function() {
+  return gulp.src(['lib/' + platform + '/configuration.py'])
+  .pipe(gulp.dest('.'));
+});
+
+gulp.task('configure-windows', function() {
+  platform = 'windows';
+  return gulp.start('configure');
+});
+
+gulp.task('configure-osx', function() {
+  platform = 'osx';
+  return gulp.start('configure');
+});
+
+gulp.task('configure-linux', function() {
+  platform = 'linux';
+  return gulp.start('configure');
+});
+
 gulp.task('build', ['css', 'fonts', 'js']);
 
 gulp.task('build-release', function() {

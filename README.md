@@ -71,6 +71,8 @@ And inside elmyra's root directory:
 
 Now you can compile the assets either manually by running `gulp`, or let gulp watch for changes and recompile automatically by running `gulp watch`. Additionally, there are gulp tasks to create releases - `gulp release-[windows/osx/linux]` - which collect all relevant files and put them into an archive named after the platform (e.g. `windows.zip`) in the `release/` directory.
 
+Elmyra uses a platform-dependent configuration module (`configuration.py`) in its root directory to determine the paths to the bundled dependencies, before starting the server the correct configuration module has to be copied over from the respective `lib/[windows/osx/linux]` folders by running one of the `gulp configure-[windows/osx/linux]` tasks.
+
 ### Runtime Dependencies
 
 To run Elmyra, [Python 3.4+](https://www.python.org/) needs to be installed on your system (Run `python3 --version` in a console to see if and which version is installed, if it's none or the wrong one please refer to [python.org](https://www.python.org/) for installation instructions).
