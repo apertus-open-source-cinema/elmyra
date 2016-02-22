@@ -123,7 +123,7 @@ gulp.task('release', ['build-release'], function() {
              '!configuration.py'
            ], { base: '.' })
          )
-         .pipe(zip(platform + '.zip'))
+         .pipe(zip('elmyra-preview-' + platform + '.zip'))
          .pipe(gulp.dest('release/'));
 });
 

@@ -18,9 +18,9 @@ Watch the [Blender Conference presentation on Elmyra](https://youtu.be/ht1hPNjQx
 
 ### Setup
 
-- Download the release package: &nbsp;[`Windows`](http://files.apertus.org/elmyra/windows.zip)
- &nbsp;[`OS X`](http://files.apertus.org/elmyra/osx.zip)
- &nbsp;[`Linux`](http://files.apertus.org/elmyra/linux.zip)
+- Download the release package: &nbsp;[`Windows`](http://files.apertus.org/elmyra/elmyra-preview-windows.zip)
+ &nbsp;[`OS X`](http://files.apertus.org/elmyra/elmyra-preview-osx.zip)
+ &nbsp;[`Linux`](http://files.apertus.org/elmyra/elmyra-preview-linux.zip)
 
 - Unzip it anywhere, open a terminal, navigate to Elmyra's root directory and enter:
 
