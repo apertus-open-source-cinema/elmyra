@@ -57,7 +57,7 @@ Open another terminal at elmyra's root directory, then enter:
 
 ### Bundled dependencies and assets
 
-Download and unzip the [bundled dependencies and assets](http://files.apertus.org/elmyra/lib.zip) and put the `lib` folder inside Elmyra's root directory.
+Download and unzip the [bundled dependencies and assets](http://files.apertus.org/elmyra/elmyra-lib.zip) and put the `lib` folder inside Elmyra's root directory.
 
 ### Development Dependencies
 
