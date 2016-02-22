@@ -18,6 +18,17 @@ var MediaFormatIcon = React.createClass({
 });
 
 var DownloadOption = React.createClass({
+  formatTooltips: {
+    'png': 'Larger filesizes but lossless, supports transparency - great for reduced, graphic designs',
+    'jpg': 'Very small filesizes but lossy, no transparency - great for visually dense, detailed images',
+    'svg': 'Vector-based line graphic - only available for illustrated/line-based styles',
+    'mp4': 'Most widely spread video format - use this e.g. for uploading to Youtube',
+    'ogv': 'An alternative, open format',
+    'webm': 'An alternative, open format',
+    'gif': 'Bad quality but biggest fun factor',
+    'png-sequence': 'All frames of the animation as .png (lossless, supports transparency) in a .zip file',
+    'svg-sequence': 'All frames of the animation as .svg (vector-based line graphics) in a .zip file - only available for illustrated/line-based styles'
+  },
   render: function() {
     if(this.props[this.props.format]) {
       var fileSize = <span className="text-muted">
@@ -27,7 +38,7 @@ var DownloadOption = React.createClass({
       return(
         <li>
           <a href={'/' + this.props.title + '/' + this.props.currentVersionID + '/' + this.props.format}
-             title="TODO: Explain format pro/con/criteria here"
+             title={this.formatTooltips[this.props.format]}
              download={this.props.title}>
             <MediaFormatIcon format={this.props.format} /> {this.props.format} {fileSize}
             </a>
