@@ -26,7 +26,7 @@ var EmbedField = React.createClass({
                type="text"
                className="form-control"
                placeholder="Embed URL"
-               value={'http://feature.todo/' + this.props.title + '/' + this.props.currentVersionID}
+               value={location.origin + '/' + this.props.title + '/' + this.props.currentVersionID}
                readOnly />
 
         <span className="input-group-btn">

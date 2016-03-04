@@ -124,6 +124,40 @@ def visualizations():
 
     return jsonify({"visualizations": visualizations_export})
 
+@app.route("/<visualization>/<version>")
+def embedded(visualization, version):
+    visualization_path = path.join("visualizations", visualization)
+
+    if version == "latest":
+        versions = natsorted(glob(path.join(visualization_path, "*")))
+        version = path.basename(versions[-1])
+
+    meta_path = path.join(visualization_path, version, "meta.json")
+    meta = {}
+
+    with open(meta_path) as file:
+        meta.update(json.loads(file.read()))
+
+    if meta["mediaType"] == 'still':
+
+        file = path.join(visualization_path, version, "still.png")
+
+        if path.exists(file):
+            return send_file(file,
+                             mimetype="image/png",
+                             as_attachment=True,
+                             attachment_filename="{}.png".format(visualization))
+
+    elif meta["mediaType"] == 'animation':
+
+        file = path.join(visualization_path, version, "animation.mp4")
+
+        if path.exists(file):
+            return send_file(file,
+                             mimetype="video/mp4",
+                             as_attachment=True,
+                             attachment_filename="{}.mp4".format(visualization))
+
 
 @app.route("/<visualization>/<version>/png")
 def png(visualization, version):
