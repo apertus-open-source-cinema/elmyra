@@ -1,10 +1,22 @@
 # Elmyra
 
-A blender-based rapid iterative visualization system
+**A blender-based rapid iterative visualization system.**
 
-[![Conference presentation video thumbnail](http://files.apertus.org/elmyra/youtube-screenshot.png)](https://youtu.be/ht1hPNjQxcY?t=24s)
+## What is Elmyra?
 
-Watch the [Blender Conference presentation on Elmyra](https://youtu.be/ht1hPNjQxcY?t=24s) for an introduction!
+- **Visualization Wizard** - Create rendered or interactive presentations of your CAD work in the browser
+- **Automated Rendering** - Get drafts immediately, and high-quality versions later, automatically
+- **Continuous Deployment** - Embed visualizations via URLs that always deliver up-to-date material
+- **Blender Based** - If [Blender](https://www.blender.org/) can render it, Elmyra can as well, because that's what runs inside
+- **Free & Open Source** - Developed as a part of the [AXIOM Gamma](http://apertus.org/axiom-gamma) project
+
+[![Interface screenshot thumbnail](http://files.apertus.org/elmyra/interface-screenshot-thumbnail.png)](http://files.apertus.org/elmyra/interface-screenshot.png)  
+
+Click the image for a full-size screenshot!
+
+[![Conference presentation video thumbnail](http://files.apertus.org/elmyra/youtube-screenshot-thumbnail.png)](https://youtu.be/ht1hPNjQxcY?t=24s)
+
+Watch the [Blender Conference presentation](https://youtu.be/ht1hPNjQxcY?t=24s) on Elmyra for an in-depth introduction to the project's goals! (23 minutes)
 
 ## Setting up Elmyra
 
