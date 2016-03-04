@@ -188,24 +188,25 @@ def download(visualization, version, format):
         version = path.basename(natsorted(versions)[-1])
 
     if format == 'thumbnail':
-        gif_file = path.join(visualization_path, version, "thumbnail.gif")
-        png_file = path.join(visualization_path, version, "thumbnail.png")
+        thumb_filepath = path.join(visualization_path, version, "thumbnail.png")
 
-        if path.exists(gif_file):
-            return send_file(gif_file, mimetype="image/gif")
-        elif path.exists(png_file):
-            return send_file(png_file, mimetype="image/png")
+        if path.exists(thumb_filepath):
+            return send_file(thumb_filepath, mimetype="image/png")
+        else:
+            return "", 404
     else:
-        file = path.join(visualization_path,
-                         version,
-                         "exported.{}".format(format))
+        exported_file = path.join(visualization_path,
+                                  version,
+                                  "exported.{}".format(format))
 
-        if path.exists(file):
-            return send_file(file,
+        if path.exists(exported_file):
+            return send_file(exported_file,
                              mimetype=MIMETYPES[format],
                              as_attachment=True,
                              attachment_filename="{0}.{1}".format(visualization,
                                                                   format))
+        else:
+            return "", 404
 
 
 if __name__ == "__main__":

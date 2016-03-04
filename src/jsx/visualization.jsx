@@ -32,13 +32,13 @@ var Visualization = React.createClass({
     }
 
     var thumbnail;
-    if(currentVersion.thumbnail === undefined) {
+    if(currentVersion.lastRender === undefined) {
       thumbnail = <div className="text-center"
                        style={{ color: '#ccc', width: '480px', height: '240px' }} >
         No preview yet
       </div>;
      } else {
-       var invalidate_cache = '?' + moment(currentVersion.thumbnail.exported).unix();
+       var invalidate_cache = '?' + moment(currentVersion.lastRender).unix();
 
        thumbnail = <img src={'/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
                         className="img-responsive"

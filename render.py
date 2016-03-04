@@ -41,9 +41,9 @@ def render_frame(render_directory,
     if existing_frame:
         alpha = float(existing_samples) / float(existing_samples + additional_samples)
 
-        merge_samples = existing_samples + additional_samples
-        merge_filename = "{0:06}.{1}.png".format(frame, merge_samples)
-        merge_filepath = path.join(render_directory, merge_filename)
+        result_samples = existing_samples + additional_samples
+        result_filename = "{0:06}.{1}.png".format(frame, result_samples)
+        result_filepath = path.join(render_directory, result_filename)
 
         ffmpeg_call = [
             FFMPEG_PATH,
@@ -52,7 +52,7 @@ def render_frame(render_directory,
             "-i", cache_filepath,
             "-filter_complex",
             "[1:v][0:v]blend=all_expr='A*{0}+B*{1}'".format(alpha, 1 - alpha),
-            merge_filepath
+            result_filepath
         ]
 
         call(ffmpeg_call)
@@ -61,10 +61,10 @@ def render_frame(render_directory,
         remove(cache_filepath)
 
     else:
-        rename_filename = "{0:06}.{1}.png".format(frame, additional_samples)
-        rename_filepath = path.join(render_directory, rename_filename)
+        result_filename = "{0:06}.{1}.png".format(frame, additional_samples)
+        result_filepath = path.join(render_directory, result_filename)
 
-        rename(cache_filepath, rename_filepath)
+        rename(cache_filepath, result_filepath)
 
     if bpy.context.scene.render.use_freestyle:
         svg_old_filepath = path.join(render_directory,
@@ -77,6 +77,18 @@ def render_frame(render_directory,
 
         rename(svg_old_filepath, svg_new_filepath)
 
+    # Thumbnail creation
+
+    thumbnail_filepath = path.join(render_directory, "..", "thumbnail.png")
+    call([
+        FFMPEG_PATH,
+        '-y',
+        "-f", "image2",
+        "-i", result_filepath,
+        "-vf", "scale=720:720:force_original_aspect_ratio=decrease",
+        thumbnail_filepath
+    ])
+    # "-vf", "scale=480:-1",
 
     meta.write({
         "renderDevice": bpy.context.scene.cycles.device,

@@ -27,34 +27,9 @@ def export_still(options):
         "-i", path.join(image_directory, "*.png")
     ]
 
-    export_thumbnail_still(ffmpeg_input_options, export_directory)
     export_png(ffmpeg_input_options, export_directory)
     export_jpg(ffmpeg_input_options, export_directory)
     export_svg(image_directory, export_directory)
-
-
-def export_thumbnail_still(ffmpeg_input_options, export_directory):
-    meta.write({"processing": "Exporting Thumbnail"})
-    benchmark = time()
-
-    export_file = path.join(export_directory, "thumbnail.png")
-    ffmpeg_call = ffmpeg_input_options + [
-        "-vf", "scale=480:-1",
-        export_file
-    ]
-
-    call(ffmpeg_call)
-
-    filesize = path.getsize(export_file)
-    meta.write({
-        "processing": False,
-        "thumbnail": {
-            "filePath": "thumbnail.png",
-            "exported": datetime.now().isoformat(),
-            "processingTime": time() - benchmark,
-            "fileSize": filesize
-        }
-    })
 
 
 def export_jpg(ffmpeg_input_options, export_directory):
@@ -135,61 +110,12 @@ def export_animation(options):
         "-i", path.join(image_directory, "*.png")
     ]
 
-    export_thumbnail_animation(ffmpeg_input_options, export_directory)
     export_mp4(ffmpeg_input_options, export_directory)
     export_ogv(ffmpeg_input_options, export_directory)
     export_webm(ffmpeg_input_options, export_directory)
     export_gif(ffmpeg_input_options, export_directory)
     export_png_sequence(image_directory, export_directory)
     export_svg_sequence(image_directory, export_directory)
-
-
-def export_thumbnail_animation(ffmpeg_input_options, export_directory):
-    meta.write({"processing": "Exporting Thumbnail"})
-    benchmark = time()
-
-    # TODO: Figure out if the scaling makes sense
-    # (480 in old vs 320 in new? applies for palette and/or result?)
-    #
-    # old call for reference:
-    # ffmpeg_call = ffmpeg_input_options + [
-    #     "-vf", "scale=480:-1",
-    #     "-gifflags", "+transdiff",
-    #     export_file
-    # ]
-
-    export_file = path.join(export_directory, "thumbnail.gif")
-
-    # GIF encoding technique taken from
-    # http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
-
-    palette_file = path.join(export_directory, "palette.png")
-    filters = "fps=15,scale=320:-1:flags=lanczos"
-
-    ffmpeg_palette_call = ffmpeg_input_options + [
-        "-vf", "{},palettegen".format(filters),
-        palette_file
-    ]
-
-    ffmpeg_render_call = ffmpeg_input_options + [
-        "-i", palette_file,
-        "-lavfi", "{} [x]; [x][1:v] paletteuse".format(filters),
-        export_file
-    ]
-
-    call(ffmpeg_palette_call)
-    call(ffmpeg_render_call)
-
-    filesize = path.getsize(export_file)
-    meta.write({
-        "processing": False,
-        "thumbnail": {
-            "filePath": "thumbnail.gif",
-            "exported": datetime.now().isoformat(),
-            "processingTime": time() - benchmark,
-            "fileSize": filesize
-        }
-    })
 
 
 def export_mp4(ffmpeg_input_options, export_directory):
