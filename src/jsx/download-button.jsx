@@ -7,7 +7,7 @@ var MediaFormatIcon = React.createClass({
       classes = 'octicon octicon-file-media';
     } else if(['svg'].indexOf(this.props.format) > -1) {
       classes = 'octicon octicon-file-code';
-    } else if(['png-sequence', 'svg-sequence'].indexOf(this.props.format) > -1) {
+    } else if(['png.zip', 'svg.zip'].indexOf(this.props.format) > -1) {
       classes = 'octicon octicon-file-zip';
     } else {
       classes = 'octicon octicon-file';
@@ -26,8 +26,8 @@ var DownloadOption = React.createClass({
     'ogv': 'An alternative, open format',
     'webm': 'An alternative, open format',
     'gif': 'Bad quality but biggest fun factor',
-    'png-sequence': 'All frames of the animation as .png (lossless, supports transparency) in a .zip file',
-    'svg-sequence': 'All frames of the animation as .svg (vector-based line graphics) in a .zip file - only available for illustrated/line-based styles'
+    'png.zip': 'All frames of the animation as .png (lossless, supports transparency) in a .zip file',
+    'svg.zip': 'All frames of the animation as .svg (vector-based line graphics) in a .zip file - only available for illustrated/line-based styles'
   },
   render: function() {
     if(this.props[this.props.format]) {
@@ -37,9 +37,9 @@ var DownloadOption = React.createClass({
 
       return(
         <li>
-          <a href={'/' + this.props.title + '/' + this.props.currentVersionID + '/' + this.props.format}
+          <a href={'/vis/' + this.props.title + '/' + this.props.currentVersionID + '/' + this.props.format}
              title={this.formatTooltips[this.props.format]}
-             download={this.props.title}>
+             download={this.props.title + '.' + this.props.format}>
             <MediaFormatIcon format={this.props.format} /> {this.props.format} {fileSize}
             </a>
           </li>
@@ -61,17 +61,17 @@ var DownloadButton = React.createClass({
     var defaultDownload;
     var downloadOptions;
     if(this.props.mediaType === 'animation') {
-      defaultDownload = '/' + this.props.title + '/' + this.props.currentVersionID + '/mp4';
+      defaultDownload = '/vis/' + this.props.title + '/' + this.props.currentVersionID + '/mp4';
       downloadOptions = <ul className="dropdown-menu">
         <DownloadOption {... this.props} format="mp4" />
         <DownloadOption {... this.props} format="ogv" />
         <DownloadOption {... this.props} format="webm" />
         <DownloadOption {... this.props} format="gif" />
-        <DownloadOption {... this.props} format="png-sequence" />
-        <DownloadOption {... this.props} format="svg-sequence" />
+        <DownloadOption {... this.props} format="png.zip" />
+        <DownloadOption {... this.props} format="svg.zip" />
       </ul>;
     } else {
-      defaultDownload = '/' + this.props.title + '/' + this.props.currentVersionID + '/png';
+      defaultDownload = '/vis/' + this.props.title + '/' + this.props.currentVersionID + '/png';
       downloadOptions = <ul className="dropdown-menu">
         <DownloadOption {... this.props} format="png" />
         <DownloadOption {... this.props} format="jpg" />

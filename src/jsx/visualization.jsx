@@ -40,7 +40,7 @@ var Visualization = React.createClass({
      } else {
        var invalidate_cache = '?' + moment(currentVersion.thumbnail.exported).unix();
 
-       thumbnail = <img src={'/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
+       thumbnail = <img src={'/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
                         className="img-responsive"
                         title={title.join('\n')}
                         style={{ maxWidth: '480px', maxHeight: '240px' }} />;

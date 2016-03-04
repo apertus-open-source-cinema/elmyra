@@ -61,7 +61,7 @@ def export_jpg(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting JPG"})
     benchmark = time()
 
-    export_file = path.join(export_directory, "still.jpg")
+    export_file = path.join(export_directory, "exported.jpg")
     ffmpeg_call = ffmpeg_input_options + [export_file]
 
     call(ffmpeg_call)
@@ -70,7 +70,7 @@ def export_jpg(ffmpeg_input_options, export_directory):
     meta.write({
         "processing": False,
         "jpg": {
-            "filePath": "still.jpg",
+            "filePath": "exported.jpg",
             "exported": datetime.now().isoformat(),
             "processingTime": time() - benchmark,
             "fileSize": filesize
@@ -82,7 +82,7 @@ def export_png(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting PNG"})
     benchmark = time()
 
-    export_file = path.join(export_directory, "still.png")
+    export_file = path.join(export_directory, "exported.png")
     ffmpeg_call = ffmpeg_input_options + [export_file]
 
     call(ffmpeg_call)
@@ -91,7 +91,7 @@ def export_png(ffmpeg_input_options, export_directory):
     meta.write({
         "processing": False,
         "png": {
-            "filePath": "still.png",
+            "filePath": "exported.png",
             "exported": datetime.now().isoformat(),
             "processingTime": time() - benchmark,
             "fileSize": filesize
@@ -106,7 +106,7 @@ def export_svg(image_directory, export_directory):
         meta.write({"processing": "Exporting SVG"})
         benchmark = time()
 
-        export_file = path.join(export_directory, "still.svg")
+        export_file = path.join(export_directory, "exported.svg")
 
         copy(vector_input_files[0], export_file)
 
@@ -114,7 +114,7 @@ def export_svg(image_directory, export_directory):
         meta.write({
             "processing": False,
             "svg": {
-                "filePath": "still.svg",
+                "filePath": "exported.svg",
                 "exported": datetime.now().isoformat(),
                 "processingTime": time() - benchmark,
                 "fileSize": filesize
@@ -196,7 +196,7 @@ def export_mp4(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting MP4"})
     benchmark = time()
 
-    export_file = path.join(export_directory, "animation.mp4")
+    export_file = path.join(export_directory, "exported.mp4")
     ffmpeg_call = ffmpeg_input_options + [
         "-c:v", "libx264",
         "-preset", "slow",
@@ -210,7 +210,7 @@ def export_mp4(ffmpeg_input_options, export_directory):
     meta.write({
         "processing": False,
         "mp4": {
-            "filePath": "animation.mp4",
+            "filePath": "exported.mp4",
             "exported": datetime.now().isoformat(),
             "processingTime": time() - benchmark,
             "fileSize": filesize
@@ -222,7 +222,7 @@ def export_ogv(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting OGV"})
     benchmark = time()
 
-    export_file = path.join(export_directory, "animation.ogv")
+    export_file = path.join(export_directory, "exported.ogv")
     ffmpeg_call = ffmpeg_input_options + [
         "-codec:v", "libtheora",
         "-qscale:v", "7",
@@ -235,7 +235,7 @@ def export_ogv(ffmpeg_input_options, export_directory):
     meta.write({
         "processing": False,
         "ogv": {
-            "filePath": "animation.ogv",
+            "filePath": "exported.ogv",
             "exported": datetime.now().isoformat(),
             "processingTime": time() - benchmark,
             "fileSize": filesize
@@ -247,7 +247,7 @@ def export_webm(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting WEBM"})
     benchmark = time()
 
-    export_file = path.join(export_directory, "animation.webm")
+    export_file = path.join(export_directory, "exported.webm")
     ffmpeg_call = ffmpeg_input_options + [
         "-c:v", "libvpx",
         "-crf", "4",
@@ -261,7 +261,7 @@ def export_webm(ffmpeg_input_options, export_directory):
     meta.write({
         "processing": False,
         "webm": {
-            "filePath": "animation.webm",
+            "filePath": "exported.webm",
             "exported": datetime.now().isoformat(),
             "processingTime": time() - benchmark,
             "fileSize": filesize
@@ -274,7 +274,7 @@ def export_gif(ffmpeg_input_options, export_directory):
     meta.write({"processing": "Exporting GIF"})
     benchmark = time()
 
-    export_file = path.join(export_directory, "animation.gif")
+    export_file = path.join(export_directory, "exported.gif")
 
     # GIF encoding technique taken from
     # http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
@@ -300,7 +300,7 @@ def export_gif(ffmpeg_input_options, export_directory):
     meta.write({
         "processing": False,
         "gif": {
-            "filePath": "animation.gif",
+            "filePath": "exported.gif",
             "exported": datetime.now().isoformat(),
             "processingTime": time() - benchmark,
             "fileSize": filesize
@@ -313,7 +313,7 @@ def export_png_sequence(image_directory, export_directory):
     benchmark = time()
 
     raster_input_files = glob(path.join(image_directory, "*.png"))
-    export_file = path.join(export_directory, "animation.png.zip")
+    export_file = path.join(export_directory, "exported.png.zip")
 
     zip_file = ZipFile(export_file, 'w')
 
@@ -323,8 +323,8 @@ def export_png_sequence(image_directory, export_directory):
     filesize = path.getsize(export_file)
     meta.write({
         "processing": False,
-        "png-sequence": {
-            "filePath": "animation.png.zip",
+        "png.zip": {
+            "filePath": "exported.png.zip",
             "exported": datetime.now().isoformat(),
             "processingTime": time() - benchmark,
             "fileSize": filesize
@@ -339,7 +339,7 @@ def export_svg_sequence(image_directory, export_directory):
         meta.write({"processing": "Exporting SVG Sequence"})
         benchmark = time()
 
-        export_file = path.join(export_directory, "animation.svg.zip")
+        export_file = path.join(export_directory, "exported.svg.zip")
 
         zip_file = ZipFile(export_file, 'w')
 
@@ -349,8 +349,8 @@ def export_svg_sequence(image_directory, export_directory):
         filesize = path.getsize(export_file)
         meta.write({
             "processing": False,
-            "svg-sequence": {
-                "filePath": "animation.svg.zip",
+            "svg.zip": {
+                "filePath": "exported.svg.zip",
                 "exported": datetime.now().isoformat(),
                 "processingTime": time() - benchmark,
                 "fileSize": filesize

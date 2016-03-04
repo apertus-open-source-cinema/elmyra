@@ -10,7 +10,7 @@ var VersionButton = React.createClass({
     formData.append("blendfile", file);
 
     $.ajax({
-      url: '/' + this.props.title + '/upload',
+      url: '/vis/' + this.props.title + '/upload',
       type: 'POST',
       data: formData,
       processData: false,
@@ -33,7 +33,7 @@ var VersionButton = React.createClass({
     console.log('boo')
 
     $.ajax({
-      url: '/' + this.props.title + '/update',
+      url: '/vis/' + this.props.title + '/update',
       type: 'POST',
       success: function(response) {
         $('#flash').html(
@@ -89,7 +89,7 @@ var VersionButton = React.createClass({
             <span className="octicon octicon-cloud-download" /> This Version
           </li>
           <li>
-            <a href={'/' + this.props.title + '/' + this.props.currentVersionID + '/blend'} download>
+            <a href={'/vis/' + this.props.title + '/' + this.props.currentVersionID + '/blend'} download>
               Download blendfile
             </a>
           </li>

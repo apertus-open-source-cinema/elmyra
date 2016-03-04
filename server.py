@@ -13,6 +13,19 @@ from configuration import BLENDER_PATH
 GENERATE_SCRIPT = path.join(path.dirname(__file__), "generator-blender.py")
 UPDATE_SCRIPT = path.join(path.dirname(__file__), "updater-blender.py")
 
+MIMETYPES = {
+    "png": "image/png",
+    "jpg": "image/jpg",
+    "svg": "image/svg",
+    "gif": "image/gif",
+    "mp4": "video/mp4",
+    "ogv": "video/ogg",
+    "webm": "video/webm",
+    "svg.zip": "application/zip",
+    "png.zip": "application/zip"
+}
+
+
 app = Flask(__name__)
 
 
@@ -48,7 +61,36 @@ def generate():
     return redirect(url_for("index"))
 
 
-@app.route("/<visualization>/upload", methods=["POST"])
+@app.route("/visualizations")
+def visualizations():
+    visualizations_export = []
+
+    for viz in sorted(glob("visualizations/*")):
+        title = path.basename(viz)
+        versions = natsorted(glob(path.join(viz, "*")), reverse=True)
+
+        versions_export = []
+
+        for version in versions:
+            meta = {
+                "title": title,
+                "version": path.basename(version)
+            }
+
+            meta_path = path.join(version, "meta.json")
+
+            if path.exists(meta_path):
+                with open(meta_path) as file:
+                    meta.update(json.loads(file.read()))
+
+            versions_export.append(meta)
+
+        visualizations_export.append({"versions": versions_export})
+
+    return jsonify({"visualizations": visualizations_export})
+
+
+@app.route("/vis/<visualization>/upload", methods=["POST"])
 def upload(visualization):
     blender_call = [
         BLENDER_PATH,
@@ -77,7 +119,7 @@ def upload(visualization):
     return jsonify({"success": True}), 200, {'ContentType':'application/json'}
 
 
-@app.route("/<visualization>/update", methods=["POST"])
+@app.route("/vis/<visualization>/update", methods=["POST"])
 def update(visualization):
     blender_call = [
         BLENDER_PATH,
@@ -95,36 +137,7 @@ def update(visualization):
     return jsonify({"success": True}), 200, {'ContentType':'application/json'}
 
 
-@app.route("/visualizations")
-def visualizations():
-    visualizations_export = []
-
-    for viz in sorted(glob("visualizations/*")):
-        title = path.basename(viz)
-        versions = natsorted(glob(path.join(viz, "*")), reverse=True)
-        latest_version = versions[-1]
-
-        versions_export = []
-
-        for version in versions:
-            meta = {
-                "title": title,
-                "version": path.basename(version)
-            }
-
-            meta_path = path.join(version, "meta.json")
-
-            if path.exists(meta_path):
-                with open(meta_path) as file:
-                    meta.update(json.loads(file.read()))
-
-            versions_export.append(meta)
-
-        visualizations_export.append({"versions": versions_export})
-
-    return jsonify({"visualizations": visualizations_export})
-
-@app.route("/<visualization>/<version>")
+@app.route("/vis/<visualization>/<version>")
 def embedded(visualization, version):
     visualization_path = path.join("visualizations", visualization)
 
@@ -133,213 +146,32 @@ def embedded(visualization, version):
         version = path.basename(versions[-1])
 
     meta_path = path.join(visualization_path, version, "meta.json")
-    meta = {}
 
     with open(meta_path) as file:
-        meta.update(json.loads(file.read()))
+        meta = json.loads(file.read())
 
     if meta["mediaType"] == 'still':
-
-        file = path.join(visualization_path, version, "still.png")
+        file = path.join(visualization_path, version, "exported.png")
 
         if path.exists(file):
-            return send_file(file,
-                             mimetype="image/png",
-                             as_attachment=True,
-                             attachment_filename="{}.png".format(visualization))
+            return send_file(file, mimetype="image/png")
 
     elif meta["mediaType"] == 'animation':
-
-        file = path.join(visualization_path, version, "animation.mp4")
+        file = path.join(visualization_path, version, "exported.mp4")
 
         if path.exists(file):
-            return send_file(file,
-                             mimetype="video/mp4",
-                             as_attachment=True,
-                             attachment_filename="{}.mp4".format(visualization))
+            return send_file(file, mimetype="video/mp4")
 
 
-@app.route("/<visualization>/<version>/png")
-def png(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "still.png")
-    else:
-        file = path.join(visualization_path, version, "still.png")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="image/png",
-                         as_attachment=True,
-                         attachment_filename="{}.png".format(visualization))
-
-
-@app.route("/<visualization>/<version>/jpg")
-def jpg(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "still.jpg")
-    else:
-        file = path.join(visualization_path, version, "still.jpg")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="image/jpg",
-                         as_attachment=True,
-                         attachment_filename="{}.jpg".format(visualization))
-
-
-@app.route("/<visualization>/<version>/svg")
-def svg(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "still.svg")
-    else:
-        file = path.join(visualization_path, version, "still.svg")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="image/svg",
-                         as_attachment=True,
-                         attachment_filename="{}.svg".format(visualization))
-
-
-@app.route("/<visualization>/<version>/mp4")
-def mp4(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "animation.mp4")
-    else:
-        file = path.join(visualization_path, version, "animation.mp4")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="video/mp4",
-                         as_attachment=True,
-                         attachment_filename="{}.mp4".format(visualization))
-
-
-@app.route("/<visualization>/<version>/ogv")
-def ogv(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "animation.ogv")
-    else:
-        file = path.join(visualization_path, version, "animation.ogv")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="video/ogg",
-                         as_attachment=True,
-                         attachment_filename="{}.ogv".format(visualization))
-
-
-@app.route("/<visualization>/<version>/webm")
-def webm(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "animation.webm")
-    else:
-        file = path.join(visualization_path, version, "animation.webm")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="video/webm",
-                         as_attachment=True,
-                         attachment_filename="{}.webm".format(visualization))
-
-
-@app.route("/<visualization>/<version>/gif")
-def gif(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "animation.gif")
-    else:
-        file = path.join(visualization_path, version, "animation.gif")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="image/gif",
-                         as_attachment=True,
-                         attachment_filename="{}.gif".format(visualization))
-
-
-@app.route("/<visualization>/<version>/png-sequence")
-def png_sequence(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "animation.png.zip")
-    else:
-        file = path.join(visualization_path, version, "animation.png.zip")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="application/zip",
-                         as_attachment=True,
-                         attachment_filename="{}.png.zip".format(visualization))
-
-
-@app.route("/<visualization>/<version>/svg-sequence")
-def svg_sequence(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        file = path.join(versions[-1], "animation.svg.zip")
-    else:
-        file = path.join(visualization_path, version, "animation.svg.zip")
-
-    if path.exists(file):
-        return send_file(file,
-                         mimetype="application/zip",
-                         as_attachment=True,
-                         attachment_filename="{}.svg.zip".format(visualization))
-
-
-@app.route("/<visualization>/<version>/thumbnail")
-def thumbnail(visualization, version):
-    visualization_path = path.join("visualizations", visualization)
-
-    if version == "latest":
-        versions = natsorted(glob(path.join(visualization_path, "*")))
-        version_path = path.join(versions[-1])
-    else:
-        version_path = path.join(visualization_path, version)
-
-    gif_file = path.join(version_path, "thumbnail.gif")
-    png_file = path.join(version_path, "thumbnail.png")
-
-    if path.exists(gif_file):
-        return send_file(gif_file, mimetype="image/gif")
-    elif path.exists(png_file):
-        return send_file(png_file, mimetype="image/png")
-
-
-@app.route("/<visualization>/<version>/blend")
+@app.route("/vis/<visualization>/<version>/blend")
 def download_blend(visualization, version):
     visualization_path = path.join("visualizations", visualization)
 
     if version == "latest":
         versions = natsorted(glob(path.join(visualization_path, "*")))
-        blend_file = path.join(versions[-1], "scene.blend")
-    else:
-        blend_file = path.join(visualization_path, version, "scene.blend")
+        version = path.basename(versions[-1])
+
+    blend_file = path.join(visualization_path, version, "scene.blend")
 
     return send_file(blend_file,
                      mimetype="application/x-blender",
@@ -347,9 +179,33 @@ def download_blend(visualization, version):
                      attachment_filename="{0}.blend".format(visualization))
 
 
-@app.route("/static/<path:path>")
-def serve_asset(path):
-    return send_file(path.join("static", path))
+@app.route("/vis/<visualization>/<version>/<format>")
+def download(visualization, version, format):
+    visualization_path = path.join("visualizations", visualization)
+
+    if version == "latest":
+        versions = glob(path.join(visualization_path, "*"))
+        version = path.basename(natsorted(versions)[-1])
+
+    if format == 'thumbnail':
+        gif_file = path.join(visualization_path, version, "thumbnail.gif")
+        png_file = path.join(visualization_path, version, "thumbnail.png")
+
+        if path.exists(gif_file):
+            return send_file(gif_file, mimetype="image/gif")
+        elif path.exists(png_file):
+            return send_file(png_file, mimetype="image/png")
+    else:
+        file = path.join(visualization_path,
+                         version,
+                         "exported.{}".format(format))
+
+        if path.exists(file):
+            return send_file(file,
+                             mimetype=MIMETYPES[format],
+                             as_attachment=True,
+                             attachment_filename="{0}.{1}".format(visualization,
+                                                                  format))
 
 
 if __name__ == "__main__":
