@@ -151,7 +151,7 @@ def export_ogv(ffmpeg_input_options, export_directory):
     export_file = path.join(export_directory, "exported.ogv")
     ffmpeg_call = ffmpeg_input_options + [
         "-codec:v", "libtheora",
-        "-qscale:v", "7",
+        "-qscale:v", "10",
         export_file
     ]
 
@@ -177,7 +177,7 @@ def export_webm(ffmpeg_input_options, export_directory):
     ffmpeg_call = ffmpeg_input_options + [
         "-c:v", "libvpx",
         "-crf", "4",
-        "-b:v", "1M",
+        "-b:v", "32M",
         export_file
     ]
 

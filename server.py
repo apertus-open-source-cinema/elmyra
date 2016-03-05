@@ -157,10 +157,10 @@ def embedded(visualization, version):
             return send_file(file, mimetype="image/png")
 
     elif meta["mediaType"] == 'animation':
-        file = path.join(visualization_path, version, "exported.mp4")
+        file = path.join(visualization_path, version, "exported.webm")
 
         if path.exists(file):
-            return send_file(file, mimetype="video/mp4")
+            return send_file(file, mimetype="video/webm")
 
 
 @app.route("/vis/<visualization>/<version>/blend")
