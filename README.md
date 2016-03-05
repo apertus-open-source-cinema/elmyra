@@ -24,7 +24,7 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
 **Heads up:** This is a preview (alpha) release - but the more people test and report problems, the sooner it'll be production ready! :)  
 
 ### Requirements
-- You **need** to have [Python 3.4+](https://www.python.org/) installed - you can check this with `python3 --version` (on some platforms without the `3`).
+- You **need** to have [Python 3.4+](https://www.python.org/) installed - you can check this with `python3 --version` (on some platforms without `3`).
 
 - You **don't need** to have Blender installed - it comes bundled with Elmyra.
 
@@ -36,15 +36,15 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
 
 - Unzip it anywhere, open a terminal, navigate to Elmyra's root directory and enter:
 
-          pip3 install -r requirements.txt
+        pip3 install -r requirements.txt
 
 - Start the server:
 
-       python3 server.py
+        python3 server.py
 
 - Open another terminal and start the renderer (can be started and stopped anytime actually):
 
-      python3 renderer.py
+        python3 renderer.py
 
 - Done! Open your browser and go to `http://localhost:5000/`
 
