@@ -2,6 +2,12 @@
 
 **A blender-based rapid iterative visualization system.**
 
+[![Interface thumbnail 1](http://files.apertus.org/elmyra/interface-1-thumbnail.png)](http://files.apertus.org/elmyra/interface-1.png) &nbsp;
+[![Interface thumbnail 2](http://files.apertus.org/elmyra/interface-2-thumbnail.png)](http://files.apertus.org/elmyra/interface-2.png) &nbsp;
+
+[![Interface thumbnail 4](http://files.apertus.org/elmyra/interface-4-thumbnail.png)](http://files.apertus.org/elmyra/interface-4.png) &nbsp;
+[![Interface thumbnail 3](http://files.apertus.org/elmyra/interface-3-thumbnail.png)](http://files.apertus.org/elmyra/interface-3.png) &nbsp;
+
 ## What is Elmyra?
 
 - **Visualization Wizard** - Create rendered or interactive presentations of your CAD work in the browser
@@ -10,13 +16,7 @@
 - **Blender Based** - If [Blender](https://www.blender.org/) can render it, Elmyra can as well, because that's what runs inside
 - **Free & Open Source** - Developed as a part of the [AXIOM Gamma](http://apertus.org/axiom-gamma) project
 
-[![Interface screenshot thumbnail](http://files.apertus.org/elmyra/interface-screenshot-thumbnail.png)](http://files.apertus.org/elmyra/interface-screenshot.png)  
-
-Click the image for a full-size screenshot!
-
-[![Conference presentation video thumbnail](http://files.apertus.org/elmyra/youtube-screenshot-thumbnail.png)](https://youtu.be/ht1hPNjQxcY?t=24s)
-
-Watch the [Blender Conference presentation](https://youtu.be/ht1hPNjQxcY?t=24s) on Elmyra for an in-depth introduction to the project's goals! (23 minutes)
+Want to know more? Check out the [Blender Conference Presentation](https://youtu.be/ht1hPNjQxcY?t=24s)  (23min)
 
 ## Setting up Elmyra
 
