@@ -50,7 +50,7 @@ gulp.task('js', ['clean'], function() {
              'src/lib/react-0.14.6/react-dom.js',
              'src/lib/bootstrap-3.3.5/js/bootstrap.js',
              'src/lib/moment-2.11.1/moment.js',
-             'src/lib/clipboard.js-1.5.2/clipboard.js',
+             'src/lib/clipboard.js-1.5.9/clipboard.js',
              'src/lib/filesize.js-3.1.2/filesize.min.js',
              'src/lib/three.js-r73/three.js'
            ]),
