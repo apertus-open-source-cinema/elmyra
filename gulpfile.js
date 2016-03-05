@@ -27,7 +27,8 @@ gulp.task('css', ['clean'], function() {
            gulp.src([
              'src/lib/bootstrap-3.3.5/css/bootstrap.css',
              'src/lib/bootstrap-3.3.5/css/bootstrap-theme.css',
-             'src/lib/octicons-3.3.0/octicons.css'
+             'src/lib/octicons-3.3.0/octicons.css',
+             'src/lib/featherlight-1.3.5/featherlight.min.css'
            ]),
            gulp.src('src/styl/main.styl').pipe(stylus())
          )
@@ -52,6 +53,7 @@ gulp.task('js', ['clean'], function() {
              'src/lib/moment-2.11.1/moment.js',
              'src/lib/clipboard.js-1.5.9/clipboard.js',
              'src/lib/filesize.js-3.1.2/filesize.min.js',
+             'src/lib/featherlight-1.3.5/featherlight.min.js',
              'src/lib/three.js-r73/three.js'
            ]),
            gulp.src([

@@ -5,6 +5,17 @@ var Visualization = React.createClass({
   changeVersion: function(versionID) {
     this.setState({ currentVersionID: versionID });
   },
+  preview: function() {
+    var currentVersion = this.props.versions[0];
+
+    if(currentVersion.mediaType === 'animation') {
+      var content = $('<video autoplay controls><source src="' + location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '"></video>');
+      $.featherlight(content, { type: 'html' });
+    } else {
+      var content = '/vis/' + currentVersion.title + '/' + this.state.currentVersionID;
+      $.featherlight(content, { type: 'image' });
+    }
+  },
   render: function() {
     var currentVersion = this.props.versions[0];
 
@@ -51,7 +62,8 @@ var Visualization = React.createClass({
     return(
       <div className="visualization">
         <div className={typeof(currentVersion.processing) === "string" ? 'preview active' : 'preview'}>
-          <a href="#">
+          <a onClick={this.preview}
+             style={{cursor: 'pointer'}} >
             {previewImage}
           </a>
         </div>
