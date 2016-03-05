@@ -40,13 +40,15 @@ def update_object(obj, min_interval):
                 file.write(stl)
 
             bpy.ops.import_mesh.stl(filepath=stl_path)
+            bpy.ops.object.shade_smooth()
 
             remove(stl_path)
 
             obj_new_geometry = bpy.context.scene.objects.active
 
             if obj.type == "EMPTY":
-                common.remove_object(obj.name)
+                common.remove_object(obj.name) # Remove empty
+                bpy.ops.object.modifier_add(type='EDGE_SPLIT')
                 obj = obj_new_geometry
             else:
                 update_geometry(obj, obj_new_geometry)
