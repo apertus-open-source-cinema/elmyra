@@ -85,7 +85,7 @@ def render_frame(render_directory,
         '-y',
         "-f", "image2",
         "-i", result_filepath,
-        "-vf", "scale=720:720:force_original_aspect_ratio=decrease",
+        "-vf", "scale=480:270:force_original_aspect_ratio=decrease",
         thumbnail_filepath
     ])
     # "-vf", "scale=480:-1",
