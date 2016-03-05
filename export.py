@@ -206,7 +206,7 @@ def export_gif(ffmpeg_input_options, export_directory):
     # http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
 
     palette_file = path.join(export_directory, "palette.png")
-    filters = "fps=15,scale=320:-1:flags=lanczos"
+    filters = "fps=15,scale=720:-1:flags=lanczos"
 
     ffmpeg_palette_call = ffmpeg_input_options + [
         "-vf", "{},palettegen".format(filters),
