@@ -48,6 +48,13 @@ var VersionButton = React.createClass({
     });
   },
   render: function() {
+    var label;
+    if(this.props.currentVersionID === 'latest') {
+      label = 'Latest Version';
+    } else {
+      label = 'Version ' + this.state.currentVersionID;
+    }
+
     var versions = this.props.versions.map(function(version, index) {
       return(
         <li key={index}>
@@ -61,7 +68,7 @@ var VersionButton = React.createClass({
     return(
       <span className="dropdown">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i className="octicon octicon-three-bars" />
+          <i className="octicon octicon-versions" /> {label}
         </a>
         <ul className="dropdown-menu">
           <li className="dropdown-header">
@@ -83,16 +90,6 @@ var VersionButton = React.createClass({
             <span className="octicon octicon-lock" /> Permament Versions
           </li>
           {versions}
-          <li role="separator" className="divider"></li>
-
-          <li className="dropdown-header text-warning">
-            <span className="octicon octicon-cloud-download" /> This Version
-          </li>
-          <li>
-            <a href={'/vis/' + this.props.title + '/' + this.props.currentVersionID + '/blend'} download>
-              Download blendfile
-            </a>
-          </li>
           <li role="separator" className="divider"></li>
 
           <li className="dropdown-header">

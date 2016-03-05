@@ -46,26 +46,19 @@ var Visualization = React.createClass({
                         style={{ maxWidth: '480px', maxHeight: '240px' }} />;
      }
 
-     var version;
-     if(this.state.currentVersionID === 'latest') {
-       version = 'Latest Version';
-     } else {
-       version = 'Version ' + this.state.currentVersionID;
-     }
-
     return(
       <span className="visualization">
         <div className="panel panel-default">
           <div className="panel-body" style={{backgroundColor: "inherit"}}>
             <div className="text-center">
               <h4>
+                {currentVersion.title}
+              </h4>
+              <span className="text-muted" style={{position: "relative", top: "-8px"}}>
                 <VersionButton {... currentVersion}
                                currentVersionID={this.state.currentVersionID}
                                versions={this.props.versions}
-                               changeVersion={this.changeVersion} /> {currentVersion.title}
-              </h4>
-              <span className="text-muted" style={{position: "relative", top: "-10px"}}>
-                {version}
+                               changeVersion={this.changeVersion} />
               </span>
             </div>
 
