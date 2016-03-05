@@ -1,8 +1,12 @@
+title-color = #444
+link-color = #666
+link-hover-color = #777
+
 body
-  padding 51px 0px 0px 0px
+  padding: 51px 0 0 0
 
 .navbar-inverse .navbar-brand
-  color #fff
+  color: #fff
 
 .pad
   padding: 4px 0
@@ -13,9 +17,51 @@ body
 
 .visualization
   flex: 0 0 auto
-  margin: 20px 0px 20px 20px
-  width: 520px
-  min-height: 520px
+  margin: 50px 0 0 50px
+
+  a
+    color: link-color
+    text-decoration: none
+
+    &:hover
+      color: link-hover-color
+
+  .preview
+    background-image: url(../checker.png)
+    box-shadow: inset 0 0 20px #333, 0 0 20px #ccc;
+
+    &.active
+      background-image: url(../checker-active.png)
+      box-shadow: inset 0 0 20px #333, 0 0 20px #ccc;
+
+    a
+      align-items: center
+      display: flex
+      height: 270px
+      justify-content: center
+      width: 480px
+
+      img
+        max-height: 100%
+        max-width: 100%
+
+  .menu
+    align-items: center;
+    display: flex
+    justify-content: space-between
+
+    .title
+      color: title-color
+      font-weight: bold
+
+    .version
+      position: relative
+      top: -8px
+
+    .controls
+      display: flex
+      justify-content: space-between
+      width: 240px
 
 form#new-visualization .spacer
   height: 30px

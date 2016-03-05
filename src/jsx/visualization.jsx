@@ -31,60 +31,53 @@ var Visualization = React.createClass({
       title.push(moment.utc(duration.asMilliseconds()).format("mm:ss"));
     }
 
-    var thumbnail;
+    var previewImage;
     if(currentVersion.lastRender === undefined) {
-      thumbnail = <div className="text-center"
-                       style={{ color: '#ccc', width: '480px', height: '240px' }} >
-        No preview yet
-      </div>;
+      previewImage = <div className="text-center">No preview yet</div>;
      } else {
        var invalidate_cache = '?' + moment(currentVersion.lastRender).unix();
 
-       thumbnail = <img src={'/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
-                        className="img-responsive"
-                        title={title.join('\n')}
-                        style={{ maxWidth: '480px', maxHeight: '240px' }} />;
+       previewImage = <img src={'/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
+                        title={title.join('\n')} />;
+     }
+
+     var processing;
+     if(typeof(currentVersion.processing) === "string") {
+       processing = <span className="octicon octicon-zap"
+                          title={currentVersion.processing}
+                          style={{color: 'rgb(255, 153, 0)', cursor: 'help', position: 'relative', top: '-2px'}} />;
      }
 
     return(
-      <span className="visualization">
-        <div className="panel panel-default">
-          <div className="panel-body" style={{backgroundColor: "inherit"}}>
-            <div className="text-center">
-              <h4>
-                {currentVersion.title}
-              </h4>
-              <span className="text-muted" style={{position: "relative", top: "-8px"}}>
-                <VersionButton {... currentVersion}
-                               currentVersionID={this.state.currentVersionID}
-                               versions={this.props.versions}
-                               changeVersion={this.changeVersion} />
-              </span>
-            </div>
+      <div className="visualization">
+        <div className={typeof(currentVersion.processing) === "string" ? 'preview active' : 'preview'}>
+          <a href="#">
+            {previewImage}
+          </a>
+        </div>
 
-            {/* TODO: Show render quality in conjunction with samples */}
+        <div className="menu">
+          <div className="header">
+            <h5 className="title">
+              {currentVersion.title} {processing}
+            </h5>
+            <span className="version">
+              <VersionButton {... currentVersion}
+                             currentVersionID={this.state.currentVersionID}
+                             versions={this.props.versions}
+                             changeVersion={this.changeVersion} />
+                         </span>
+          </div>
 
-            <br />
-
-            <span>
-              {thumbnail}
-            </span>
-
-            <br /><br />
-
-            <div className="row">
-              <div className="col-xs-4">
-               <DownloadButton {... currentVersion} currentVersionID={this.state.currentVersionID} />
-              </div>
-              <div className="col-xs-8">
-                <EmbedField {... currentVersion} currentVersionID={this.state.currentVersionID} />
-              </div>
-            </div>
-
-            <ProcessingState {... currentVersion} />
+          {/* TODO: Show render quality in conjunction with samples */}
+          {/* TODO: <ProcessingState {... currentVersion} />*/}
+          <div className="controls">
+            <DownloadButton {... currentVersion} currentVersionID={this.state.currentVersionID} />
+            <EmbedButton {... currentVersion} currentVersionID={this.state.currentVersionID} />
+            <UpdateButton {... currentVersion} currentVersionID={this.state.currentVersionID} />
           </div>
         </div>
-      </span>
+      </div>
     );
   }
 });

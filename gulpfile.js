@@ -56,7 +56,8 @@ gulp.task('js', ['clean'], function() {
            ]),
            gulp.src([
              'src/jsx/download-button.jsx',
-             'src/jsx/embed-field.jsx',
+             'src/jsx/embed-button.jsx',
+             'src/jsx/update-button.jsx',
              'src/jsx/processing-state.jsx',
              'src/jsx/versions.jsx',
              'src/jsx/visualization.jsx',

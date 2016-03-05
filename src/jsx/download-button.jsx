@@ -94,10 +94,10 @@ var DownloadButton = React.createClass({
     }
 
     return(
-      <div className="btn-group btn-block">
-        <button className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <div className="dropdown">
+        <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i className="octicon octicon-desktop-download" /> Download
-        </button>
+        </a>
         {downloadOptions}
       </div>
     );
