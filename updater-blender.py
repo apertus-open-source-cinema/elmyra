@@ -2,6 +2,7 @@ import os
 import sys
 
 from argparse import ArgumentParser
+from time import time
 
 # Manually add elmyra's directory to sys.path because
 # the params.py script runs from blender context
@@ -35,14 +36,22 @@ if options.blend:
     version.save_new(options.id)
     meta.write_media_info()
 else:
-    version.open_latest(options.id)
+    run_updates = True
 
-    # TODO: Find problem: Why does it update although the hash stayed the same?
-    #       (Happened on update form external sources manually)
+    if options.min_interval:
+        meta = meta.get()
+        if "lastUpdate" in meta:
+            run_updates = time() - meta["lastUpdate"] < options.min_interval
 
-    if update.update_models(options, options.min_interval):
-        version.save_new(options.id)
-        meta.write_media_info()
+    if run_updates:
+        version.open_latest(options.id)
+
+        # TODO: Find problem: Why does it update although hash stayed the same?
+        #       (Happened on update form external sources manually)
+        #       (Note 06/03/2016 - not sure if still applies)
+
+        if update.update_models():
+            version.save_new(options.id)
+            meta.write_media_info()
     else:
-        # Save only updated meta-information (timestamps)
-        version.save_current(options)
+        meta.write({"lastUpdate": time()})

@@ -3,62 +3,74 @@ import hashlib
 import requests
 
 from os import path, remove
-from time import time
 
 import common
 import meta
 
 
-def update_object(obj, min_interval):
-    url = obj["elmyra-url"]
-    last_hash = obj.get("elmyra-hash")
-    last_updated = obj.get("elmyra-updated")
-
-    if last_updated and min_interval and time() - last_updated < min_interval:
-        return False
+def get_stl(url):
+    if path.exists(url):
+        with open(url, "rb") as file:
+            return file.read()
     else:
-        if path.exists(url):
-            with open(url, "rb") as file:
-                stl = file.read()
-        else:
-            # Get binary file with requests library
-            stl = requests.get(url).content
+        # Get binary file with requests library
+        return requests.get(url).content
 
-        hasher = hashlib.sha1()
-        hasher.update(stl)
-        new_hash = hasher.hexdigest()
+def get_hash(data):
+    hasher = hashlib.sha1()
+    hasher.update(data)
+    return hasher.hexdigest()
 
-        if new_hash == last_hash:
-            obj["elmyra-updated"] = int(time())
 
-            return False
-        else:
-            viz_dir = bpy.path.abspath("//")
-            stl_path = path.join(viz_dir, ".{0}.stl".format(new_hash))
+def temp_write(data, data_hash):
+    # TODO: Write temporary files somewhere else than elmyra's root
+    temp_dirpath = path.dirname(__file__)
+    filepath = path.join(temp_dirpath, ".{0}.stl".format(data_hash))
 
-            with open(stl_path, "wb") as file:
-                file.write(stl)
+    with open(filepath, "wb") as file:
+        file.write(data)
 
-            bpy.ops.import_mesh.stl(filepath=stl_path)
-            bpy.ops.object.shade_smooth()
+    return filepath
 
-            remove(stl_path)
 
-            obj_new_geometry = bpy.context.scene.objects.active
+def generate_objects(urls):
+    for url in urls:
+        stl = get_stl(url)
+        initial_hash = get_hash(stl)
 
-            if obj.type == "EMPTY":
-                common.remove_object(obj.name) # Remove empty
-                bpy.ops.object.modifier_add(type='EDGE_SPLIT')
-                obj = obj_new_geometry
-            else:
-                update_geometry(obj, obj_new_geometry)
-                common.remove_object(obj_new_geometry.name)
+        stl_filepath = temp_write(stl, initial_hash)
 
-            obj["elmyra-url"] = url
-            obj["elmyra-hash"] = new_hash
-            obj["elmyra-updated"] = int(time())
+        bpy.ops.import_mesh.stl(filepath=stl_filepath)
+        bpy.ops.object.shade_smooth()
+        bpy.ops.object.modifier_add(type='EDGE_SPLIT')
 
-            return True
+        bpy.context.active_object["elmyra-url"] = url
+        bpy.context.active_object["elmyra-hash"] = initial_hash
+
+        remove(stl_filepath)
+
+
+def update_object(obj):
+    stl = get_stl(obj["elmyra-url"])
+    new_hash = get_hash(stl)
+
+    if new_hash != obj["elmyra-hash"]:
+        stl_filepath = temp_write(stl, new_hash)
+
+        bpy.ops.import_mesh.stl(filepath=stl_filepath)
+        bpy.ops.object.shade_smooth()
+
+        remove(stl_filepath)
+
+        obj_new_geometry = bpy.context.scene.objects.active
+        update_geometry(obj, obj_new_geometry)
+        common.remove_object(obj_new_geometry.name)
+
+        obj["elmyra-hash"] = new_hash
+
+        return True
+    else:
+        return False
 
 
 def update_geometry(obj, obj_new_geometry):
@@ -128,31 +140,17 @@ def update_geometry(obj, obj_new_geometry):
 
 
 
-def update_models(options, min_interval=None):
+def update_models():
     meta.write({"processing": "Updating models"})
 
     updates_occurred = False
 
-    # First import - supplied via args
-    if hasattr(options, "models"):
-        for url in options.models.splitlines():
-            bpy.ops.object.empty_add(type="CUBE")
-            bpy.context.active_object["elmyra-url"] = url
-
-        updates_occurred = True
-
     # Update existing models
     for obj in bpy.data.objects:
         if obj.get("elmyra-url") is not None:
-            if update_object(obj, min_interval):
+            if update_object(obj):
                 updates_occurred = True
 
-    meta.write({
-        "processing": False,
-        "update": {
-            "lastUpdate": time(),
-            "updatesOcurred": updates_occurred
-        }
-    })
+    meta.write({"processing": False})
 
     return updates_occurred

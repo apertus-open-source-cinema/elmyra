@@ -5,7 +5,6 @@ from natsort import natsorted
 from os import makedirs, path
 from time import strftime
 
-import meta
 
 VISUALIZATIONS_PATH = path.join(path.dirname(__file__), "visualizations")
 
@@ -32,11 +31,6 @@ def open_latest(visualization):
                             "scene.blend")
 
     bpy.ops.wm.open_mainfile(filepath=filepath)
-
-
-def save_current(options):
-    bpy.ops.file.pack_all()
-    bpy.ops.wm.save_mainfile()
 
 
 def save_new(visualization):

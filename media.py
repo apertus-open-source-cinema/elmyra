@@ -34,5 +34,3 @@ def setup(options):
     }[options.media_type]
 
     function(options)
-
-    meta.write_media_info()

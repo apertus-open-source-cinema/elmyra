@@ -3,6 +3,17 @@ import json
 
 from os import path
 
+
+def get():
+    blend_filepath = bpy.path.abspath("//")
+    meta_filepath = path.join(blend_filepath, "meta.json")
+
+    if path.exists(meta_filepath):
+        with open(meta_filepath) as file:
+            return json.loads(file.read())
+    else:
+        return {}
+
 def write(attributes):
     blend_path = bpy.path.abspath("//")
     meta_path = path.join(blend_path, "meta.json")

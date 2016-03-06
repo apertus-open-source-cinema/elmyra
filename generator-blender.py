@@ -14,6 +14,7 @@ sys.path.append(current_dir)
 import common
 import camera
 import media
+import meta
 import modifier
 import style
 import update
@@ -50,11 +51,11 @@ def options_from_args(args):
 
 options = options_from_args(sys.argv)
 
-version.save_new(options.id)
 common.setup_default_scene()
 media.setup(options)
-update.update_models(options)
+update.generate_objects(options.models.splitlines())
 style.setup(options)
 modifier.setup(options)
 camera.setup(options)
-version.save_current(options)
+version.save_new(options.id)
+meta.write_media_info()
