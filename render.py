@@ -29,7 +29,9 @@ def render_frame(render_directory,
     bpy.context.scene.frame_current = frame
     bpy.context.scene.cycles.samples = additional_samples
 
+    # Enable SVG export when using Freestyle
     if bpy.context.scene.render.use_freestyle:
+        bpy.ops.wm.addon_enable(module='render_freestyle_svg')
         bpy.context.scene.svg_export.use_svg_export = True
 
     cache_filename = ".render-cache.png"

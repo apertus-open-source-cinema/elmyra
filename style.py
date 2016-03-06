@@ -9,6 +9,7 @@ def illustrated(options):
     append_from_library("illustrated", "World", "illustrated")
 
     bpy.context.scene.render.use_freestyle = True
+    bpy.ops.wm.addon_enable(module='render_freestyle_svg')
     bpy.context.scene.svg_export.use_svg_export = True
 
     for obj in bpy.data.objects:
