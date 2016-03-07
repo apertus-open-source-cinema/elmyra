@@ -15,12 +15,12 @@ import export
 import render
 import version
 
-DEFAULT_RENDER_TIME = 60
+DEFAULT_RENDER_TIME = 60 # seconds
 
 def options_from_args(args):
     parser = ArgumentParser(prog="Elmyra Render Params")
     parser.add_argument("--id", required=True)
-    parser.add_argument("--device", default="GPU")
+    parser.add_argument("--device", default="CPU")
 
     custom_args = args[sys.argv.index('--') + 1:]
 

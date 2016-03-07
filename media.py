@@ -1,7 +1,5 @@
 import bpy
 
-import meta
-
 
 def setup_animation(options):
     bpy.context.scene.cycles.use_animated_seed = True

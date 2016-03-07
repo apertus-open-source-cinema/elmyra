@@ -90,7 +90,6 @@ def render_frame(render_directory,
         "-vf", "scale=480:270:force_original_aspect_ratio=decrease",
         thumbnail_filepath
     ])
-    # "-vf", "scale=480:-1",
 
     meta.write({
         "renderDevice": bpy.context.scene.cycles.device,
@@ -100,7 +99,7 @@ def render_frame(render_directory,
         "lastRenderedSamples": additional_samples
     })
 
-def render(abandon_after=60, device="GPU"):
+def render(abandon_after=60, device="CPU"):
     benchmark = time()
 
     bpy.context.scene.cycles.seed = int(benchmark) # Imagestacking random seed
