@@ -1,3 +1,4 @@
+"""Methods to set media related (resolution, length) scene properties"""
 import bpy
 
 

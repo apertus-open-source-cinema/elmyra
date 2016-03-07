@@ -1,3 +1,5 @@
+"""Renders and exports all visualizations, over and over"""
+
 from glob import glob
 from os import path
 from subprocess import call

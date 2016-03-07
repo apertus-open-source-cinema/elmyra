@@ -1,3 +1,6 @@
+"""Methods to set style-related properties on the objects and scene"""
+
+
 from common import append_from_library
 
 import bpy

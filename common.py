@@ -1,3 +1,6 @@
+"""Utility methods to ensure dependencies, setup defaults, remove, append ..."""
+
+
 import bpy
 
 from os import path

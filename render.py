@@ -1,3 +1,5 @@
+"""Offers methods to render frames for a given time with a given device"""
+
 import bpy
 
 from glob import glob

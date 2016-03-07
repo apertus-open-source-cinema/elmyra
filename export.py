@@ -1,3 +1,4 @@
+"""Methods for exporting to different formats"""
 import bpy
 
 from datetime import datetime
@@ -196,6 +197,7 @@ def export_webm(ffmpeg_input_options, export_directory):
 
 
 def export_gif(ffmpeg_input_options, export_directory):
+    """Export a GIF from the input frames, scaled down to 720p"""
 
     meta.write({"processing": "Exporting GIF"})
     benchmark = time()
@@ -235,6 +237,7 @@ def export_gif(ffmpeg_input_options, export_directory):
 
 
 def export_png_sequence(image_directory, export_directory):
+    """Export all input frames as PNGs inside a ZIP"""
     meta.write({"processing": "Exporting PNG Sequence"})
     benchmark = time()
 

@@ -1,5 +1,6 @@
 import os
 import subprocess
+"""Tries to update all visualization models from their URLs, over and over"""
 
 from glob import glob
 from os import path
