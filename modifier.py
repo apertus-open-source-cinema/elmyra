@@ -3,18 +3,6 @@ import bpy
 from common import append_from_library
 
 
-def none(options):
-    pass
-
-
-def explosion(options):
-    pass
-
-
-def layout(options):
-    pass
-
-
 def section(options):
     # Avoid transparency glitches (section is based on transparency)
     # Might be still too little for some meshes
@@ -24,7 +12,6 @@ def section(options):
     axis = options.modifier_section_axis
 
     append_from_library("section", "NodeTree", "section")
-
     # TODO: DO THIS WITH SUPER CARE:
     #       Find out what is the difference between
     #       section_node_group  vs.  section_node_group_node
@@ -76,11 +63,7 @@ def section(options):
 
 
 def setup(options):
-    function = {
-        "none": none,
-        "explosion": explosion,
-        "layout": layout,
-        "section": section
-    }[options.modifier_type]
-
-    function(options)
+    if options.modifier_type == "none":
+        pass
+    elif options.modifier_type == "section":
+        section(options)

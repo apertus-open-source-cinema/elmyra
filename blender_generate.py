@@ -1,15 +1,20 @@
+"""
+Generates and saves a new visualization
+
+Custom arguments:
+title -- the title
+id -- the visualization identifier (only alphanumeric characters and dashes)
+TODO
+"""
+
 import sys
 
 from argparse import ArgumentParser
 from os import path
 
-# Manually add elmyra"s directory to sys.path because
-# the params.py script runs from blender context
-
-current_dir = path.dirname(path.realpath(__file__))
-sys.path.append(current_dir)
-
-# Own module imports
+# Manually add elmyra's directory to sys.path because
+# this script runs from blender context
+sys.path.append(path.dirname(path.realpath(__file__)))
 
 import common
 import camera
@@ -21,7 +26,7 @@ import update
 import version
 
 
-def options_from_args(args):
+def parse_custom_args():
     parser = ArgumentParser(prog="Elmyra Generate Params")
 
     parser.add_argument("--title", required=True)
@@ -45,17 +50,25 @@ def options_from_args(args):
     parser.add_argument("--modifier-section-animate-progress-from", type=float, default=0)
     parser.add_argument("--modifier-section-animate-progress-to", type=float, default=1)
 
-    custom_args = args[sys.argv.index("--") + 1:]
+    custom_args = sys.argv[sys.argv.index("--") + 1:]
 
     return parser.parse_args(custom_args)
 
-options = options_from_args(sys.argv)
+args = parse_custom_args()
 
+common.ensure_addons()
 common.setup_default_scene()
-media.setup(options)
-update.generate_objects(options.models.splitlines())
-style.setup(options)
-modifier.setup(options)
-camera.setup(options)
-version.save_new(options.id)
+
+media.setup(args.media_type,
+            args.media_width,
+            args.media_height,
+            args.media_length)
+
+update.generate_objects(args.models.splitlines())
+
+style.setup(args.style_type)
+modifier.setup(args)
+camera.setup(args)
+
+version.save_new(args.id)
 meta.write_media_info()

@@ -31,11 +31,23 @@ def write(attributes):
 
 
 def write_media_info():
+    if bpy.context.scene.render.engine == "BLEND4WEB":
+        media_length = 0
+        media_type = "web3d"
+    elif bpy.context.scene.frame_end > bpy.context.scene.frame_start:
+        num_frames = bpy.context.scene.frame_end - bpy.context.scene.frame_start
+        media_length = round(num_frames / bpy.context.scene.render.fps)
+        media_type = "animation"
+    else:
+        media_length = 0
+        media_type = "still"
+
+
     write({
         "mediaWidth": bpy.context.scene.render.resolution_x,
         "mediaHeight": bpy.context.scene.render.resolution_y,
-        "mediaLength": round((bpy.context.scene.frame_end - bpy.context.scene.frame_start) / 24) if bpy.context.scene.frame_end > bpy.context.scene.frame_start else 0,
-        "mediaType": "animation" if bpy.context.scene.frame_end > bpy.context.scene.frame_start else "still",
+        "mediaLength":  media_length,
+        "mediaType": media_type,
         "mediaFps": bpy.context.scene.render.fps,
         "mediaFrameCount": bpy.context.scene.frame_end
     })

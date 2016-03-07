@@ -11,9 +11,17 @@ var Visualization = React.createClass({
     if(currentVersion.mediaType === 'animation') {
       var content = $('<video autoplay controls><source src="' + location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '"></video>');
       $.featherlight(content, { type: 'html' });
-    } else {
+    } else if (currentVersion.mediaType === 'still') {
       var content = '/vis/' + currentVersion.title + '/' + this.state.currentVersionID;
       $.featherlight(content, { type: 'image' });
+    } else if (currentVersion.mediaType === 'web3d') {
+      var content = location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID;
+      $.featherlight({
+        iframe: content,
+        iframeMaxWidth: '80%',
+        iframeWidth: 1280,
+        iframeHeight: 720
+      });
     }
   },
   render: function() {

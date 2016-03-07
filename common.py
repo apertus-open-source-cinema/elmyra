@@ -2,6 +2,7 @@
 
 
 import bpy
+from addon_utils import check
 
 from os import path
 
@@ -18,6 +19,21 @@ def append_from_library(blend, directory, item):
                       directory=directory,
                       filename=filename,
                       autoselect=False)
+
+
+def ensure_addons():
+    # TODO: Persist addons being enabled as user settings (otherwise overhead!)
+
+    for addon in ('blend4web', 'render_freestyle_svg'):
+        is_enabled, is_loaded = check(addon)
+        if not is_enabled:
+            bpy.ops.wm.addon_enable(module=addon)
+
+
+def remove_object(name):
+    bpy.ops.object.select_all(action="DESELECT")
+    bpy.data.objects[name].select = True
+    bpy.ops.object.delete()
 
 
 def setup_default_scene():
@@ -42,9 +58,3 @@ def setup_default_scene():
 
     for mat in bpy.data.materials:
         mat.use_nodes = True
-
-
-def remove_object(name):
-    bpy.ops.object.select_all(action="DESELECT")
-    bpy.data.objects[name].select = True
-    bpy.ops.object.delete()

@@ -10,8 +10,8 @@ from time import strftime
 
 from configuration import BLENDER_PATH
 
-GENERATE_SCRIPT = path.join(path.dirname(__file__), "generator-blender.py")
-UPDATE_SCRIPT = path.join(path.dirname(__file__), "updater-blender.py")
+GENERATE_SCRIPT = path.join(path.dirname(__file__), "blender_generate.py")
+UPDATE_SCRIPT = path.join(path.dirname(__file__), "blender_update.py")
 
 MIMETYPES = {
     "png": "image/png",
@@ -22,7 +22,8 @@ MIMETYPES = {
     "ogv": "video/ogg",
     "webm": "video/webm",
     "svg.zip": "application/zip",
-    "png.zip": "application/zip"
+    "png.zip": "application/zip",
+    "html": "text/html"
 }
 
 
@@ -150,18 +151,23 @@ def embedded(visualization, version):
     with open(meta_path) as file:
         meta = json.loads(file.read())
 
-    if meta["mediaType"] == 'still':
+    if meta["mediaType"] == "still":
         file = path.join(visualization_path, version, "exported.png")
 
         if path.exists(file):
             return send_file(file, mimetype="image/png")
 
-    elif meta["mediaType"] == 'animation':
+    elif meta["mediaType"] == "animation":
         file = path.join(visualization_path, version, "exported.webm")
 
         if path.exists(file):
             return send_file(file, mimetype="video/webm")
 
+    elif meta["mediaType"] == "web3d":
+        file = path.join(visualization_path, version, "exported.html")
+
+        if path.exists(file):
+            return send_file(file, mimetype="text/html")
 
 @app.route("/vis/<visualization>/<version>/blend")
 def download_blend(visualization, version):

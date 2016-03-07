@@ -7,7 +7,7 @@ from subprocess import call
 from configuration import BLENDER_PATH
 
 
-RENDER_SCRIPT = path.join(path.dirname(__file__), 'renderer-blender.py')
+RENDER_SCRIPT = path.join(path.dirname(__file__), 'blender_render.py')
 LOOP = True
 
 

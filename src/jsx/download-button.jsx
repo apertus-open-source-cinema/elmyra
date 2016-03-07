@@ -8,7 +8,8 @@ var DownloadOption = React.createClass({
     'webm': 'An alternative, open format',
     'gif': 'Bad quality but biggest fun factor',
     'png.zip': 'Larger filesizes but lossless, supports transparency - great for reduced, graphic designs',
-    'svg.zip': 'Vector-based line graphic - only available for illustrated/line-based styles'
+    'svg.zip': 'Vector-based line graphic - only available for illustrated/line-based styles',
+    'html': 'Full website with embedded interactive Blend4Web 3D viewer'
   },
   render: function() {
     if(this.props[this.props.format]) {
@@ -71,7 +72,7 @@ var DownloadButton = React.createClass({
         <DownloadOption {... this.props} format="png.zip" />
         <DownloadOption {... this.props} format="svg.zip" />
       </ul>;
-    } else {
+    } else if(this.props.mediaType === 'still') {
       downloadOptions = <ul className="dropdown-menu">
         <li className="dropdown-header">
           <span className="octicon octicon-file-binary" /> 3D Scene Files
@@ -90,6 +91,19 @@ var DownloadButton = React.createClass({
           <span className="octicon octicon-file-code" /> Vector Files
         </li>
         <DownloadOption {... this.props} format="svg" />
+      </ul>;
+    } else if(this.props.mediaType === 'web3d') {
+      downloadOptions = <ul className="dropdown-menu">
+        <li className="dropdown-header">
+          <span className="octicon octicon-file-binary" /> 3D Scene Files
+        </li>
+        {blendOption}
+        <li role="separator" className="divider"></li>
+
+        <li className="dropdown-header">
+          <span className="octicon octicon-file-media" /> Website
+        </li>
+        <DownloadOption {... this.props} format="html" />
       </ul>;
     }
 

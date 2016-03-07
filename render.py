@@ -33,7 +33,6 @@ def render_frame(render_directory,
 
     # Enable SVG export when using Freestyle
     if bpy.context.scene.render.use_freestyle:
-        bpy.ops.wm.addon_enable(module='render_freestyle_svg')
         bpy.context.scene.svg_export.use_svg_export = True
 
     cache_filename = ".render-cache.png"
@@ -101,7 +100,8 @@ def render_frame(render_directory,
         "lastRenderedSamples": additional_samples
     })
 
-def render(abandon_after=60, device="CPU"):
+
+def render_frames(target_time, device):
     benchmark = time()
 
     bpy.context.scene.cycles.seed = int(benchmark) # Imagestacking random seed
@@ -180,7 +180,15 @@ def render(abandon_after=60, device="CPU"):
                      frame["requested_samples"],
                      frame["available_frame"])
 
-        if time() - benchmark > abandon_after:
+        if time() - benchmark > target_time:
             break
 
     meta.write({"processing": False})
+
+
+def render(target_time, device):
+
+    if bpy.context.scene.render.engine == "BLEND4WEB":
+        pass
+    else:
+        render_frames(target_time, device)

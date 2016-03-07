@@ -14,7 +14,7 @@ from configuration import FFMPEG_PATH
 import meta
 
 
-def export_still(options):
+def export_still():
     export_directory = bpy.path.abspath("//")
     image_directory = path.join(export_directory, "rendered_frames")
 
@@ -98,7 +98,7 @@ def export_svg(image_directory, export_directory):
         })
 
 
-def export_animation(options):
+def export_animation():
     export_directory = bpy.path.abspath("//")
     image_directory = path.join(export_directory, "rendered_frames")
 
@@ -238,6 +238,7 @@ def export_gif(ffmpeg_input_options, export_directory):
 
 def export_png_sequence(image_directory, export_directory):
     """Export all input frames as PNGs inside a ZIP"""
+
     meta.write({"processing": "Exporting PNG Sequence"})
     benchmark = time()
 
@@ -287,8 +288,32 @@ def export_svg_sequence(image_directory, export_directory):
         })
 
 
-def export(options):
-    if bpy.context.scene.frame_end > bpy.context.scene.frame_start:
-        export_animation(options)
+def export_web3d():
+    meta.write({"processing": "Exporting HTML"})
+    benchmark = time()
+
+    export_directory = bpy.path.abspath("//")
+    export_filepath = path.join(export_directory, "exported.html")
+
+    bpy.ops.export_scene.b4w_html(filepath=export_filepath)
+
+    filesize = path.getsize(export_filepath)
+    meta.write({
+        "processing": False,
+        "html": {
+            "filePath": "exported.html",
+            "exported": datetime.now().isoformat(),
+            "processingTime": time() - benchmark,
+            "fileSize": filesize
+        }
+    })
+
+
+def export():
+    if bpy.context.scene.render.engine == "BLEND4WEB":
+        export_web3d()
     else:
-        export_still(options)
+        if bpy.context.scene.frame_end > bpy.context.scene.frame_start:
+            export_animation()
+        else:
+            export_still()
