@@ -144,3 +144,11 @@ gulp.task('release-linux', function() {
   platform = 'linux';
   return gulp.start('release');
 });
+
+gulp.task('release-lib', function() {
+  return gulp.src([
+           'lib/**/*',
+         ], { base: '.' })
+         .pipe(zip('elmyra-lib.zip'))
+         .pipe(gulp.dest('release/'));
+});
