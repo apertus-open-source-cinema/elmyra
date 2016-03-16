@@ -32,7 +32,7 @@ var ModifierType = React.createClass({
           </div>
 
           <div>
-            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, ID, { modifierType: 'section' })}>
+            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, CrossSection, { modifierType: 'cross-section' })}>
               Choose
             </button>
           </div>
@@ -48,7 +48,7 @@ var ModifierType = React.createClass({
           </div>
 
           <div>
-            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, ID, { modifierType: 'animatedSection' })}>
+            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, AnimatedCrossSection, { modifierType: 'animated-cross-section' })}>
               Choose
             </button>
           </div>

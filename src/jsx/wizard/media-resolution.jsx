@@ -9,10 +9,10 @@ var MediaResolution = React.createClass({
     navigationTitle: 'Resolution'
   },
   changeWidth: function(event) {
-    this.setState({ width: event.target.value });
+    this.setState({ width: parseInt(event.target.value) });
   },
   changeHeight: function(event) {
-    this.setState({ height: event.target.value });
+    this.setState({ height: parseInt(event.target.value) });
   },
   render: function() {
     return(

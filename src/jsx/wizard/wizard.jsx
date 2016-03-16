@@ -26,7 +26,11 @@ var Wizard = React.createClass({
       'model-url': this.state.modelUrl,
       'camera-type': this.state.cameraType,
       'style-type': this.state.styleType,
-      'modifier-type': this.state.modifierType
+      'modifier-type': this.state.modifierType,
+      'modifier-section-axis': this.state.modifierSectionAxis,
+      'modifier-section-level': this.state.modifierSectionLevel,
+      'modifier-section-level-from': this.state.modifierSectionLevelFrom,
+      'modifier-section-level-to': this.state.modifierSectionLevelTo,
     };
 
     $.ajax({

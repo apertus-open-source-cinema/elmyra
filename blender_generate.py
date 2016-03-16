@@ -44,9 +44,8 @@ def parse_custom_args():
     parser.add_argument("--modifier-type", required=True)
     parser.add_argument("--modifier-section-axis", default="Z")
     parser.add_argument("--modifier-section-level", type=float, default=0.5)
-    parser.add_argument("--modifier-section-animated")
-    parser.add_argument("--modifier-section-animate-progress-from", type=float, default=0)
-    parser.add_argument("--modifier-section-animate-progress-to", type=float, default=1)
+    parser.add_argument("--modifier-section-level-from", type=float, default=0)
+    parser.add_argument("--modifier-section-level-to", type=float, default=1)
 
     custom_args = sys.argv[sys.argv.index("--") + 1:]
 

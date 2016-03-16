@@ -31,13 +31,13 @@ def section(options):
         section_node_group_node = mat.node_tree.nodes.new("ShaderNodeGroup")
         section_node_group_node.node_tree = bpy.data.node_groups["section"]
 
-        if options.modifier_section_animated:
+        if options.modifier_type == "cross-section-animated":
             bpy.context.scene.frame_current = 1
-            section_node_group.inputs[axis].default_value = options.modifier_section_animate_progress_from
+            section_node_group.inputs[axis].default_value = options.modifier_section_level_from
             section_node_group.inputs[axis].keyframe_insert("default_value")
 
             bpy.context.scene.frame_current = bpy.context.scene.frame_end
-            section_node_group.inputs[axis].default_value = options.modifier_section_animate_progress_to
+            section_node_group.inputs[axis].default_value = options.modifier_section_level_to
             section_node_group.inputs[axis].keyframe_insert("default_value")
 
             # for fc in section_node_group.inputs[axis].animation_data.action.fcurves:
@@ -65,5 +65,5 @@ def section(options):
 def setup(options):
     if options.modifier_type == "none":
         pass
-    elif options.modifier_type == "section":
+    elif options.modifier_type in ("cross-section", "animated-cross-section"):
         section(options)

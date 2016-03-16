@@ -67,6 +67,8 @@ gulp.task('js', ['clean'], function() {
              'src/jsx/index/versions.jsx',
              'src/jsx/index/visualization.jsx',
              'src/jsx/wizard/id.jsx',
+             'src/jsx/wizard/animated-cross-section.jsx',
+             'src/jsx/wizard/cross-section.jsx',
              'src/jsx/wizard/modifier-type.jsx',
              'src/jsx/wizard/style-type.jsx',
              'src/jsx/wizard/camera-type.jsx',
