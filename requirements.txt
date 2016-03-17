@@ -1,3 +1,2 @@
 Flask==0.10.1
 natsort==4.0.4
-unicode-slugify==0.1.3

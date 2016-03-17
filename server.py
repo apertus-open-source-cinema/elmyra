@@ -4,7 +4,6 @@ from flask import Flask, jsonify, render_template, redirect, request, send_file,
 from glob import glob
 from natsort import natsorted
 from os import path, remove
-from slugify import slugify
 from subprocess import call
 from time import strftime
 
