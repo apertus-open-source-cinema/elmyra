@@ -51,29 +51,46 @@ var Visualization = React.createClass({
     }
 
     var previewImage;
+    var previewClasses = ['preview'];
     if(currentVersion.lastRender === undefined) {
-      previewImage = <div className="text-center">No preview yet</div>;
-     } else {
-       var invalidate_cache = '?' + moment(currentVersion.lastRender).unix();
+      previewClasses.push('pending');
+      previewImage = 'Rendering soon';
+    } else {
+      var invalidate_cache = '?' + moment(currentVersion.lastRender).unix();
 
-       previewImage = <img src={'/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
-                        title={title.join('\n')} />;
-     }
+      previewImage = <img src={'/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
+                          title={title.join('\n')} />;
+    }
 
-     var processing;
-     if(typeof(currentVersion.processing) === "string") {
-       processing = <span className="octicon octicon-zap"
-                          title={currentVersion.processing}
-                          style={{color: 'rgb(255, 153, 0)', cursor: 'help', position: 'relative', top: '-2px'}} />;
-     }
+    var processing;
+    if(typeof(currentVersion.processing) === "string") {
+      previewClasses.push('active');
+      processing = <span className="octicon octicon-zap"
+                         title={currentVersion.processing}
+                         style={{color: 'rgb(255, 153, 0)', cursor: 'help', position: 'relative', top: '-2px'}} />;
+
+      if(currentVersion.lastRender === undefined) {
+        previewImage = 'Now rendering';
+      }
+    }
+
+    var overlayClasses;
+    if(currentVersion.mediaType === 'still') {
+      overlayClasses = 'octicon octicon-device-camera overlay still'
+    } else if(currentVersion.mediaType === 'animation') {
+      overlayClasses = 'octicon octicon-device-camera-video overlay animation'
+    } else if(currentVersion.mediaType === 'web3d') {
+      overlayClasses = 'octicon octicon-device-mobile overlay web3d'
+    }
 
     return(
       <div className="visualization">
-        <div className={typeof(currentVersion.processing) === "string" ? 'preview active' : 'preview'}>
-          <a onClick={this.preview}
-             style={{cursor: 'pointer'}} >
+        <div className={previewClasses.join(' ')}>
+          <a onClick={currentVersion.lastRender === undefined ? null : this.preview}>
             {previewImage}
           </a>
+
+          <span className={overlayClasses} />
         </div>
 
         <div className="menu">
