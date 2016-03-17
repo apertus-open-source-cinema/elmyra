@@ -189,6 +189,8 @@ def render_frames(target_time, device):
 def render(target_time, device):
 
     if bpy.context.scene.render.engine == "BLEND4WEB":
-        pass
+        meta.write({
+            "lastRender": datetime.now().isoformat()
+        })
     else:
         render_frames(target_time, device)
