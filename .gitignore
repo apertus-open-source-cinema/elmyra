@@ -6,5 +6,8 @@ __pycache__
 /static/fonts/
 /static/js/
 /visualizations/
-/configuration.py
+/renderer
+/renderer.bat
+/server
+/server.bat
 .tags*

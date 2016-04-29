@@ -6,8 +6,6 @@ from natsort import natsorted
 from os import path
 from subprocess import call
 
-from configuration import BLENDER_PATH
-
 
 RENDER_SCRIPT = path.join(path.dirname(__file__), 'blender_render.py')
 LOOP = True
@@ -15,7 +13,7 @@ LOOP = True
 
 def render(id):
     call([
-        BLENDER_PATH,
+        "blender",
         "--background",
         "--python", RENDER_SCRIPT,
         "--",

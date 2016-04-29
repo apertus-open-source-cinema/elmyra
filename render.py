@@ -9,8 +9,6 @@ from os import makedirs, path, remove, rename
 from subprocess import call
 from time import time
 
-from configuration import FFMPEG_PATH
-
 import meta
 
 
@@ -49,7 +47,7 @@ def render_frame(render_directory,
         result_filepath = path.join(render_directory, result_filename)
 
         ffmpeg_call = [
-            FFMPEG_PATH,
+            "ffmpeg",
             "-y",
             "-i", existing_frame,
             "-i", cache_filepath,
@@ -84,8 +82,8 @@ def render_frame(render_directory,
 
     thumbnail_filepath = path.join(render_directory, "..", "thumbnail.png")
     call([
-        FFMPEG_PATH,
-        '-y',
+        "ffmpeg",
+        "-y",
         "-f", "image2",
         "-i", result_filepath,
         "-vf", "scale=480:270:force_original_aspect_ratio=decrease",

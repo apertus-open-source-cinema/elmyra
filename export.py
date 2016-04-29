@@ -9,8 +9,6 @@ from subprocess import call
 from time import time
 from zipfile import ZipFile
 
-from configuration import FFMPEG_PATH
-
 import meta
 
 
@@ -20,8 +18,8 @@ def export_still():
 
 
     ffmpeg_input_options = [
-        FFMPEG_PATH,
-        '-y',
+        "ffmpeg",
+        "-y",
         "-f", "image2",
         "-pattern_type", "glob",
         "-framerate", "24",
@@ -103,7 +101,7 @@ def export_animation():
     image_directory = path.join(export_directory, "rendered_frames")
 
     ffmpeg_input_options = [
-        FFMPEG_PATH,
+        "ffmpeg",
         "-y",
         "-f", "image2",
         "-pattern_type", "glob",

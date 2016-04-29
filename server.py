@@ -7,8 +7,6 @@ from os import path, remove
 from subprocess import call
 from time import strftime
 
-from configuration import BLENDER_PATH
-
 GENERATE_SCRIPT = path.join(path.dirname(__file__), "blender_generate.py")
 UPDATE_SCRIPT = path.join(path.dirname(__file__), "blender_update.py")
 
@@ -37,7 +35,7 @@ def index():
 @app.route("/generate", methods=["POST"])
 def generate():
     blender_call = [
-        BLENDER_PATH,
+        "blender",
         "--background",
         "--python",
         GENERATE_SCRIPT,
@@ -85,7 +83,7 @@ def visualizations():
 @app.route("/vis/<visualization>/upload", methods=["POST"])
 def upload(visualization):
     blender_call = [
-        BLENDER_PATH,
+        "blender",
         "--background",
         "--python",
         UPDATE_SCRIPT,
@@ -114,7 +112,7 @@ def upload(visualization):
 @app.route("/vis/<visualization>/update", methods=["POST"])
 def update(visualization):
     blender_call = [
-        BLENDER_PATH,
+        "blender",
         "--background",
         "--python",
         UPDATE_SCRIPT,
