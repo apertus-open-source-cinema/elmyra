@@ -120,13 +120,57 @@ def render_frames(target_time, device):
     if len(rendered_frames) < total_frames:
         meta.write({"processing": "Rendering missing frames"})
 
-        for number in range(first + len(rendered_frames), last + 1):
-            requested_frames.append({
-                "number": number,
-                "available_samples": 0,
-                "requested_samples": SAMPLES_INITIAL,
-                "available_frame": None
-            })
+        # Build the initial list of frames based on a binary split pattern:
+        #
+        #  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |  (10 example frame numbers)
+        #  -----------------------------------------
+        #  |   |   |   |   | 1 |   |   |   |   |   |
+        #  |   |   | 2 |   |   |   |   | 3 |   |   |  (split pattern and
+        #  | 4 |   |   | 5 |   | 6 |   |   | 7 |   |   render order)
+        #  |   | 8 |   |   |   |   | 9 |   |   |10 |
+
+        all_frames = range(first, last + 1)
+
+        numbers = [int(path.basename(r).split(".")[0]) for r in rendered_frames]
+
+        all_ranges = []
+        buffer_range = []
+
+        for frame in all_frames:
+            if frame not in numbers:
+                buffer_range.append(frame)
+            elif len(buffer_range) > 0:
+                all_ranges.append(buffer_range)
+                buffer_range = []
+
+        if len(buffer_range) > 0:
+            all_ranges.append(buffer_range)
+            buffer_range = []
+
+        while len(all_ranges) > 0:
+            largest_range = max(all_ranges, key=lambda r: [len(r), -min(r)])
+            all_ranges.remove(largest_range)
+            split_index = len(largest_range) // 2
+
+            for index, frame in enumerate(largest_range):
+                if index == split_index:
+                    requested_frames.append({
+                        "number": frame,
+                        "available_samples": 0,
+                        "requested_samples": SAMPLES_INITIAL,
+                        "available_frame": None
+                    })
+
+                    if len(buffer_range) > 0:
+                        all_ranges.append(buffer_range)
+                        buffer_range = []
+                else:
+                    buffer_range.append(frame)
+
+            if len(buffer_range) > 0:
+                all_ranges.append(buffer_range)
+                buffer_range = []
+
     else:
         samples = [int(path.basename(r).split(".")[1]) for r in rendered_frames]
         min_samples = min(samples)
