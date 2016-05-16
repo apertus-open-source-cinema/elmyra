@@ -6,8 +6,6 @@ __pycache__
 /static/fonts/
 /static/js/
 /visualizations/
-/renderer
-/renderer.bat
-/server
-/server.bat
+/*.bat
+/*.run
 .tags*

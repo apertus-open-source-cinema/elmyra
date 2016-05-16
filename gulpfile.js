@@ -1,6 +1,7 @@
 var babel = require('gulp-babel'),
     concat = require('gulp-concat')
     del = require('del'),
+    git = require('git-rev-sync'),
     gulp = require('gulp'),
     cssnano = require('gulp-cssnano'),
     streamqueue  = require('streamqueue'),
@@ -9,25 +10,25 @@ var babel = require('gulp-babel'),
     util = require('gulp-util'),
     zip = require('gulp-zip');
 
-var platform = 'linux';
-gulp.task('windows', function(callback) {
-  platform = 'windows';
+var release = null;
+
+gulp.task('configure-windows', function(callback) {
+  release = 'windows';
   callback();
 });
 
-gulp.task('osx', function(callback) {
-  platform = 'osx';
+gulp.task('configure-osx', function(callback) {
+  release = 'osx';
   callback();
 });
 
-gulp.task('linux', function(callback) {
-  platform = 'linux';
+gulp.task('configure-linux', function(callback) {
+  release = 'linux';
   callback();
 });
 
-var release = false;
-gulp.task('enable-release', function(callback) {
-  release = true;
+gulp.task('configure-dev', function(callback) {
+  release = null;
   callback();
 });
 
@@ -35,7 +36,9 @@ gulp.task('clean', function() {
   return del([
     'static/css',
     'static/fonts',
-    'static/js'
+    'static/js',
+    '*.run',
+    '*.bat',
   ]);
 });
 
@@ -104,34 +107,46 @@ gulp.task('js', function() {
         .pipe(gulp.dest('static/js/'));
 });
 
-gulp.task('configure-windows', function() {
-  return gulp.src([
-           'lib/windows/renderer.bat',
-           'lib/windows/server.bat',
-         ])
-         .pipe(gulp.dest('.'));
-});
+gulp.task('launchers', function() {
+  if(release === 'windows' || release === null && process.platform === 'win32') {
 
-gulp.task('configure-osx', function() {
-  return gulp.src([
-           'lib/osx/renderer',
-           'lib/osx/server',
-         ])
-         .pipe(gulp.dest('.'));
-});
+    return gulp.src([
+                  'lib/windows/renderer.bat',
+                  'lib/windows/server.bat',
+                  'lib/windows/dev-server.bat'
+                ])
+                .pipe(gulp.dest('.'));
 
-gulp.task('configure-linux', function() {
-  return gulp.src([
-           'lib/linux/renderer',
-           'lib/linux/server',
-         ])
-         .pipe(gulp.dest('.'));
+  } else if(release === 'osx' || release === null && process.platform === 'darwin') {
+
+    return gulp.src([
+                  'lib/osx/renderer.run',
+                  'lib/osx/server.run',
+                  'lib/osx/dev-server.run'
+                ])
+                .pipe(gulp.dest('.'));
+
+  } else if(release === 'linux' || release === null && process.platform === 'linux') {
+
+    return gulp.src([
+                  'lib/linux/renderer.run',
+                  'lib/linux/server.run',
+                  'lib/linux/dev-server.run'
+                ])
+                .pipe(gulp.dest('.'));
+
+  }
 });
 
 gulp.task(
   'build',
-  gulp.series('clean', gulp.parallel('css', 'fonts', 'js'))
+  gulp.series('clean', gulp.parallel('css', 'fonts', 'js', 'launchers'))
 );
+
+gulp.task('build-windows', gulp.series('configure-windows', 'build'));
+gulp.task('build-osx', gulp.series('configure-osx', 'build'));
+gulp.task('build-linux', gulp.series('configure-linux', 'build'));
+gulp.task('build-dev', gulp.series('configure-dev', 'build'));
 
 gulp.task('default', gulp.series('build'));
 
@@ -139,56 +154,39 @@ gulp.task('watch', function() {
   gulp.watch('src/**/*', gulp.series('build'));
 });
 
-
 gulp.task('zip', function() {
-  var configuration;
-  if(platform === 'windows') {
-    configuration = [
-      'lib/windows/renderer.bat',
-      'lib/windows/server.bat',
-    ]
-  } else if(platform === 'osx') {
-    configuration = [
-      'lib/osx/renderer',
-      'lib/osx/server',
-    ];
-  } else if(platform === 'linux') {
-    configuration = [
-      'lib/linux/renderer',
-      'lib/linux/server',
-    ];
-  }
+  var releaseFlags = [];
+  releaseFlags.push(git.short());
+  releaseFlags.push(release);
 
   return streamqueue(
            { objectMode: true },
-           gulp.src(configuration),
            gulp.src([
              'lib/elmyra/**/*',
-             'lib/' + platform + '/**/*',
+             'lib/' + release + '/**/*',
              'static/**/*',
              'templates/**/*',
              'LICENSE',
              'README.md',
              '*.py',
-             '!server',
-             '!renderer',
-             '!server.bat',
-             '!renderer.bat',
+             '*.run',
+             '*.bat'
            ], { base: '.' })
          )
-         .pipe(zip('elmyra-preview-' + platform + '.zip'))
+         .pipe(zip('elmyra-' + releaseFlags.join('-') + '.zip'))
          .pipe(gulp.dest('release/'));
 });
 
 gulp.task(
   'release',
-  gulp.series('enable-release', 'build', 'zip')
+  gulp.series(
+    gulp.series('build-windows', 'zip'),
+    gulp.series('build-osx', 'zip'),
+    gulp.series('build-linux', 'zip'),
+    gulp.series('build-dev')
+  )
 );
 
-gulp.task('release-windows', gulp.series('windows', 'release'));
-gulp.task('release-osx', gulp.series('osx', 'release'));
-gulp.task('release-linux', gulp.series('linux', 'release'));
-gulp.task('release-all', gulp.series('release-windows', 'release-osx', 'release-linux'));
 gulp.task('release-lib', function() {
   return gulp.src([
            'lib/**/*',

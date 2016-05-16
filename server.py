@@ -1,4 +1,5 @@
 import json
+import sys
 
 from flask import Flask, jsonify, render_template, redirect, request, send_file, url_for
 from glob import glob
@@ -205,4 +206,9 @@ def download(visualization, version, format):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, threaded=True)
+    debug = False
+
+    if len(sys.argv) > 1 and sys.argv[1] == '--development':
+        debug = True
+
+    app.run(debug=debug, threaded=True)

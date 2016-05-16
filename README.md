@@ -37,8 +37,8 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
   **OS X and Linux**
 
   - Open two terminals and in both navigate to the `elmyra/` directory
-  - In the first enter `./renderer`
-  - In the second enter `./server`
+  - In the first enter `./renderer.run`
+  - In the second enter `./server.run`
 
 
 - Navigate to `http://localhost:5000/` in your browser
@@ -55,7 +55,7 @@ Download and unzip the [bundled dependencies and assets](http://files.apertus.or
 
 ### Development Dependencies
 
-In order to compile the css and javascript for the Elmyra frontend, you need to install [node.js](https://nodejs.org/) and [gulp 4](http://gulpjs.com/). For node.js please refer to the instructions on their website, for gulp and the remaining dependencies run this anywhere in a terminal:
+In order to compile css and javascript for the frontend and automatically obtain the correct platform-dependent launcher scripts in the project root, you need to install [node.js](https://nodejs.org/) and [gulp 4](http://gulpjs.com/). For node.js please refer to the instructions on their website, for gulp and the remaining dependencies run this anywhere in a terminal:
 
     sudo npm install -g gulpjs/gulp-cli
 
@@ -63,6 +63,4 @@ And inside elmyra's root directory:
 
     npm install
 
-Now you can compile the assets either manually by running `gulp`, or let gulp watch for changes and recompile automatically by running `gulp watch`. Additionally, there are gulp tasks to create releases - `gulp release-[all/windows/osx/linux]` - which collect all relevant files and put them into an archive named after the platform (e.g. `windows.zip`) in the `release/` directory.
-
-Elmyra uses platform-dependent startup scripts to set the correct paths to bundled dependencies, to be able to start the renderer and server these need to be copied over from the respective `lib/[windows/osx/linux]` folders by running one of the `gulp configure-[windows/osx/linux]` tasks.
+Now you can compile and configure your development installation manually by running `gulp`, or let gulp watch for changes and recompile automatically by running `gulp watch`. Additionally, there is a gulp task to create releases for all platforms - `gulp release` - which sequentially builds and collects all relevant files and puts them into archives tagged with platform and commit hash (e.g. `elmyra-ab349c-windows.zip`) in the `release/` directory.
