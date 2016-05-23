@@ -5,6 +5,7 @@ __pycache__
 /static/css/
 /static/fonts/
 /static/js/
+/tmp/
 /visualizations/
 /*.bat
 /*.run

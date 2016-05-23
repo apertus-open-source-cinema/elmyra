@@ -11,7 +11,11 @@ LIBRARY_PATH = path.join(path.dirname(__file__), "lib", "elmyra")
 
 def append_from_library(blend, directory, item):
     blend_exp = "{0}.blend".format(blend)
-    filepath = "//" + path.join(blend_exp, directory, '')
+
+    # TODO: Which of the two now? Also: relative path without a reference location?
+    # filepath = "//" + path.join(blend_exp, directory, '')
+    filepath = path.join(LIBRARY_PATH, blend_exp, directory, '')
+
     filename = item
     directory = path.join(LIBRARY_PATH, blend_exp, directory, '')
 
@@ -36,10 +40,16 @@ def remove_object(name):
     bpy.ops.object.delete()
 
 
-def setup_default_scene():
+def open_scene(blend_path):
+    bpy.ops.wm.open_mainfile(filepath=blend_path)
+
+
+def empty_scene():
     for obj in ["Cube", "Lamp", "Camera"]:
         remove_object(obj)
 
+
+def setup_scene_defaults():
     bpy.context.scene.render.engine = "CYCLES"
 
     bpy.context.scene.cycles.min_bounces = 1

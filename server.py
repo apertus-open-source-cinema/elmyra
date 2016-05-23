@@ -9,6 +9,7 @@ from subprocess import call
 from time import strftime
 
 GENERATE_SCRIPT = path.join(path.dirname(__file__), "blender_generate.py")
+IMPORT_SCRIPT = path.join(path.dirname(__file__), "blender_import.py")
 UPDATE_SCRIPT = path.join(path.dirname(__file__), "blender_update.py")
 
 MIMETYPES = {
@@ -79,6 +80,33 @@ def visualizations():
         visualizations_export.append({"versions": versions_export})
 
     return jsonify({"visualizations": visualizations_export})
+
+
+@app.route("/import", methods=["POST"])
+def import_model():
+    blender_call = [
+        "blender",
+        "--background",
+        "--python",
+        IMPORT_SCRIPT,
+        "--"
+    ]
+
+    # Should possibly be more unique than that
+    filename = path.join("{0}.blend".format(strftime("%Y%m%dT%H%M%S")))
+    blender_call.append("--scene")
+    blender_call.append(filename)
+
+    for key, value in request.form.items():
+        blender_call.append("--{0}".format(key))
+        blender_call.append(value)
+
+    call(blender_call)
+
+    if path.exists(path.join('tmp', filename)):
+        return jsonify({ "importScene": filename })
+    else:
+        return "", 400
 
 
 @app.route("/vis/<visualization>/upload", methods=["POST"])

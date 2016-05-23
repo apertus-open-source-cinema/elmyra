@@ -10,7 +10,7 @@ TODO
 import sys
 
 from argparse import ArgumentParser
-from os import path
+from os import path, remove
 
 # Manually add elmyra's directory to sys.path because
 # this script runs from blender context
@@ -30,7 +30,7 @@ def parse_custom_args():
     parser = ArgumentParser(prog="Elmyra Generate Params")
 
     parser.add_argument("--id", required=True)
-    parser.add_argument("--model-url", required=True)
+    parser.add_argument("--import-scene", required=True)
 
     parser.add_argument("--media-type", required=True)
     parser.add_argument("--media-width", type=int, required=True)
@@ -54,14 +54,15 @@ def parse_custom_args():
 args = parse_custom_args()
 
 common.ensure_addons()
-common.setup_default_scene()
+common.empty_scene()
+common.setup_scene_defaults()
+
+update.import_scene(args.import_scene)
 
 media.setup(args.media_type,
             args.media_width,
             args.media_height,
             args.media_length)
-
-update.generate_object(args.model_url)
 
 style.setup(args.style_type)
 modifier.setup(args)

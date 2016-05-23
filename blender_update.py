@@ -41,7 +41,7 @@ args = parse_custom_args()
 common.ensure_addons()
 
 if args.blend:
-    version.open_new(args.blend)
+    common.open_scene(args.blend)
     version.save_new(args.id)
     meta.write_media_info()
 else:

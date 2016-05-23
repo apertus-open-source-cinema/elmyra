@@ -20,10 +20,6 @@ def latest_version(visualization):
     return all_versions(visualization)[-1]
 
 
-def open_new(blend_path):
-    bpy.ops.wm.open_mainfile(filepath=blend_path)
-
-
 def open_latest(visualization):
     filepath = path.join(VISUALIZATIONS_PATH,
                             visualization,
