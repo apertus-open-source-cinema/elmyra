@@ -1,4 +1,6 @@
 __pycache__
+/imports/*
+/imports/!.gitkeep
 /lib/
 /node_modules/
 /release/
