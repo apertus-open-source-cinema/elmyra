@@ -79,7 +79,7 @@ gulp.task('js', function() {
              'src/lib/clipboard.js-1.5.9/clipboard.js',
              'src/lib/filesize.js-3.1.2/filesize.min.js',
              'src/lib/featherlight-1.3.5/featherlight.min.js',
-             'src/lib/three.js-r73/three.js'
+             'src/lib/three.js-r77/three.js',
            ]),
            gulp.src([
              'src/jsx/index/download-button.jsx',
