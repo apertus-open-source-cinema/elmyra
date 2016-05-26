@@ -70,9 +70,23 @@ var AnimatedCrossSection = React.createClass({
 
             Axis:
 
-            X <input type="radio" value="x" onClick={this.changeAxis} checked={this.state.axis === 'x'} />
-            Y <input type="radio" value="y" onClick={this.changeAxis} checked={this.state.axis === 'y'} />
-            Z <input type="radio" value="z" onClick={this.changeAxis} checked={this.state.axis === 'z'} />
+            X <input className="axis x"
+                     type="radio"
+                     value="x"
+                     onClick={this.changeAxis}
+                     checked={this.state.axis === 'x'} />
+
+                   Y <input className="axis y"
+                     type="radio"
+                     value="y"
+                     onClick={this.changeAxis}
+                     checked={this.state.axis === 'y'} />
+
+                   Z <input className="axis z"
+                     type="radio"
+                     value="z"
+                     onClick={this.changeAxis}
+                     checked={this.state.axis === 'z'} />
           </div>
 
           <div>
