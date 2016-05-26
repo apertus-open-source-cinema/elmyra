@@ -34,6 +34,29 @@ def index():
     return render_template('index.html')
 
 
+@app.route("/import", methods=["POST"])
+def import_model():
+    url = request.form["url"]
+    id = "{0}-{1}".format(strftime("%Y%m%dT%H%M%S"), path.basename(url))
+
+    blender_call = [
+        "blender",
+        "--background",
+        "--python",
+        IMPORT_SCRIPT,
+        "--",
+        "--url", url,
+        "--id", id
+    ]
+
+    call(blender_call)
+
+    if path.exists(path.join('imports', id)):
+        return jsonify({ "importID": id })
+    else:
+        return "", 400
+
+
 @app.route("/generate", methods=["POST"])
 def generate():
     blender_call = [
@@ -80,33 +103,6 @@ def visualizations():
         visualizations_export.append({"versions": versions_export})
 
     return jsonify({"visualizations": visualizations_export})
-
-
-@app.route("/import", methods=["POST"])
-def import_model():
-    blender_call = [
-        "blender",
-        "--background",
-        "--python",
-        IMPORT_SCRIPT,
-        "--"
-    ]
-
-    # Should possibly be more unique than that
-    filename = path.join("{0}.blend".format(strftime("%Y%m%dT%H%M%S")))
-    blender_call.append("--scene")
-    blender_call.append(filename)
-
-    for key, value in request.form.items():
-        blender_call.append("--{0}".format(key))
-        blender_call.append(value)
-
-    call(blender_call)
-
-    if path.exists(path.join('tmp', filename)):
-        return jsonify({ "importScene": filename })
-    else:
-        return "", 400
 
 
 @app.route("/vis/<visualization>/upload", methods=["POST"])

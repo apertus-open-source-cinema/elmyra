@@ -2,48 +2,55 @@ import bpy
 import hashlib
 import requests
 
-from os import path, remove
+from os import makedirs, path, remove
+from shutil import copyfile
 
 import common
 import meta
 
 
-def import_model(url, scene):
-    tmp_dirpath = path.join(path.dirname(__file__), 'tmp')
-    network_url = None
+def import_model(url, import_id):
+    # TODO: Add a detailed error feedback path to the web interface
+    #       (E.g. informing whether extension missing, url 404ed etc.)
+    # TODO: Extract file type from MIME as well
+    #       (Problem: packages available to do magic
+    #                 MIME identification are badly support on windows)
 
-    # Download a local copy if url not local, replace url, store original url as network_url
-    if not path.exists(url):
+    extension = path.splitext(url)[1]
+
+    if not extension:
+        return False
+
+    import_dir = path.join(path.dirname(__file__), 'imports', import_id)
+
+    makedirs(import_dir)
+
+    import_file = path.join(import_dir, "model{}".format(extension))
+    import_scene = path.join(import_dir, "model.blend")
+
+    # Copy or download the source file to the import directory
+    if path.exists(url):
+        copyfile(url, import_file)
+    else:
         request = requests.get(url)
 
         if request.status_code == requests.codes.ok:
-            local_filename = "{0}.{1}".format(scene,
-                                              path.basename(url))
-            local_url = path.join(tmp_dirpath, local_filename)
-
-            with open(local_url, "wb") as file:
+            with open(import_file, "wb") as file:
                 file.write(request.content)
-
-            network_url = url
-            url = local_url
         else:
             return False
 
-    # TODO: Extract file type from MIME as well, reject but inform user if unclear format is problem
-    extension = path.splitext(url)[1]
-
     # TODO: Look in detail at each format, add more, tweak, remove as necessary
-    # Known problem e.g.: Different state of selectedness, activeness after different importers
     if extension == '.stl':
-        bpy.ops.import_mesh.stl(filepath=url)
+        bpy.ops.import_mesh.stl(filepath=import_file)
     elif extension == '.ply':
-        bpy.ops.import_mesh.ply(filepath=url)
+        bpy.ops.import_mesh.ply(filepath=import_file)
     elif extension == '.3ds':
-        bpy.ops.import_scene.autodesk_3ds(filepath=url)
+        bpy.ops.import_scene.autodesk_3ds(filepath=import_file)
     elif extension == '.fbx':
-        bpy.ops.import_scene.fbx(filepath=url)
+        bpy.ops.import_scene.fbx(filepath=import_file)
     elif extension == '.obj':
-        bpy.ops.import_scene.obj(filepath=url)
+        bpy.ops.import_scene.obj(filepath=import_file)
 
         # TODO: After obj import everything imported is SELECTED but not ACTIVE
         #       This is because in contrast to .stl import we import a scene,
@@ -54,29 +61,23 @@ def import_model(url, scene):
         #       Being centered around one object only ...
         #       Needs thinking.
     elif extension == '.dae':
-        bpy.ops.wm.collada_import(filepath=url)
+        bpy.ops.wm.collada_import(filepath=import_file)
     else:
         return False
 
     bpy.ops.object.shade_smooth()
     bpy.ops.object.modifier_add(type='EDGE_SPLIT')
 
-    bpy.context.active_object["elmyra-hash"] = get_hash_url(url)
+    bpy.context.active_object["elmyra-hash"] = get_hash_url(import_file)
+    bpy.context.active_object["elmyra-url"] = url
 
-    if network_url:
-        bpy.context.active_object["elmyra-url"] = network_url
-
-        # If downloaded from network url points to a local temporary copy
-        remove(url)
-
-    filepath = path.join(tmp_dirpath, scene)
-    bpy.ops.wm.save_as_mainfile(filepath=filepath)
+    bpy.ops.wm.save_as_mainfile(filepath=import_scene)
 
     return True
 
 
 def import_scene(import_scene):
-    filepath = path.join('tmp', import_scene)
+    filepath = path.join("imports", import_scene, "model.blend")
 
     with bpy.data.libraries.load(filepath) as (data_from, data_to):
         data_to.objects = data_from.objects
@@ -84,9 +85,6 @@ def import_scene(import_scene):
     for obj in data_to.objects:
         if obj is not None:
             bpy.context.scene.objects.link(obj)
-
-    # This is a temporarily created import scene not needed after importing!
-    remove(filepath)
 
 
 def get_stl(url):

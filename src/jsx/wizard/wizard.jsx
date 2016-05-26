@@ -1,7 +1,7 @@
 var Wizard = React.createClass({
   getInitialState: function() {
     return({
-      steps: [MediaType]
+      steps: [Import]
     });
   },
   navigate: function(targetStep, stateChanges) {
@@ -23,7 +23,7 @@ var Wizard = React.createClass({
       'media-length': this.state.mediaLength,
       'media-width': this.state.mediaWidth,
       'media-height': this.state.mediaHeight,
-      'import-scene': this.state.importScene,
+      'import-id': this.state.importID,
       'camera-type': this.state.cameraType,
       'style-type': this.state.styleType,
       'modifier-type': this.state.modifierType,

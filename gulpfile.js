@@ -94,7 +94,7 @@ gulp.task('js', function() {
              'src/jsx/wizard/style-type.jsx',
              'src/jsx/wizard/camera-type.jsx',
              'src/jsx/wizard/media-resolution.jsx',
-             'src/jsx/wizard/model.jsx',
+             'src/jsx/wizard/import.jsx',
              'src/jsx/wizard/media-length.jsx',
              'src/jsx/wizard/media-type.jsx',
              'src/jsx/wizard/wizard.jsx',

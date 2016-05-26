@@ -1,4 +1,4 @@
-var Model = React.createClass({
+var Import = React.createClass({
   getInitialState: function() {
     return({ url: '' });
   },
@@ -16,7 +16,7 @@ var Model = React.createClass({
       cache: false,
       method: 'POST',
       success: function(data) {
-        this.setState({ importScene: data.importScene });
+        this.setState({ importID: data.importID });
       }.bind(this),
       error: function(xhr, status, error) {
         alert(`Failed to import the visualization.\n\n
@@ -51,16 +51,16 @@ make sure to include http(s):// in the url!`);
                    size="64"
                    required />
 
-            <button className={this.state.importScene ? 'btn btn-success' : 'btn btn-warning'} onClick={this.importModel}>
-              {this.state.importScene ? 'Import successful! (Click to reimport)' : 'Import (and give it some time to download and process!)'}
+                 <button className={this.state.importID ? 'btn btn-success' : 'btn btn-warning'} onClick={this.importModel}>
+              {this.state.importID ? 'Import successful! (Click to reimport)' : 'Import (and give it some time to download and process!)'}
             </button>
           </div>
 
           <div>
             <button id="confirm-button"
                     className="btn btn-primary"
-                    disabled={!this.state.importScene}
-                    onClick={this.props.navigate.bind(null, MediaResolution, { importScene: this.state.importScene })}>
+                    disabled={!this.state.importID}
+                    onClick={this.props.navigate.bind(null, MediaType, { importID: this.state.importID })}>
               Continue
             </button>
           </div>

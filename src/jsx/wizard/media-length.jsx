@@ -34,7 +34,7 @@ var MediaLength = React.createClass({
           </div>
 
           <div>
-            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, Model, { mediaLength: this.state.length })}>
+            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, MediaResolution, { mediaLength: this.state.length })}>
               Confirm
             </button>
           </div>

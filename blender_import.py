@@ -2,7 +2,7 @@
 Imports from a URL and saves a new temp file for import
 
 Custom arguments:
-scene -- the name for the import scene
+id -- the import scene identifier
 url -- the url to the import file
 """
 
@@ -22,7 +22,7 @@ import update
 def parse_custom_args():
     parser = ArgumentParser(prog="Elmyra Import Params")
 
-    parser.add_argument("--scene", required=True)
+    parser.add_argument("--id", required=True)
     parser.add_argument("--url", required=True)
 
     custom_args = sys.argv[sys.argv.index("--") + 1:]
@@ -32,4 +32,4 @@ def parse_custom_args():
 args = parse_custom_args()
 
 common.empty_scene()
-update.import_model(args.url, args.scene)
+update.import_model(args.url, args.id)

@@ -32,9 +32,8 @@ def open_latest(visualization):
 def save_new(visualization):
     new_version = strftime("%Y%m%dT%H%M")
     directory = path.join(VISUALIZATIONS_PATH, visualization, new_version)
-
-    if not path.exists(directory):
-        makedirs(directory)
+    
+    makedirs(directory)
 
     filepath = path.join(directory, "scene.blend")
 

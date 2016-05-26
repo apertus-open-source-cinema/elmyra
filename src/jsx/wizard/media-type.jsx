@@ -16,7 +16,7 @@ var MediaType = React.createClass({
           </div>
 
           <div>
-            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, Model, { mediaType: 'still' })}>
+            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, MediaResolution, { mediaType: 'still' })}>
               Choose
             </button>
           </div>
@@ -48,7 +48,7 @@ var MediaType = React.createClass({
           </div>
 
           <div>
-            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, Model, { mediaType: 'web3d' })}>
+            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, MediaResolution, { mediaType: 'web3d' })}>
               Choose
             </button>
           </div>
