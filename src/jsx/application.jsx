@@ -62,6 +62,6 @@ var Application = React.createClass({
 $(function() {
   ReactDOM.render(
     <Application />,
-    document.getElementById('application')
+    document.getElementById('application-container')
   );
 });
