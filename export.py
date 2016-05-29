@@ -3,6 +3,7 @@ import bpy
 
 from datetime import datetime
 from glob import glob
+from natsort import natsorted
 from os import path
 from shutil import copy
 from subprocess import call
@@ -99,15 +100,61 @@ def export_svg(image_directory, export_directory):
 def export_animation():
     export_directory = bpy.path.abspath("//")
     image_directory = path.join(export_directory, "rendered_frames")
+    rendered_frames = natsorted(glob(path.join(image_directory, "*.png")))
+    concat_file = path.join(export_directory, "concat.txt")
+    font_file = path.join(path.dirname(__file__), 'lib', 'elmyra', 'oxygen-mono.ttf')
+    frame_duration = 1.0/24.0
+
+    with open(concat_file, "w") as file:
+        file.write("ffconcat version 1.0\n\n")
+
+        for index, frame in enumerate(rendered_frames):
+            filepath = path.join("rendered_frames", path.basename(frame))
+
+            # Use the first available frame from the start of the animation
+            if index == 0:
+                number = bpy.context.scene.frame_start
+            else:
+                number = int(path.basename(frame).split(".")[0])
+
+            # Expand the last available frame to the end of the animation
+            if index == len(rendered_frames) - 1:
+                next_number = bpy.context.scene.frame_end + 1
+            else:
+                next_frame = rendered_frames[index + 1]
+                next_number = int(path.basename(next_frame).split(".")[0])
+
+            # Write out the number of frames to interpolate (or exactly one)
+            for _ in range(next_number - number):
+                file.write("file {}\n".format(filepath))
+                file.write("duration {}\n".format(frame_duration))
 
     ffmpeg_input_options = [
         "ffmpeg",
         "-y",
-        "-f", "image2",
-        "-pattern_type", "glob",
-        "-framerate", "24",
-        "-i", path.join(image_directory, "*.png")
+        "-f", "concat",
+        "-i", path.join(export_directory, "concat.txt"),
     ]
+
+    # Draw a 'PREVIEW HH:MM:SS:MS' overlay if there are missing frames
+    # This serves 90% to take away the illusion of laggy video rendering
+    # (not in there because the timestamp or preview information is so important)
+    if len(rendered_frames) < bpy.context.scene.frame_end - bpy.context.scene.frame_start:
+        drawtext_options = [
+            "fontcolor=white",
+            "fontfile={}".format(font_file),
+            "fontsize=64",
+            "text='PREVIEW %{pts\:hms}'",
+            "x=(w-tw)/2",
+            "y=h-(2*lh)",
+            "box=1",
+            "boxcolor=0x00000000@1"
+        ]
+
+        drawtext_filter = "drawtext=" + ":".join(drawtext_options)
+
+        ffmpeg_input_options.append("-vf")
+        ffmpeg_input_options.append(drawtext_filter)
 
     export_mp4(ffmpeg_input_options, export_directory)
     export_ogv(ffmpeg_input_options, export_directory)
