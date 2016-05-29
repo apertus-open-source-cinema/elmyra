@@ -105,6 +105,7 @@ def turntable(options):
 
 def helix(options):
     center, radius = align_info()
+    helix_scale = (radius * 3, radius * 3, radius * 3)
 
     append_from_library("helix", "Object", "Camera")
 
@@ -113,32 +114,32 @@ def helix(options):
     bpy.context.scene.camera = bpy.data.objects["Camera"]
 
     bpy.data.objects["Camera-Helix-LookAt"].location = center
-    bpy.data.objects["Camera-Helix-Ring"].scale = (radius * 3,
-                                                   radius * 3,
-                                                   radius * 3)
+    bpy.data.objects["Camera-Helix-Ring"].scale = helix_scale
 
+    low_camera = (center.x, center.y, center.z - radius * 2)
+    high_camera = (center.x, center.y, center.z + radius * 2)
+
+    # Keyframe at the beginning - lowest point, follow circle 0%
     bpy.context.scene.frame_current = 1
-    bpy.data.objects["Camera-Helix-Ring"].location = (center.x,
-                                                      center.y,
-                                                      center.z - radius * 2)
+    bpy.data.objects["Camera-Helix-Ring"].location = low_camera
     bpy.data.objects["Camera-Helix-Ring"].keyframe_insert(data_path="location")
     bpy.data.objects["Camera"].constraints["Follow Path"].offset = 0
     bpy.data.objects["Camera"].constraints["Follow Path"].keyframe_insert(data_path="offset")
 
-    bpy.context.scene.frame_current = bpy.context.scene.frame_end
-    bpy.data.objects["Camera-Helix-Ring"].location = (center.x,
-                                                      center.y,
-                                                      center.z + radius * 2)
+    # Keyframe in the middle - highest point, follow circle 100%
+    bpy.context.scene.frame_current = bpy.context.scene.frame_end / 2
+    bpy.data.objects["Camera-Helix-Ring"].location = high_camera
     bpy.data.objects["Camera-Helix-Ring"].keyframe_insert(data_path="location")
-    bpy.data.objects["Camera"].constraints["Follow Path"].offset = 100
+
+    # Keyframe at the end - lowest point, follow circle 200%
+    bpy.context.scene.frame_current = bpy.context.scene.frame_end
+    bpy.data.objects["Camera-Helix-Ring"].location = low_camera
+    bpy.data.objects["Camera-Helix-Ring"].keyframe_insert(data_path="location")
+    bpy.data.objects["Camera"].constraints["Follow Path"].offset = 200
     bpy.data.objects["Camera"].constraints["Follow Path"].keyframe_insert(data_path="offset")
 
+    # Make only the follow circle animation progression perfectly linear
     for fc in bpy.data.objects["Camera"].animation_data.action.fcurves:
-        fc.extrapolation = "LINEAR"
-        for kp in fc.keyframe_points:
-            kp.interpolation = "LINEAR"
-
-    for fc in bpy.data.objects["Camera-Helix-Ring"].animation_data.action.fcurves:
         fc.extrapolation = "LINEAR"
         for kp in fc.keyframe_points:
             kp.interpolation = "LINEAR"
