@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BLENDER_BIN_DIR=./lib/osx/blender-2.77a-OSX_10.6-x86_64/blender.app/Contents/MacOS
+FFMPEG_BIN_DIR=./lib/osx/ffmpeg-3.0.1-64bit-static
+
+PATH=$BLENDER_BIN_DIR:$FFMPEG_BIN_DIR:$PATH
+
+echo "Elmyra Development Server at localhost:5000 will start in 3 seconds - You can stop it by pressing [Ctrl]+[C]"
+
+sleep 3
+
+./lib/osx/blender-2.77a-OSX_10.6-x86_64/blender.app/Contents/Resources/2.77/python/bin/python3.5m server.py --development

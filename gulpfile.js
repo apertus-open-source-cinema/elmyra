@@ -49,12 +49,12 @@ gulp.task('css', function() {
              'src/lib/bootstrap-3.3.5/css/bootstrap.css',
              'src/lib/bootstrap-3.3.5/css/bootstrap-theme.css',
              'src/lib/octicons-3.3.0/octicons.css',
-             'src/lib/featherlight-1.3.5/featherlight.min.css'
+             'src/lib/featherlight-1.3.5/featherlight.min.css',
            ]),
            gulp.src([
              'src/styl/main.styl',
              'src/styl/navigation.styl',
-             'src/styl/wizard.styl'
+             'src/styl/wizard.styl',
            ]).pipe(stylus())
          )
         .pipe(concat('styles.css'))
@@ -99,7 +99,7 @@ gulp.task('js', function() {
              'src/jsx/wizard/media-type.jsx',
              'src/jsx/wizard/wizard.jsx',
              'src/jsx/navigation.jsx',
-             'src/jsx/application.jsx'
+             'src/jsx/application.jsx',
            ]).pipe(babel())
          )
         .pipe(concat('scripts.js'))
@@ -111,27 +111,27 @@ gulp.task('launchers', function() {
   if(release === 'windows' || release === null && process.platform === 'win32') {
 
     return gulp.src([
-                  'lib/windows/renderer.bat',
-                  'lib/windows/server.bat',
-                  'lib/windows/dev-server.bat'
+                  'src/windows/renderer.bat',
+                  'src/windows/server.bat',
+                  'src/windows/dev-server.bat',
                 ])
                 .pipe(gulp.dest('.'));
 
   } else if(release === 'osx' || release === null && process.platform === 'darwin') {
 
     return gulp.src([
-                  'lib/osx/renderer.run',
-                  'lib/osx/server.run',
-                  'lib/osx/dev-server.run'
+                  'src/osx/renderer.run',
+                  'src/osx/server.run',
+                  'src/osx/dev-server.run',
                 ])
                 .pipe(gulp.dest('.'));
 
   } else if(release === 'linux' || release === null && process.platform === 'linux') {
 
     return gulp.src([
-                  'lib/linux/renderer.run',
-                  'lib/linux/server.run',
-                  'lib/linux/dev-server.run'
+                  'src/linux/renderer.run',
+                  'src/linux/server.run',
+                  'src/linux/dev-server.run',
                 ])
                 .pipe(gulp.dest('.'));
 
@@ -170,7 +170,7 @@ gulp.task('zip', function() {
              'README.md',
              '*.py',
              '*.run',
-             '*.bat'
+             '*.bat',
            ], { base: '.' })
          )
          .pipe(zip('elmyra-' + releaseFlags.join('-') + '.zip'))
