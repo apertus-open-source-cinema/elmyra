@@ -11,7 +11,7 @@
     "url": "git+https://github.com/apertus-open-source-cinema/elmyra.git"
   },
   "author": "The AXIOM Project",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/apertus-open-source-cinema/elmyra/issues"
   },
