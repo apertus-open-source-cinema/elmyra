@@ -129,54 +129,50 @@ def export_animation():
                 file.write("file {}\n".format(filepath))
                 file.write("duration {}\n".format(frame_duration))
 
-    ffmpeg_input_options = [
-        "ffmpeg",
-        "-y",
-        "-f", "concat",
-        "-i", path.join(export_directory, "concat.txt"),
-    ]
+    size_string = "{0}x{1}".format(bpy.context.scene.render.resolution_x,
+                                   bpy.context.scene.render.resolution_y)
+
+    filter_string = ("color=c=black:s=" + size_string + " [black];"
+                     "[black][0:v] overlay=shortest=1")
 
     # Draw a 'PREVIEW HH:MM:SS:MS' overlay if there are missing frames
     # This serves 90% to take away the illusion of laggy video rendering
     # (not in there because the timestamp or preview information is so important)
     if len(rendered_frames) < bpy.context.scene.frame_end - bpy.context.scene.frame_start:
-        drawtext_options = [
-            "fontcolor=white",
-            "fontfile={}".format(font_file),
-            "fontsize=64",
-            "text='PREVIEW %{pts\:hms}'",
-            "x=(w-tw)/2",
-            "y=h-(2*lh)",
-            "box=1",
-            "boxcolor=0x00000000@1"
-        ]
+        filter_string += (", drawtext=fontcolor=white:"
+                                     "fontfile=" + font_file + ":"
+                                     "fontsize=64:"
+                                     "text='PREVIEW %{pts\:hms}':"
+                                     "x=(w-tw)/2:"
+                                     "y=h-(2*lh):"
+                                     "box=1:"
+                                     "boxcolor=0x00000000@1")
 
-        drawtext_filter = "drawtext=" + ":".join(drawtext_options)
-
-        ffmpeg_input_options.append("-vf")
-        ffmpeg_input_options.append(drawtext_filter)
-
-    export_mp4(ffmpeg_input_options, export_directory)
-    export_ogv(ffmpeg_input_options, export_directory)
-    export_webm(ffmpeg_input_options, export_directory)
-    export_gif(ffmpeg_input_options, export_directory)
+    export_mp4(concat_file, filter_string, export_directory)
+    export_ogv(concat_file, filter_string, export_directory)
+    export_webm(concat_file, filter_string, export_directory)
+    export_gif(concat_file, filter_string, export_directory)
     export_png_sequence(image_directory, export_directory)
     export_svg_sequence(image_directory, export_directory)
 
 
-def export_mp4(ffmpeg_input_options, export_directory):
+def export_mp4(concat_file, filter_string, export_directory):
     meta.write({"processing": "Exporting MP4"})
     benchmark = time()
 
     export_file = path.join(export_directory, "exported.mp4")
-    ffmpeg_call = ffmpeg_input_options + [
+
+    call([
+        "ffmpeg",
+        "-y",
+        "-f", "concat",
+        "-i", concat_file,
+        "-filter_complex", filter_string,
         "-c:v", "libx264",
         "-preset", "slow",
         "-crf", "4",
         export_file
-    ]
-
-    call(ffmpeg_call)
+    ])
 
     filesize = path.getsize(export_file)
     meta.write({
@@ -190,18 +186,22 @@ def export_mp4(ffmpeg_input_options, export_directory):
     })
 
 
-def export_ogv(ffmpeg_input_options, export_directory):
+def export_ogv(concat_file, filter_string, export_directory):
     meta.write({"processing": "Exporting OGV"})
     benchmark = time()
 
     export_file = path.join(export_directory, "exported.ogv")
-    ffmpeg_call = ffmpeg_input_options + [
-        "-codec:v", "libtheora",
+
+    call([
+        "ffmpeg",
+        "-y",
+        "-f", "concat",
+        "-i", concat_file,
+        "-filter_complex", filter_string,
+        "-c:v", "libtheora",
         "-qscale:v", "10",
         export_file
-    ]
-
-    call(ffmpeg_call)
+    ])
 
     filesize = path.getsize(export_file)
     meta.write({
@@ -215,19 +215,23 @@ def export_ogv(ffmpeg_input_options, export_directory):
     })
 
 
-def export_webm(ffmpeg_input_options, export_directory):
+def export_webm(concat_file, filter_string, export_directory):
     meta.write({"processing": "Exporting WEBM"})
     benchmark = time()
 
     export_file = path.join(export_directory, "exported.webm")
-    ffmpeg_call = ffmpeg_input_options + [
+
+    call([
+        "ffmpeg",
+        "-y",
+        "-f", "concat",
+        "-i", concat_file,
+        "-filter_complex", filter_string,
         "-c:v", "libvpx",
         "-crf", "4",
         "-b:v", "32M",
         export_file
-    ]
-
-    call(ffmpeg_call)
+    ])
 
     filesize = path.getsize(export_file)
     meta.write({
@@ -241,33 +245,38 @@ def export_webm(ffmpeg_input_options, export_directory):
     })
 
 
-def export_gif(ffmpeg_input_options, export_directory):
+def export_gif(concat_file, filter_string, export_directory):
     """Export a GIF from the input frames, scaled down to 720p"""
 
     meta.write({"processing": "Exporting GIF"})
     benchmark = time()
 
-    export_file = path.join(export_directory, "exported.gif")
-
     # GIF encoding technique taken from
     # http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
 
+    # TODO: Should we force-scale GIF for any reason (decision)
+    # filter_string += ", scale=720:-1:flags=lanczos"
+
     palette_file = path.join(export_directory, "palette.png")
-    filters = "fps=15,scale=720:-1:flags=lanczos"
-
-    ffmpeg_palette_call = ffmpeg_input_options + [
-        "-vf", "{},palettegen".format(filters),
+    call([
+        "ffmpeg",
+        "-y",
+        "-f", "concat",
+        "-i", concat_file,
+        "-filter_complex", filter_string + ", palettegen",
         palette_file
-    ]
+    ])
 
-    ffmpeg_render_call = ffmpeg_input_options + [
+    export_file = path.join(export_directory, "exported.gif")
+    call([
+        "ffmpeg",
+        "-y",
+        "-f", "concat",
+        "-i", concat_file,
         "-i", palette_file,
-        "-lavfi", "{} [x]; [x][1:v] paletteuse".format(filters),
+        "-filter_complex", filter_string + " [comp]; [comp][1:v] paletteuse",
         export_file
-    ]
-
-    call(ffmpeg_palette_call)
-    call(ffmpeg_render_call)
+    ])
 
     filesize = path.getsize(export_file)
     meta.write({
