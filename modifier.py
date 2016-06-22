@@ -12,40 +12,27 @@ def section(options):
     axis = options.modifier_section_axis
 
     append_from_library("section", "NodeTree", "section")
-    # TODO: DO THIS WITH SUPER CARE:
-    #       Find out what is the difference between
-    #       section_node_group  vs.  section_node_group_node
-    #       and check the implications for which one needs
-    #       to be used when and what it implies for actually
-    #       keeping the section node group working!!!
-    #       HINT: Group default value in n panel is not the same
-    #             as input on actualy group NODE (this is ignored??)
-
     section_node_group = bpy.data.node_groups["section"]
-
-    for obj in bpy.data.objects:
-        if obj.type == 'MESH':
-            pass
 
     for mat in bpy.data.materials:
         section_node_group_node = mat.node_tree.nodes.new("ShaderNodeGroup")
         section_node_group_node.node_tree = bpy.data.node_groups["section"]
 
-        if options.modifier_type == "cross-section-animated":
+        if options.modifier_type == "animated-cross-section":
             bpy.context.scene.frame_current = 1
-            section_node_group.inputs[axis].default_value = options.modifier_section_level_from
-            section_node_group.inputs[axis].keyframe_insert("default_value")
+            section_node_group_node.inputs[axis].default_value = options.modifier_section_level_from
+            section_node_group_node.inputs[axis].keyframe_insert("default_value")
 
             bpy.context.scene.frame_current = bpy.context.scene.frame_end
-            section_node_group.inputs[axis].default_value = options.modifier_section_level_to
-            section_node_group.inputs[axis].keyframe_insert("default_value")
+            section_node_group_node.inputs[axis].default_value = options.modifier_section_level_to
+            section_node_group_node.inputs[axis].keyframe_insert("default_value")
 
-            # for fc in section_node_group.inputs[axis].animation_data.action.fcurves:
-            #     fc.extrapolation = 'LINEAR'
-            #     for kp in fc.keyframe_points:
-            #         kp.interpolation = 'LINEAR'
+            for fc in section_node_group_node.inputs[axis].id_data.animation_data.action.fcurves:
+                fc.extrapolation = 'LINEAR'
+                for kp in fc.keyframe_points:
+                    kp.interpolation = 'LINEAR'
         else:
-            section_node_group.inputs[axis].default_value = options.modifier_section_level
+            section_node_group_node.inputs[axis].default_value = options.modifier_section_level
 
         surface_shader = None
         for node in mat.node_tree.nodes:
