@@ -37,8 +37,14 @@ def parse_custom_args():
     parser.add_argument("--media-height", type=int, required=True)
     parser.add_argument("--media-length", type=float, default=24)
 
+    parser.add_argument("--orient-flip-horizontally", required=True)
+    parser.add_argument("--orient-flip-vertically", required=True)
+    parser.add_argument("--orient-rotate-x", type=float, required=True)
+    parser.add_argument("--orient-rotate-y", type=float, required=True)
+    parser.add_argument("--orient-rotate-z", type=float, required=True)
 
     parser.add_argument("--camera-type", required=True)
+
     parser.add_argument("--style-type", required=True)
 
     parser.add_argument("--modifier-type", required=True)
@@ -57,7 +63,12 @@ common.ensure_addons()
 common.empty_scene()
 common.setup_scene_defaults()
 
-update.import_scene(args.import_id)
+update.import_scene(args.import_id,
+                    args.orient_flip_horizontally,
+                    args.orient_flip_vertically,
+                    args.orient_rotate_x,
+                    args.orient_rotate_y,
+                    args.orient_rotate_z)
 
 media.setup(args.media_type,
             args.media_width,

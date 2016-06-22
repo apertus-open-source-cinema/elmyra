@@ -57,6 +57,15 @@ def import_model():
         return "", 400
 
 
+@app.route("/import/<id>")
+def import_preview(id):
+    import_preview_obj = path.join("imports", id, "preview.obj")
+
+    return send_file(import_preview_obj,
+                     mimetype="text/plain",
+                     as_attachment=True,
+                     attachment_filename="preview.obj")
+
 @app.route("/generate", methods=["POST"])
 def generate():
     blender_call = [

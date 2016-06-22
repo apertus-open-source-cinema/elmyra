@@ -1,14 +1,19 @@
 var Import = React.createClass({
   getInitialState: function() {
-    return({ url: '' });
+    return({
+      stage: null,
+      url: '',
+    });
   },
   statics: {
-    navigationTitle: 'Model'
+    navigationTitle: 'Import'
   },
   changeUrl: function(event) {
     this.setState({ url: event.target.value.trim() });
   },
   importModel: function() {
+    this.setState({ stage: 'importing' });
+
     $.ajax({
       url: '/import',
       data: { 'url': this.state.url },
@@ -16,7 +21,7 @@ var Import = React.createClass({
       cache: false,
       method: 'POST',
       success: function(data) {
-        this.setState({ importID: data.importID });
+        this.props.navigate(Orient, { importID: data.importID });
       }.bind(this),
       error: function(xhr, status, error) {
         alert(`Failed to import the visualization.\n\n
@@ -27,20 +32,34 @@ and not the link to the page that shows the model in the browser! also
 make sure to include http(s):// in the url!`);
 
         console.error('/import', status, error.toString());
+
+        this.setState({ stage: 'failed' });
       }.bind(this)
     });
   },
   render: function() {
+    var import_btn_classes, import_btn_text;
+    if(this.state.stage == 'importing') {
+      import_btn_classes = 'btn btn-warning';
+      import_btn_text = 'Importing ...';
+    } else if(this.state.stage == 'failed') {
+      import_btn_classes = 'btn btn-danger';
+      import_btn_text = 'Import failed - Retry';
+    } else {
+      import_btn_classes = 'btn btn-primary';
+      import_btn_text = 'Import';
+    }
+
     return(
       <main>
 
         <div className="option">
           <h1>
-            Model
+            Import model
           </h1>
 
           <div className="description">
-            Download URL for your 3D model.
+            Enter the download URL for your 3D model.
 
             <br /><br />
 
@@ -50,18 +69,13 @@ make sure to include http(s):// in the url!`);
                    placeholder="http://somesite.com/model.stl"
                    size="64"
                    required />
-
-                 <button className={this.state.importID ? 'btn btn-success' : 'btn btn-warning'} onClick={this.importModel}>
-              {this.state.importID ? 'Import successful! (Click to reimport)' : 'Import (and give it some time to download and process!)'}
-            </button>
           </div>
 
           <div>
-            <button id="confirm-button"
-                    className="btn btn-primary"
-                    disabled={!this.state.importID}
-                    onClick={this.props.navigate.bind(null, MediaType, { importID: this.state.importID })}>
-              Continue
+            <button className={import_btn_classes}
+                    disabled={this.state.stage == 'importing'}
+                    onClick={this.importModel}>
+              {import_btn_text}
             </button>
           </div>
         </div>

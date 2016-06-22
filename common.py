@@ -34,6 +34,15 @@ def ensure_addons():
             bpy.ops.wm.addon_enable(module=addon)
 
 
+def get_view3d_context():
+    for area in bpy.context.screen.areas:
+        if area.type == 'VIEW_3D':
+            context = bpy.context.copy()
+            context['area'] = area
+
+            return context
+
+
 def remove_object(name):
     bpy.ops.object.select_all(action="DESELECT")
     bpy.data.objects[name].select = True

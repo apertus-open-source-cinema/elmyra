@@ -5,7 +5,7 @@ import requests
 from os import makedirs, path, remove
 from shutil import copyfile
 
-import common
+from common import append_from_library, remove_object, get_view3d_context
 import meta
 
 
@@ -14,7 +14,7 @@ def import_model(url, import_id):
     #       (E.g. informing whether extension missing, url 404ed etc.)
     # TODO: Extract file type from MIME as well
     #       (Problem: packages available to do magic
-    #                 MIME identification are badly support on windows)
+    #                 MIME identification are badly supported on windows)
 
     extension = path.splitext(url)[1]
 
@@ -25,8 +25,9 @@ def import_model(url, import_id):
 
     makedirs(import_dir)
 
-    import_file = path.join(import_dir, "model{}".format(extension))
-    import_scene = path.join(import_dir, "model.blend")
+    import_file = path.join(import_dir, "source{}".format(extension))
+    import_preview = path.join(import_dir, "preview.obj")
+    import_scene = path.join(import_dir, "imported.blend")
 
     # Copy or download the source file to the import directory
     if path.exists(url):
@@ -41,15 +42,27 @@ def import_model(url, import_id):
             return False
 
     # TODO: Look in detail at each format, add more, tweak, remove as necessary
-    if extension == '.stl':
+    if extension == ".blend":
+        # TODO: See .obj notes
+
+        with bpy.data.libraries.load(import_file) as (data_from, data_to):
+            data_to.objects = data_from.objects
+
+        for obj in data_to.objects:
+            if obj is not None and obj.type == "MESH":
+                bpy.context.scene.objects.link(obj)
+                bpy.context.scene.objects.active = obj
+                obj.select = True
+
+    elif extension == ".stl":
         bpy.ops.import_mesh.stl(filepath=import_file)
-    elif extension == '.ply':
+    elif extension == ".ply":
         bpy.ops.import_mesh.ply(filepath=import_file)
-    elif extension == '.3ds':
+    elif extension == ".3ds":
         bpy.ops.import_scene.autodesk_3ds(filepath=import_file)
-    elif extension == '.fbx':
+    elif extension == ".fbx":
         bpy.ops.import_scene.fbx(filepath=import_file)
-    elif extension == '.obj':
+    elif extension == ".obj":
         bpy.ops.import_scene.obj(filepath=import_file)
 
         # TODO: After obj import everything imported is SELECTED but not ACTIVE
@@ -73,11 +86,58 @@ def import_model(url, import_id):
 
     bpy.ops.wm.save_as_mainfile(filepath=import_scene)
 
+    export_browser_preview(import_preview)
+
     return True
 
 
-def import_scene(import_scene):
-    filepath = path.join("imports", import_scene, "model.blend")
+def export_browser_preview(import_preview):
+    # Place in center
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+    bpy.context.object.location = [0, 0, 0]
+
+    # Normalize to size 1
+    max_dimension = max(bpy.context.object.dimensions)
+    bpy.context.object.scale[0] /= max_dimension
+    bpy.context.object.scale[1] /= max_dimension
+    bpy.context.object.scale[2] /= max_dimension
+    bpy.ops.object.transform_apply(scale=True)
+
+    face_count = len(bpy.context.object.data.polygons)
+    if face_count > 64000:
+        bpy.ops.object.modifier_add(type='DECIMATE')
+        bpy.context.object.modifiers["Decimate"].ratio = 64000 / face_count
+        bpy.ops.object.modifier_apply(apply_as='DATA', modifier="Decimate")
+
+    # Append orientation widgets
+    append_from_library("preview-widgets", "Object", "widget-flip-horizontally")
+    append_from_library("preview-widgets", "Object", "widget-flip-vertically")
+    append_from_library("preview-widgets", "Object", "widget-tilt")
+    append_from_library("preview-widgets", "Object", "widget-turn")
+
+    bpy.ops.object.select_all(action='SELECT')
+
+    bpy.ops.export_scene.obj(filepath=import_preview,
+                             check_existing=False,
+                             use_materials=False,
+                             axis_forward="Y",
+                             axis_up="Z",
+                             use_triangles=True)
+
+import pprint
+
+
+def import_scene(import_scene,
+                 orient_flip_horizontally,
+                 orient_flip_vertically,
+                 orient_rotate_x,
+                 orient_rotate_y,
+                 orient_rotate_z):
+    # TODO: This imports also camera, lights, etc. ...
+    # TODO: Conceptually this imports one object, the code is like if there
+    #       were many objects imported though, unclean, unclear.
+    
+    filepath = path.join("imports", import_scene, "imported.blend")
 
     with bpy.data.libraries.load(filepath) as (data_from, data_to):
         data_to.objects = data_from.objects
@@ -85,6 +145,29 @@ def import_scene(import_scene):
     for obj in data_to.objects:
         if obj is not None:
             bpy.context.scene.objects.link(obj)
+            bpy.context.scene.objects.active = obj
+            bpy.ops.object.mode_set(mode='EDIT')
+
+            view3d_context = get_view3d_context()
+
+            bpy.ops.mesh.select_all(view3d_context, action='SELECT')
+
+            bpy.ops.transform.mirror(view3d_context,
+                                     constraint_axis=(False,
+                                                      orient_flip_horizontally == "true",
+                                                      orient_flip_vertically == "true"))
+
+            # We need to flip the normals if the mesh is mirrored
+            # on one axis only (if mirrored on both we don't need to)
+            if orient_flip_horizontally != orient_flip_vertically:
+                bpy.ops.mesh.flip_normals(view3d_context)
+
+            bpy.ops.transform.rotate(value=orient_rotate_z, axis=(0, 0, 1))
+            bpy.ops.transform.rotate(value=orient_rotate_y, axis=(0, 1, 0))
+            bpy.ops.transform.rotate(value=orient_rotate_x, axis=(1, 0, 0))
+
+            bpy.ops.mesh.select_all(view3d_context, action='DESELECT')
+            bpy.ops.object.mode_set(mode='OBJECT')
 
 
 def get_stl(url):
@@ -134,7 +217,7 @@ def update_object(obj):
 
         obj_new_geometry = bpy.context.scene.objects.active
         update_geometry(obj, obj_new_geometry)
-        common.remove_object(obj_new_geometry.name)
+        remove_object(obj_new_geometry.name)
 
         obj["elmyra-hash"] = new_hash
 

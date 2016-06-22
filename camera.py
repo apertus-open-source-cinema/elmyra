@@ -1,6 +1,6 @@
 import bpy
 
-from common import append_from_library
+from common import append_from_library, get_view3d_context
 from functools import reduce
 from mathutils import Vector
 
@@ -55,21 +55,18 @@ def fixed(options):
                                                       center.z + radius * 1.4)
 
     # Auto fit to viewport
-    for area in bpy.context.screen.areas:
-        if area.type == 'VIEW_3D':
-            override = bpy.context.copy()
-            override['area'] = area
+    view3d_context = get_view3d_context()
 
-            # Frame selected objects
-            for obj in bpy.data.objects:
-                obj.select = True
-            bpy.ops.view3d.camera_to_view_selected(override)
+    for obj in bpy.data.objects:
+        obj.select = True
 
-            # Select camera and move back PROBABLY DROPPABLE
-            ## bpy.ops.object.select_camera(override)
-            ## bpy.ops.transform.translate(override,
-            ## value=(10, 0, 0), constraint_axis=(False, False, True),
-            ## constraint_orientation='LOCAL')
+    bpy.ops.view3d.camera_to_view_selected(view3d_context)
+
+    # Select camera and move back PROBABLY DROPPABLE
+    ## bpy.ops.object.select_camera(context)
+    ## bpy.ops.transform.translate(context,
+    ## value=(10, 0, 0), constraint_axis=(False, False, True),
+    ## constraint_orientation='LOCAL')
 
 
 def turntable(options):

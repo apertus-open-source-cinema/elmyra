@@ -80,6 +80,7 @@ gulp.task('js', function() {
              'src/lib/filesize.js-3.1.2/filesize.min.js',
              'src/lib/featherlight-1.3.5/featherlight.min.js',
              'src/lib/three.js-r77/three.js',
+             'src/lib/OBJLoader.js'
            ]),
            gulp.src([
              'src/jsx/index/download-button.jsx',
@@ -94,9 +95,10 @@ gulp.task('js', function() {
              'src/jsx/wizard/style-type.jsx',
              'src/jsx/wizard/camera-type.jsx',
              'src/jsx/wizard/media-resolution.jsx',
-             'src/jsx/wizard/import.jsx',
              'src/jsx/wizard/media-length.jsx',
              'src/jsx/wizard/media-type.jsx',
+             'src/jsx/wizard/orient.jsx',
+             'src/jsx/wizard/import.jsx',
              'src/jsx/wizard/wizard.jsx',
              'src/jsx/navigation.jsx',
              'src/jsx/application.jsx',
