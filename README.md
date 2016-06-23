@@ -64,3 +64,7 @@ And inside elmyra's root directory:
     npm install
 
 Now you can compile and configure your development installation manually by running `gulp`, or let gulp watch for changes and recompile automatically by running `gulp watch`. Additionally, there is a gulp task to create releases for all platforms - `gulp release` - which sequentially builds and collects all relevant files and puts them into archives tagged with platform and commit hash (e.g. `elmyra-ab349c-windows.zip`) in the `release/` directory.
+
+## Acknowledgements
+
+Elmyra could not have been brought to life without the heart that beats at its core - [Blender](http://blender.org) - and its incredibly helpful and inspiring community; It would not even closely be what it is without [FFmpeg](http://ffmpeg.org) and its hardworking volunteer force; and in the first place, it could not have been conceived without the individuals and organizations that created this open, enabling environment for it to grow in - the AXIOM project. Thanks so much everyone!
