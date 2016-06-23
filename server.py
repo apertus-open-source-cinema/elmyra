@@ -1,5 +1,6 @@
 import json
 import sys
+import uuid
 
 from flask import Flask, jsonify, render_template, redirect, request, send_file, url_for
 from glob import glob
@@ -37,7 +38,7 @@ def index():
 @app.route("/import", methods=["POST"])
 def import_model():
     url = request.form["url"]
-    id = "{0}-{1}".format(strftime("%Y%m%dT%H%M%S"), path.basename(url))
+    id = "{0}-{1}".format(strftime("%Y%m%d"), str(uuid.uuid4()))
 
     blender_call = [
         "blender",
