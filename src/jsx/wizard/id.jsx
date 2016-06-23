@@ -28,7 +28,7 @@ var ID = React.createClass({
           </h1>
 
           <span className="text-muted">
-            <span className="octicon octicon-info" /> Only alphanumeric characters (A-Z/a-z/1-9) and dashes (-).
+            <span className="octicon octicon-info" /> Only small letters (a-z), digits (0-9) and dashes (-) allowed.
           </span>
 
           <div className="description">
@@ -48,7 +48,7 @@ var ID = React.createClass({
                      value={this.state.id}
                      placeholder="axiom-beta-turntable"
                      required
-                     pattern="/^[a-z0-9-]+$/" />
+                     pattern="[a-z0-9-]+" />
 
               <button className="btn btn-primary"
                       type="submit">
