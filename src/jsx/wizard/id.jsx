@@ -2,17 +2,27 @@ var ID = React.createClass({
   getInitialState: function() {
     return({ id: '' });
   },
+  componentDidMount: function() {
+    $('#id').focus();
+  },
   statics: {
     navigationTitle: 'ID'
   },
   changeID: function(event) {
     this.setState({ id: event.target.value });
   },
+  submitID: function(event) {
+    if(document.getElementById('id').checkValidity()) {
+      this.props.generate(this.state.id);
+    }
+
+    event.preventDefault();
+  },
   render: function() {
     return(
       <main>
 
-        <div className="option">
+        <div className="data-input">
           <h1>
             ID
           </h1>
@@ -26,20 +36,26 @@ var ID = React.createClass({
             it will be used to name the visualization in the overview,
             as well as in all URLs for embedding the visualization:
 
-            <input type="text"
-                   name="id"
-                   className="form-control text-center"
-                   onChange={this.changeID}
-                   value={this.state.id}
-                   placeholder="axiom-beta-turntable"
-                   required
-                   pattern="/^[a-z0-9-]+$/" />
-          </div>
+            <br /><br />
 
-          <div>
-            <button className="btn btn-primary" onClick={this.props.generate.bind(null, this.state.id)}>
-              Generate Visualization
-            </button>
+            <form onSubmit={this.submitID}>
+
+              <input id="id"
+                     type="text"
+                     name="id"
+                     className="form-control"
+                     onChange={this.changeID}
+                     value={this.state.id}
+                     placeholder="axiom-beta-turntable"
+                     required
+                     pattern="/^[a-z0-9-]+$/" />
+
+              <button className="btn btn-primary"
+                      type="submit">
+                Confirm & Generate Visualization
+              </button>
+
+            </form>
           </div>
         </div>
 

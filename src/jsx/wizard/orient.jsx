@@ -54,6 +54,9 @@ var Orient = React.createClass({
 
     $('#viewer-container').append(this.renderer.domElement);
 
+    // Render white background until obj is loaded
+    this.renderer.render(this.scene, this.camera);
+
     // See http://threejs.org/docs/#Reference/Loaders/OBJLoader
     var loader = new THREE.OBJLoader();
 
@@ -216,6 +219,8 @@ var Orient = React.createClass({
           </div>
 
           <div>
+            <br/>
+
             <button id="confirm-button"
                     className="btn btn-primary"
                     onClick={this.saveTransformAndNavigate}>
