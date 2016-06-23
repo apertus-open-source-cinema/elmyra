@@ -28,12 +28,7 @@ var Import = React.createClass({
           this.props.navigate(Orient, { importID: data.importID });
         }.bind(this),
         error: function(xhr, status, error) {
-          alert(`Failed to import the visualization.\n\n
-
-Make sure the URL directly points to a download of your 3D model. Especially
-when pasting a URL from github make sure to copy the raw link to the file
-and not the link to the page that shows the model in the browser! also
-make sure to include http(s):// in the url!`);
+          alert('Failed to import the visualization.\n\nMake sure the URL directly points to a download of your 3D model. Especially\nwhen pasting a URL from github make sure to copy the raw link to the file\nand not the link to the page that shows the model in the browser! also\nmake sure to include http(s):// in the url!');
 
           console.error('/import', status, error.toString());
 

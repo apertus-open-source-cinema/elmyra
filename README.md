@@ -21,9 +21,9 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
 
 ## Try the Preview Release
 
-- Download for your OS and unzip: &nbsp;[`Windows`](http://files.apertus.org/elmyra/elmyra-22a3063-windows.zip)
- &nbsp;[`OS X`](http://files.apertus.org/elmyra/elmyra-22a3063-osx.zip)
- &nbsp;[`Linux`](http://files.apertus.org/elmyra/elmyra-22a3063-linux.zip)
+- Download for your OS and unzip: &nbsp;[`Windows`](http://files.apertus.org/elmyra/elmyra-ead300d-windows.zip)
+ &nbsp;[`OS X`](http://files.apertus.org/elmyra/elmyra-ead300d-osx.zip)
+ &nbsp;[`Linux`](http://files.apertus.org/elmyra/elmyra-ead300d-linux.zip)
 
 - Start the renderer and server:
 
