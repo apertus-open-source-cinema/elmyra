@@ -45,7 +45,7 @@ var Wizard = React.createClass({
       cache: false,
       method: 'POST',
       success: function(data) {
-        window.location = '/';
+        this.props.showIndex();
       }.bind(this),
       error: function(xhr, status, error) {
         alert('Failed to generate the visualization');
