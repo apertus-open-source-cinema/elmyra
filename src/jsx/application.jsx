@@ -25,6 +25,7 @@ var Application = React.createClass({
   },
   showIndex: function() {
     this.setState({ show: 'index' });
+    this.loadFromServer();
   },
   showWizard: function() {
     this.setState({ show: 'wizard' });

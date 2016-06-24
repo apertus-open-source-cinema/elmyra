@@ -43,7 +43,7 @@ var Import = React.createClass({
     var import_btn_classes, import_btn_text;
     if(this.state.stage == 'importing') {
       import_btn_classes = 'btn btn-warning';
-      import_btn_text = [<span className="octicon octicon-zap" />, ' Importing ...'];
+      import_btn_text = ' Importing ...';
     } else if(this.state.stage == 'failed') {
       import_btn_classes = 'btn btn-danger';
       import_btn_text = 'Import failed - Retry';

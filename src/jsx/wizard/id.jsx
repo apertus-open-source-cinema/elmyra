@@ -13,6 +13,11 @@ var ID = React.createClass({
   },
   submitID: function(event) {
     if(document.getElementById('id').checkValidity()) {
+      $('#id-submit').removeClass('btn-primary')
+                     .addClass('btn-warning')
+                     .attr('disabled', true)
+                     .html('Generating ...');
+
       this.props.generate(this.state.id);
     }
 
@@ -50,7 +55,8 @@ var ID = React.createClass({
                      required
                      pattern="[a-z0-9-]+" />
 
-              <button className="btn btn-primary"
+              <button id="id-submit"
+                      className="btn btn-primary"
                       type="submit">
                 Confirm & Generate Visualization
               </button>
