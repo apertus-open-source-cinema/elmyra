@@ -182,10 +182,10 @@ def embedded(visualization, version):
             return send_file(file, mimetype="image/png")
 
     elif meta["mediaType"] == "animation":
-        file = path.join(visualization_path, version, "exported.webm")
+        file = path.join(visualization_path, version, "exported.mp4")
 
         if path.exists(file):
-            return send_file(file, mimetype="video/webm")
+            return send_file(file, mimetype="video/mp4")
 
     elif meta["mediaType"] == "web3d":
         file = path.join(visualization_path, version, "exported.html")
