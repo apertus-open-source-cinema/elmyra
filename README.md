@@ -22,7 +22,7 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
 ## Try the Preview Release
 
 - Download for your OS and unzip: &nbsp;[`Windows`](http://files.apertus.org/elmyra/elmyra-ead300d-windows.zip)
- &nbsp;[`OS X`](http://files.apertus.org/elmyra/elmyra-ead300d-osx.zip)
+ &nbsp;[`macOS`](http://files.apertus.org/elmyra/elmyra-ead300d-macos.zip)
  &nbsp;[`Linux`](http://files.apertus.org/elmyra/elmyra-ead300d-linux.zip)
 
 - Start the renderer and server:
@@ -34,7 +34,7 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
   - Double click on `server.bat`  
   &nbsp;
 
-  **OS X and Linux**
+  **macOS and Linux**
 
   - Open two terminals and in both navigate to the `elmyra/` directory
   - In the first enter `./renderer.run`

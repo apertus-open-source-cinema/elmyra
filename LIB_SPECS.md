@@ -17,7 +17,7 @@ The blender python environment needs additional packages installed:
 These packages go into:
 
 - `2.77/python/lib/python3.5/site-packages/` (Linux)
-- `Contents/Resources/2.77/python/lib/python3.5/site-packages/` (OS X)
+- `Contents/Resources/2.77/python/lib/python3.5/site-packages/` (macOS)
 - `2.77/python/lib/site-packages/` (Windows)
 
 ### Additional addons

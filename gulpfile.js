@@ -17,8 +17,8 @@ gulp.task('configure-windows', function(callback) {
   callback();
 });
 
-gulp.task('configure-osx', function(callback) {
-  release = 'osx';
+gulp.task('configure-macos', function(callback) {
+  release = 'macos';
   callback();
 });
 
@@ -119,12 +119,12 @@ gulp.task('launchers', function() {
                 ])
                 .pipe(gulp.dest('.'));
 
-  } else if(release === 'osx' || release === null && process.platform === 'darwin') {
+  } else if(release === 'macos' || release === null && process.platform === 'darwin') {
 
     return gulp.src([
-                  'src/osx/renderer.run',
-                  'src/osx/server.run',
-                  'src/osx/dev-server.run',
+                  'src/macos/renderer.run',
+                  'src/macos/server.run',
+                  'src/macos/dev-server.run',
                 ])
                 .pipe(gulp.dest('.'));
 
@@ -146,7 +146,7 @@ gulp.task(
 );
 
 gulp.task('build-windows', gulp.series('configure-windows', 'build'));
-gulp.task('build-osx', gulp.series('configure-osx', 'build'));
+gulp.task('build-macos', gulp.series('configure-macos', 'build'));
 gulp.task('build-linux', gulp.series('configure-linux', 'build'));
 gulp.task('build-dev', gulp.series('configure-dev', 'build'));
 
@@ -183,7 +183,7 @@ gulp.task(
   'release',
   gulp.series(
     gulp.series('build-windows', 'zip'),
-    gulp.series('build-osx', 'zip'),
+    gulp.series('build-macos', 'zip'),
     gulp.series('build-linux', 'zip'),
     gulp.series('build-dev')
   )
