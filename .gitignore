@@ -8,6 +8,7 @@ __pycache__
 /static/fonts/
 /static/js/
 /tmp/
+/uploads/*
 /visualizations/
 /*.bat
 /*.run

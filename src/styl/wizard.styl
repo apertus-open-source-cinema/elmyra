@@ -63,16 +63,16 @@
     width 60px
 
     &:first-child
-      border: 1px solid #ccc
+      border 1px solid #ccc
       border-radius 2px 0 0 2px
 
     &:last-child
-      border: 1px solid #ccc
+      border 1px solid #ccc
       border-radius 0 2px 2px 0
 
   .insert
-    background-color: #eee
-    border: 1px solid #ccc
+    background-color #eee
+    border 1px solid #ccc
     border-width 1px 0
 
 .axis
@@ -86,3 +86,20 @@
 
   .z
     color blue
+
+#dropzone
+  align-items center
+  border 10px dashed #ececec
+  border-radius 60px
+  color #cecece
+  cursor pointer
+  display flex
+  height 400px
+  justify-content center
+  width 100%
+
+  &.drag-registered
+    border 10px dashed #f90
+
+  *
+    pointer-events none

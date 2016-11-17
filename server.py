@@ -6,7 +6,7 @@ import uuid
 from flask import Flask, jsonify, render_template, redirect, request, send_file, url_for
 from glob import glob
 from natsort import natsorted
-from os import path, remove
+from os import makedirs, path, remove
 from subprocess import call
 from time import strftime
 
@@ -38,8 +38,20 @@ def index():
 
 @app.route("/import", methods=["POST"])
 def import_model():
-    url = request.form["url"]
     id = "{0}-{1}".format(strftime("%Y%m%d"), str(uuid.uuid4()))
+
+    if request.form.get("url", False):
+        url = request.form["url"]
+    else:
+        file = request.files["file"]
+
+        upload_dir = path.join('uploads', id)
+        makedirs(upload_dir)
+
+        upload_filepath = path.join(upload_dir, file.filename)
+        file.save(upload_filepath)
+
+        url = path.abspath(upload_filepath)
 
     blender_call = [
         "blender",
