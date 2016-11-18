@@ -150,11 +150,11 @@ gulp.task('build-macos', gulp.series('configure-macos', 'build'));
 gulp.task('build-linux', gulp.series('configure-linux', 'build'));
 gulp.task('build-dev', gulp.series('configure-dev', 'build'));
 
-gulp.task('default', gulp.series('build'));
-
 gulp.task('watch', function() {
   gulp.watch('src/**/*', gulp.series('build'));
 });
+
+gulp.task('default', gulp.series('build', 'watch'));
 
 gulp.task('zip', function() {
   var releaseFlags = [];
