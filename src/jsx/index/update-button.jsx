@@ -1,49 +1,42 @@
 var UpdateButton = React.createClass({
   uploadSelect: function(event) {
-    $('#' + this.props.title + '-upload').click();
-    event.preventDefault();
+    document.getElementById(this.props.title + '-upload').click()
+    event.preventDefault()
+  },
+  uploadFailed: function(event) {
+    document.getElementById('flash').innerHTML = '<div class="alert alert-error" role="alert"><span class="octicon octicon-x" /> Upload failed</div>'
+  },
+  uploadFinished: function(event) {
+    document.getElementById('flash').innerHTML = '<div class="alert alert-success" role="alert"><span class="octicon octicon-check" /> Upload successful</div>'
   },
   uploadSubmit: function() {
-    var file = $('#' + this.props.title + '-upload')[0].files[0];
+    var file = document.getElementById(this.props.title + '-upload').files[0]
 
-    var formData = new FormData();
-    formData.append("blendfile", file);
+    var formData = new FormData()
+    formData.append('blendfile', file)
 
-    $.ajax({
-      url: '/vis/' + this.props.title + '/upload',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(response) {
-        $('#flash').html(
-          '<div class="alert alert-success" role="alert"><span class="octicon octicon-check" /> Upload successful</div>'
-        );
-      },
-      error: function(jqXHR, textStatus, errorMessage) {
-        $('#flash').html(
-          '<div class="alert alert-error" role="alert"><span class="octicon octicon-x" /> ' + errorMessage + '</div>'
-        );
-      }
-    });
+    var request = new XMLHttpRequest()
+    request.onload = this.uploadFinished
+    request.onerror = this.uploadFailed
+    request.open('POST', '/vis/' + this.props.title + '/upload')
+    request.responseType = 'json'
+    request.send(formData)
+  },
+  updateFailed: function(event) {
+    document.getElementById('flash').innerHTML = '<div class="alert alert-error" role="alert"><span class="octicon octicon-x" /> Update failed</div>'
+  },
+  updateFinished: function(event) {
+    document.getElementById('flash').innerHTML = '<div class="alert alert-success" role="alert"><span class="octicon octicon-check" /> Update successful</div>'
   },
   updateSubmit: function(event) {
-    event.preventDefault();
+    event.preventDefault()
 
-    $.ajax({
-      url: '/vis/' + this.props.title + '/update',
-      type: 'POST',
-      success: function(response) {
-        $('#flash').html(
-          '<div class="alert alert-success" role="alert"><span class="octicon octicon-check" /> Update successful</div>'
-        );
-      },
-      error: function(jqXHR, textStatus, errorMessage) {
-        $('#flash').html(
-          '<div class="alert alert-error" role="alert"><span class="octicon octicon-x" /> ' + errorMessage + '</div>'
-        );
-      }
-    });
+    var request = new XMLHttpRequest()
+    request.onload = this.updateFinished
+    request.onerror = this.updateFailed
+    request.open('POST', '/vis/' + this.props.title + '/update')
+    request.responseType = 'json'
+    request.send()
   },
   render: function() {
     return(
@@ -69,6 +62,6 @@ var UpdateButton = React.createClass({
           </li>
         </ul>
       </div>
-    );
+    )
   }
-});
+})

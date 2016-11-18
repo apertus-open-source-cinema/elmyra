@@ -3,41 +3,43 @@ var Import = React.createClass({
     return({
       stage: null,
       url: '',
-    });
+    })
   },
   componentDidMount: function() {
-    $('#import-url').focus();
+    document.getElementById('import-url').focus()
   },
   statics: {
     navigationTitle: 'Import'
   },
   changeUrl: function(event) {
-    this.setState({ url: event.target.value.trim() });
+    this.setState({ url: event.target.value.trim() })
+  },
+  importFailed: function(event) {
+    alert('Failed to import the visualization.\n\nMake sure the URL directly points to a download of your 3D model. Especially\nwhen pasting a URL from github make sure to copy the raw link to the file\nand not the link to the page that shows the model in the browser! also\nmake sure to include http(s):// in the url!')
+
+    console.error('/import')
+
+    this.setState({ stage: 'failed' })
+  },
+  importFinished: function(event) {
+    this.props.navigate(Orient, { importId: event.target.response.importId })
   },
   importSubmit: function(event) {
     if(document.getElementById('import-url').checkValidity()) {
-      this.setState({ stage: 'importing' });
+      this.setState({ stage: 'importing' })
 
-      $.ajax({
-        url: '/import',
-        data: { 'url': this.state.url },
-        dataType: 'json',
-        cache: false,
-        method: 'POST',
-        success: function(data) {
-          this.props.navigate(Orient, { importID: data.importID });
-        }.bind(this),
-        error: function(xhr, status, error) {
-          alert('Failed to import the visualization.\n\nMake sure the URL directly points to a download of your 3D model. Especially\nwhen pasting a URL from github make sure to copy the raw link to the file\nand not the link to the page that shows the model in the browser! also\nmake sure to include http(s):// in the url!');
+      var formData = new FormData();
+      formData.append('url', this.state.url);
 
-          console.error('/import', status, error.toString());
-
-          this.setState({ stage: 'failed' });
-        }.bind(this)
-      });
+      var request = new XMLHttpRequest()
+      request.onload = this.importFinished
+      request.onerror = this.importFailed
+      request.open('POST', '/import')
+      request.responseType = 'json'
+      request.send(formData)
     }
 
-    event.preventDefault();
+    event.preventDefault()
   },
   render: function() {
     var import_btn_classes, import_btn_text;

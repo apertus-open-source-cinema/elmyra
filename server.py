@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 import uuid
 
@@ -53,7 +54,7 @@ def import_model():
     call(blender_call)
 
     if path.exists(path.join('imports', id)):
-        return jsonify({ "importID": id })
+        return jsonify({ "importId": id })
     else:
         return "", 400
 
@@ -78,7 +79,11 @@ def generate():
     ]
 
     for key, value in request.form.items():
-        blender_call.append("--{0}".format(key))
+        # Convert keys from camelCase to dash-case
+        key_temp = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', key)
+        key_dasherized = re.sub('([a-z0-9])([A-Z])', r'\1-\2', key_temp).lower()
+
+        blender_call.append("--{0}".format(key_dasherized))
         blender_call.append(value)
 
     call(blender_call)

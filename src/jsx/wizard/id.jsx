@@ -3,7 +3,7 @@ var ID = React.createClass({
     return({ id: '' });
   },
   componentDidMount: function() {
-    $('#id').focus();
+    document.getElementById('id').focus()
   },
   statics: {
     navigationTitle: 'ID'
@@ -13,15 +13,17 @@ var ID = React.createClass({
   },
   submitID: function(event) {
     if(document.getElementById('id').checkValidity()) {
-      $('#id-submit').removeClass('btn-primary')
-                     .addClass('btn-warning')
-                     .attr('disabled', true)
-                     .html('Generating ...');
+      submitButton = document.getElementById('id-submit')
 
-      this.props.generate(this.state.id);
+      submitButton.classList.remove('btn-primary')
+      submitButton.classList.add('btn-warning')
+      submitButton.setAttribute('disabled', true)
+      submitButton.innerHTML = 'Generating ...'
+
+      this.props.generate(this.state.id)
     }
 
-    event.preventDefault();
+    event.preventDefault()
   },
   render: function() {
     return(

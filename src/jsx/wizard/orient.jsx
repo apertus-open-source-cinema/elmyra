@@ -52,7 +52,7 @@ var Orient = React.createClass({
     this.renderer.setSize(720, 480);
     this.renderer.setClearColor(0xffffff);
 
-    $('#viewer-container').append(this.renderer.domElement);
+    document.getElementById('viewer-container').append(this.renderer.domElement);
 
     // Render white background until obj is loaded
     this.renderer.render(this.scene, this.camera);
@@ -60,7 +60,7 @@ var Orient = React.createClass({
     // See http://threejs.org/docs/#Reference/Loaders/OBJLoader
     var loader = new THREE.OBJLoader();
 
-    loader.load('/import/' + this.props.importID, function(object) {
+    loader.load('/import/' + this.props.importId, function(object) {
       object.children.forEach(function(child) {
         if(child.name == 'widget-flip-horizontally' ||
            child.name == 'widget-flip-vertically' ||

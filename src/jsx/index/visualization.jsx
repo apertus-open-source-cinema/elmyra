@@ -9,7 +9,7 @@ var Visualization = React.createClass({
     var currentVersion = this.props.versions[0];
 
     if(currentVersion.mediaType === 'animation') {
-      var content = $('<video autoplay controls><source src="' + location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '"></video>');
+      var content = '<video autoplay controls><source src="' + location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '"></video>';
       $.featherlight(content, { type: 'html' });
     } else if (currentVersion.mediaType === 'still') {
       var content = '/vis/' + currentVersion.title + '/' + this.state.currentVersionID;

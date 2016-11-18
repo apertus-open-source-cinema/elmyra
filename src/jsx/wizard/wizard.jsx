@@ -2,59 +2,54 @@ var Wizard = React.createClass({
   getInitialState: function() {
     return({
       steps: [Import]
-    });
+    })
   },
   navigate: function(targetStep, stateChanges) {
-    var previousStepIndex = this.state.steps.indexOf(targetStep);
+    var previousStepIndex = this.state.steps.indexOf(targetStep)
     if(previousStepIndex === -1) {
-      stateChanges.steps = this.state.steps.concat(targetStep);
+      stateChanges.steps = this.state.steps.concat(targetStep)
     } else {
-      stateChanges.steps = this.state.steps.slice(0, previousStepIndex + 1);
+      stateChanges.steps = this.state.steps.slice(0, previousStepIndex + 1)
     }
 
-    this.setState(stateChanges);
+    this.setState(stateChanges)
   },
   generate: function(id) {
-    this.setState({ id: id });
+    const generateParams = [
+     'mediaType', 'mediaLength', 'mediaWidth', 'mediaHeight', 'importId',
+     'orientFlipHorizontally', 'orientFlipVertically', 'orientRotateX',
+     'orientRotateY', 'orientRotateZ', 'cameraType', 'styleType',
+     'modifierType', 'modifierSectionAxis', 'modifierSectionLevel',
+     'modifierSectionLevelFrom', 'modifierSectionLevelTo'
+    ]
 
-    var postData = {
-      'id': id,
-      'media-type': this.state.mediaType,
-      'media-length': this.state.mediaLength,
-      'media-width': this.state.mediaWidth,
-      'media-height': this.state.mediaHeight,
-      'import-id': this.state.importID,
-      'orient-flip-horizontally': this.state.orientFlipHorizontally,
-      'orient-flip-vertically': this.state.orientFlipVertically,
-      'orient-rotate-x': this.state.orientRotateX,
-      'orient-rotate-y': this.state.orientRotateY,
-      'orient-rotate-z': this.state.orientRotateZ,
-      'camera-type': this.state.cameraType,
-      'style-type': this.state.styleType,
-      'modifier-type': this.state.modifierType,
-      'modifier-section-axis': this.state.modifierSectionAxis,
-      'modifier-section-level': this.state.modifierSectionLevel,
-      'modifier-section-level-from': this.state.modifierSectionLevelFrom,
-      'modifier-section-level-to': this.state.modifierSectionLevelTo,
-    };
+    var formData = new FormData()
 
-    $.ajax({
-      url: '/generate',
-      data: postData,
-      dataType: 'json',
-      cache: false,
-      method: 'POST',
-      success: function(data) {
-        this.props.showIndex();
-      }.bind(this),
-      error: function(xhr, status, error) {
-        alert('Failed to generate the visualization');
-        console.error('/generate', status, error.toString());
-      }.bind(this)
-    });
+    formData.append('id', id)
+
+    generateParams.forEach((param) => {
+      if(this.state[param] !== undefined) {
+        formData.append(param, this.state[param])
+      }
+    })
+
+    var request = new XMLHttpRequest()
+    request.onload = this.generateFinished
+    request.onerror = this.generateFailed
+    request.open('POST', '/generate')
+    request.responseType = 'json'
+    request.send(formData)
+
+    this.setState({ id: id })
+  },
+  generateFinished: function(event) {
+    this.props.showIndex()
+  },
+  generateFailed: function(event) {
+    alert('Failed to generate the visualization')
   },
   render: function() {
-    var CurrentStep = this.state.steps[this.state.steps.length - 1];
+    var CurrentStep = this.state.steps[this.state.steps.length - 1]
 
     return(
       <div id="wizard">
@@ -70,12 +65,12 @@ var Wizard = React.createClass({
                 key={step.navigationTitle}>
                 {index + 1} {step.navigationTitle}
               </a>
-            );
+            )
           }.bind(this))}
         </Navigation>
 
         <CurrentStep {... this.state} generate={this.generate} navigate={this.navigate} />
       </div>
-    );
+    )
   }
-});
+})
