@@ -54,6 +54,7 @@ gulp.task('css', function() {
            gulp.src([
              'src/styl/main.styl',
              'src/styl/navigation.styl',
+             'src/styl/preview.styl',
              'src/styl/wizard.styl',
            ]).pipe(stylus())
          )
@@ -101,6 +102,7 @@ gulp.task('js', function() {
              'src/jsx/wizard/import.jsx',
              'src/jsx/wizard/wizard.jsx',
              'src/jsx/navigation.jsx',
+             'src/jsx/preview.jsx',
              'src/jsx/application.jsx',
            ]).pipe(babel())
          )

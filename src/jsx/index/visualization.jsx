@@ -1,80 +1,72 @@
 var Visualization = React.createClass({
   getInitialState: function() {
-    return({ currentVersionID: 'latest' });
+    return({ currentVersionID: 'latest' })
   },
   changeVersion: function(versionID) {
-    this.setState({ currentVersionID: versionID });
+    this.setState({ currentVersionID: versionID })
   },
   preview: function() {
-    var currentVersion = this.props.versions[0];
+    var currentVersion = this.props.versions[0]
 
     if(currentVersion.mediaType === 'animation') {
-      var content = '<video autoplay controls><source src="' + location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '"></video>';
-      $.featherlight(content, { type: 'html' });
+      this.props.openPreview('animation', location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID)
     } else if (currentVersion.mediaType === 'still') {
-      var content = '/vis/' + currentVersion.title + '/' + this.state.currentVersionID;
-      $.featherlight(content, { type: 'image' });
+      this.props.openPreview('still', location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID)
     } else if (currentVersion.mediaType === 'web3d') {
-      var content = location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID;
-      $.featherlight({
-        iframe: content,
-        iframeMaxWidth: '80%',
-        iframeWidth: 1280,
-        iframeHeight: 720
-      });
+      this.props.openPreview('web3d', location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID)
     }
   },
   render: function() {
-    var currentVersion = this.props.versions[0];
+    var currentVersion = this.props.versions[0]
 
     if(this.state.currentVersionID !== 'latest') {
-      this.props.versions.forEach(function(version) {
+      this.props.versions.forEach((version) => {
         if(version.version === this.state.currentVersionID) {
-          currentVersion = version;
+          currentVersion = version
         }
-      }.bind(this));
+      })
     }
 
-    var title = [];
+    var title = []
 
     if(currentVersion.mediaWidth !== undefined && currentVersion.mediaHeight !== undefined) {
-      title.push(currentVersion.mediaWidth + 'x' + currentVersion.mediaHeight);
+      title.push(currentVersion.mediaWidth + 'x' + currentVersion.mediaHeight)
     }
 
     if(currentVersion.minimumSamples !== undefined) {
-      title.push(currentVersion.minimumSamples + 'samples');
+      title.push(currentVersion.minimumSamples + 'samples')
     }
 
     if(currentVersion.mediaType === 'animation') {
-      var duration = moment.duration(currentVersion.mediaLength, 'seconds');
-      title.push(moment.utc(duration.asMilliseconds()).format("mm:ss"));
+      var duration = moment.duration(currentVersion.mediaLength, 'seconds')
+      title.push(moment.utc(duration.asMilliseconds()).format("mm:ss"))
     }
 
-    var previewImage;
-    var previewClasses = ['preview'];
+    var previewImage
+    var previewClasses = ['preview']
     if(currentVersion.lastRender === undefined) {
-      previewClasses.push('pending');
-      previewImage = 'Rendering soon';
+      previewClasses.push('pending')
+      previewImage = 'Rendering soon'
     } else {
-      var invalidate_cache = '?' + moment(currentVersion.lastRender).unix();
+      var invalidate_cache = '?' + moment(currentVersion.lastRender).unix()
 
       previewImage = <img src={'/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
-                          title={title.join('\n')} />;
+                          title={title.join('\n')} />
     }
 
-    var processing;
+    var processing
     if(typeof(currentVersion.processing) === "string") {
-      previewClasses.push('active');
+      previewClasses.push('active')
       processing = <span className="octicon octicon-zap"
                          title={currentVersion.processing}
-                         style={{color: 'rgb(255, 153, 0)', cursor: 'help', position: 'relative', top: '-2px'}} />;
+                         style={{color: 'rgb(255, 153, 0)', cursor: 'help', position: 'relative', top: '-2px'}} />
 
       if(currentVersion.lastRender === undefined) {
-        previewImage = 'Now rendering';
+        previewImage = 'Now rendering'
       }
     }
 
-    var overlayClasses;
+    var overlayClasses
     if(currentVersion.mediaType === 'still') {
       overlayClasses = 'octicon octicon-device-camera overlay still'
     } else if(currentVersion.mediaType === 'animation') {
@@ -115,6 +107,6 @@ var Visualization = React.createClass({
           </div>
         </div>
       </div>
-    );
+    )
   }
-});
+})

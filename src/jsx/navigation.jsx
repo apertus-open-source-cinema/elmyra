@@ -8,8 +8,8 @@ var Navigation = React.createClass({
 
         {this.props.children}
       </nav>
-    );
+    )
   }
-});
+})
 
 // <div id="flash"></div>
