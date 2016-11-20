@@ -10,8 +10,10 @@ var Application = React.createClass({
   },
   getInitialState: function() {
     return({
-      previewType: null,
-      previewUrl: null,
+      preview: {
+        visualization: null,
+        versionID: null
+      },
       show: 'index',
       visualizations: []
     })
@@ -27,12 +29,19 @@ var Application = React.createClass({
     this.setState({ visualizations: event.target.response.visualizations })
   },
   closePreview: function() {
-    this.setState({ previewType: null })
-  },
-  openPreview: function(type, url) {
     this.setState({
-      previewType: type,
-      previewUrl: url
+      preview: {
+        visualization: null,
+        versionID: null
+      }
+    })
+  },
+  openPreview: function(visualization, versionID) {
+    this.setState({
+      preview: {
+        visualization: visualization,
+        versionID: versionID
+      }
     })
   },
   showIndex: function() {
@@ -59,9 +68,7 @@ var Application = React.createClass({
             })}
           </section>
 
-          <Preview type={this.state.previewType}
-                   url={this.state.previewUrl}
-                   closePreview={this.closePreview} />
+          <Preview {...this.state.preview} closePreview={this.closePreview} />
         </div>
       )
 

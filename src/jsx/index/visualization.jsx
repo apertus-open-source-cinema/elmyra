@@ -6,15 +6,7 @@ var Visualization = React.createClass({
     this.setState({ currentVersionID: versionID })
   },
   preview: function() {
-    var currentVersion = this.props.versions[0]
-
-    if(currentVersion.mediaType === 'animation') {
-      this.props.openPreview('animation', location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID)
-    } else if (currentVersion.mediaType === 'still') {
-      this.props.openPreview('still', location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID)
-    } else if (currentVersion.mediaType === 'web3d') {
-      this.props.openPreview('web3d', location.origin + '/vis/' + currentVersion.title + '/' + this.state.currentVersionID)
-    }
+    this.props.openPreview(this.props.versions[0], this.state.currentVersionID)
   },
   render: function() {
     var currentVersion = this.props.versions[0]
