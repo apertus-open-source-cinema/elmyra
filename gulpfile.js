@@ -8,29 +8,29 @@ var babel = require('gulp-babel'),
     stylus = require('gulp-stylus'),
     uglify = require('gulp-uglify'),
     util = require('gulp-util'),
-    zip = require('gulp-zip');
+    zip = require('gulp-zip')
 
-var release = null;
+var release = null
 
 gulp.task('configure-windows', function(callback) {
-  release = 'windows';
-  callback();
-});
+  release = 'windows'
+  callback()
+})
 
 gulp.task('configure-macos', function(callback) {
-  release = 'macos';
-  callback();
-});
+  release = 'macos'
+  callback()
+})
 
 gulp.task('configure-linux', function(callback) {
-  release = 'linux';
-  callback();
-});
+  release = 'linux'
+  callback()
+})
 
 gulp.task('configure-dev', function(callback) {
-  release = null;
-  callback();
-});
+  release = null
+  callback()
+})
 
 gulp.task('clean', function() {
   return del([
@@ -39,8 +39,8 @@ gulp.task('clean', function() {
     'static/js',
     '*.run',
     '*.bat',
-  ]);
-});
+  ])
+})
 
 gulp.task('css', function() {
   return streamqueue(
@@ -59,13 +59,13 @@ gulp.task('css', function() {
          )
         .pipe(concat('styles.css'))
         .pipe(release ? cssnano() : util.noop())
-        .pipe(gulp.dest('static/css/'));
-});
+        .pipe(gulp.dest('static/css/'))
+})
 
 gulp.task('fonts', function() {
   return gulp.src('src/lib/octicons-3.3.0/octicons.woff')
-             .pipe(gulp.dest('static/fonts/'));
-});
+             .pipe(gulp.dest('static/fonts/'))
+})
 
 gulp.task('js', function() {
   return streamqueue(
@@ -106,60 +106,39 @@ gulp.task('js', function() {
          )
         .pipe(concat('scripts.js'))
         .pipe(release ? uglify() : util.noop())
-        .pipe(gulp.dest('static/js/'));
-});
+        .pipe(gulp.dest('static/js/'))
+})
 
-gulp.task('launchers', function() {
+gulp.task('launcher', function() {
   if(release === 'windows' || release === null && process.platform === 'win32') {
-
-    return gulp.src([
-                  'src/windows/renderer.bat',
-                  'src/windows/server.bat',
-                  'src/windows/dev-server.bat',
-                ])
-                .pipe(gulp.dest('.'));
-
+    return gulp.src('src/windows/elmyra.bat').pipe(gulp.dest('.'))
   } else if(release === 'macos' || release === null && process.platform === 'darwin') {
-
-    return gulp.src([
-                  'src/macos/renderer.run',
-                  'src/macos/server.run',
-                  'src/macos/dev-server.run',
-                ])
-                .pipe(gulp.dest('.'));
-
+    return gulp.src('src/macos/elmyra.run').pipe(gulp.dest('.'))
   } else if(release === 'linux' || release === null && process.platform === 'linux') {
-
-    return gulp.src([
-                  'src/linux/renderer.run',
-                  'src/linux/server.run',
-                  'src/linux/dev-server.run',
-                ])
-                .pipe(gulp.dest('.'));
-
+    return gulp.src('src/linux/elmyra.run').pipe(gulp.dest('.'))
   }
-});
+})
 
 gulp.task(
   'build',
-  gulp.series('clean', gulp.parallel('css', 'fonts', 'js', 'launchers'))
-);
+  gulp.series('clean', gulp.parallel('css', 'fonts', 'js', 'launcher'))
+)
 
-gulp.task('build-windows', gulp.series('configure-windows', 'build'));
-gulp.task('build-macos', gulp.series('configure-macos', 'build'));
-gulp.task('build-linux', gulp.series('configure-linux', 'build'));
-gulp.task('build-dev', gulp.series('configure-dev', 'build'));
+gulp.task('build-windows', gulp.series('configure-windows', 'build'))
+gulp.task('build-macos', gulp.series('configure-macos', 'build'))
+gulp.task('build-linux', gulp.series('configure-linux', 'build'))
+gulp.task('build-dev', gulp.series('configure-dev', 'build'))
 
 gulp.task('watch', function() {
-  gulp.watch('src/**/*', gulp.series('build'));
-});
+  gulp.watch('src/**/*', gulp.series('build'))
+})
 
-gulp.task('default', gulp.series('build', 'watch'));
+gulp.task('default', gulp.series('build', 'watch'))
 
 gulp.task('zip', function() {
-  var releaseFlags = [];
-  releaseFlags.push(git.short());
-  releaseFlags.push(release);
+  var releaseFlags = []
+  releaseFlags.push(git.short())
+  releaseFlags.push(release)
 
   return streamqueue(
            { objectMode: true },
@@ -176,8 +155,8 @@ gulp.task('zip', function() {
            ], { base: '.' })
          )
          .pipe(zip('elmyra-' + releaseFlags.join('-') + '.zip'))
-         .pipe(gulp.dest('release/'));
-});
+         .pipe(gulp.dest('release/'))
+})
 
 gulp.task(
   'release',
@@ -187,12 +166,12 @@ gulp.task(
     gulp.series('build-linux', 'zip'),
     gulp.series('build-dev')
   )
-);
+)
 
 gulp.task('release-lib', function() {
   return gulp.src([
            'lib/**/*',
          ], { base: '.' })
          .pipe(zip('elmyra-lib.zip'))
-         .pipe(gulp.dest('release/'));
-});
+         .pipe(gulp.dest('release/'))
+})

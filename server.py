@@ -1,18 +1,19 @@
 import json
 import re
-import sys
+import subprocess
 import uuid
 
 from flask import Flask, jsonify, render_template, redirect, request, send_file, url_for
 from glob import glob
 from natsort import natsorted
 from os import makedirs, path, remove
-from subprocess import call
 from time import strftime
+
 
 GENERATE_SCRIPT = path.join(path.dirname(__file__), "blender_generate.py")
 IMPORT_SCRIPT = path.join(path.dirname(__file__), "blender_import.py")
 UPDATE_SCRIPT = path.join(path.dirname(__file__), "blender_update.py")
+
 
 MIMETYPES = {
     "png": "image/png",
@@ -63,7 +64,7 @@ def import_model():
         "--id", id
     ]
 
-    call(blender_call)
+    subprocess.run(blender_call)
 
     if path.exists(path.join('imports', id)):
         return jsonify({ "importId": id })
@@ -98,7 +99,7 @@ def generate():
         blender_call.append("--{0}".format(key_dasherized))
         blender_call.append(value)
 
-    call(blender_call)
+    subprocess.run(blender_call)
 
     return jsonify({ "done": "true" })
 
@@ -154,7 +155,7 @@ def upload(visualization):
     blender_call.append("--blend")
     blender_call.append(filename)
 
-    call(blender_call)
+    subprocess.run(blender_call)
 
     remove(filename)
 
@@ -174,7 +175,7 @@ def update(visualization):
     blender_call.append("--id")
     blender_call.append(visualization)
 
-    call(blender_call)
+    subprocess.run(blender_call)
 
     return jsonify({"success": True}), 200, {'ContentType':'application/json'}
 
@@ -256,10 +257,5 @@ def download(visualization, version, format):
             return "", 404
 
 
-if __name__ == "__main__":
-    debug = False
-
-    if len(sys.argv) > 1 and sys.argv[1] == '--development':
-        debug = True
-
+def run(debug):
     app.run(debug=debug, threaded=True)

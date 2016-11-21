@@ -6,8 +6,9 @@ from glob import glob
 from datetime import datetime
 from natsort import natsorted
 from os import makedirs, path, remove, rename
-from subprocess import call
 from time import time
+
+import subprocess
 
 import meta
 
@@ -56,7 +57,7 @@ def render_frame(render_directory,
             result_filepath
         ]
 
-        call(ffmpeg_call)
+        subprocess.run(ffmpeg_call)
 
         remove(existing_frame)
         remove(cache_filepath)
@@ -81,7 +82,7 @@ def render_frame(render_directory,
     # Thumbnail creation
 
     thumbnail_filepath = path.join(render_directory, "..", "thumbnail.png")
-    call([
+    subprocess.run([
         "ffmpeg",
         "-y",
         "-f", "image2",

@@ -25,21 +25,9 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
  &nbsp;[`macOS`](http://files.apertus.org/elmyra/elmyra-ead300d-macos.zip)
  &nbsp;[`Linux`](http://files.apertus.org/elmyra/elmyra-ead300d-linux.zip)
 
-- Start the renderer and server:
+- On **Windows**: Open the `elmyra` directory and double click `elmyra.bat`
 
-  **Windows**
-
-  - Open Windows Explorer and navigate to the `elmyra/` directory
-  - Double click on `renderer.bat`
-  - Double click on `server.bat`  
-  &nbsp;
-
-  **macOS and Linux**
-
-  - Open two terminals and in both navigate to the `elmyra/` directory
-  - In the first enter `./renderer.run`
-  - In the second enter `./server.run`
-
+- On **macOS and Linux**: Open a terminal and run `./elmyra.run` inside the `elmyra` directory
 
 - Navigate to `http://localhost:5000/` in your browser
 
@@ -63,7 +51,9 @@ And inside elmyra's root directory:
 
     npm install
 
-Now you can compile and configure your development installation manually by running `gulp build`, or let gulp build and then watch for changes and recompile automatically by just running `gulp`. Additionally, there is a gulp task to create releases for all platforms - `gulp release` - which sequentially builds and collects all relevant files and puts them into archives tagged with platform and commit hash (e.g. `elmyra-ab349c-windows.zip`) in the `release/` directory.
+Now you can compile and configure your development installation manually by running `gulp build`, or let gulp build and then watch for changes and recompile automatically by just running `gulp`. For development you can start `./elmyra.run` (respectively `elmyra.bat` on Windows) with an additional `--development` flag to enable debugging features on the internally used flask server.
+
+For releasing, there is a gulp task to create releases for all platforms - `gulp release` - which sequentially builds and collects all relevant files and puts them into archives tagged with platform and commit hash (e.g. `elmyra-ab349c-windows.zip`) in the `release` directory.
 
 ## Acknowledgements
 

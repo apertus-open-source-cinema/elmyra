@@ -6,9 +6,10 @@ from glob import glob
 from natsort import natsorted
 from os import path
 from shutil import copy
-from subprocess import call
 from time import time
 from zipfile import ZipFile
+
+import subprocess
 
 import meta
 
@@ -39,7 +40,7 @@ def export_jpg(ffmpeg_input_options, export_directory):
     export_file = path.join(export_directory, "exported.jpg")
     ffmpeg_call = ffmpeg_input_options + [export_file]
 
-    call(ffmpeg_call)
+    subprocess.run(ffmpeg_call)
 
     filesize = path.getsize(export_file)
     meta.write({
@@ -60,7 +61,7 @@ def export_png(ffmpeg_input_options, export_directory):
     export_file = path.join(export_directory, "exported.png")
     ffmpeg_call = ffmpeg_input_options + [export_file]
 
-    call(ffmpeg_call)
+    subprocess.run(ffmpeg_call)
 
     filesize = path.getsize(export_file)
     meta.write({
@@ -162,7 +163,7 @@ def export_mp4(concat_file, filter_string, export_directory):
 
     export_file = path.join(export_directory, "exported.mp4")
 
-    call([
+    subprocess.run([
         "ffmpeg",
         "-y",
         "-f", "concat",
@@ -192,7 +193,7 @@ def export_ogv(concat_file, filter_string, export_directory):
 
     export_file = path.join(export_directory, "exported.ogv")
 
-    call([
+    subprocess.run([
         "ffmpeg",
         "-y",
         "-f", "concat",
@@ -221,7 +222,7 @@ def export_webm(concat_file, filter_string, export_directory):
 
     export_file = path.join(export_directory, "exported.webm")
 
-    call([
+    subprocess.run([
         "ffmpeg",
         "-y",
         "-f", "concat",
@@ -258,7 +259,7 @@ def export_gif(concat_file, filter_string, export_directory):
     # filter_string += ", scale=720:-1:flags=lanczos"
 
     palette_file = path.join(export_directory, "palette.png")
-    call([
+    subprocess.run([
         "ffmpeg",
         "-y",
         "-f", "concat",
@@ -268,7 +269,7 @@ def export_gif(concat_file, filter_string, export_directory):
     ])
 
     export_file = path.join(export_directory, "exported.gif")
-    call([
+    subprocess.run([
         "ffmpeg",
         "-y",
         "-f", "concat",

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+BLENDER_BIN_DIR=./lib/linux/blender-2.78a-linux-glibc211-x86_64
+FFMPEG_BIN_DIR=./lib/linux/ffmpeg-3.2-64bit-static
+
+PATH=$BLENDER_BIN_DIR:$FFMPEG_BIN_DIR:$PATH
+
+echo "Elmyra is now live on localhost:5000 - You can stop it by pressing [Ctrl]+[C]"
+
+./lib/linux/blender-2.78a-linux-glibc211-x86_64/2.78/python/bin/python3.5m main.py $1
