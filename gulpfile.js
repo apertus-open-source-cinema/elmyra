@@ -72,8 +72,8 @@ gulp.task('js', function() {
            { objectMode: true },
            gulp.src([
              'src/lib/jquery-2.2.0.js',
-             'src/lib/react-0.14.6/react.js',
-             'src/lib/react-0.14.6/react-dom.js',
+             'src/lib/react-15.4.0/react.js',
+             'src/lib/react-15.4.0/react-dom.js',
              'src/lib/bootstrap-3.3.5/js/bootstrap.js',
              'src/lib/moment-2.11.1/moment.js',
              'src/lib/clipboard.js-1.5.9/clipboard.js',
