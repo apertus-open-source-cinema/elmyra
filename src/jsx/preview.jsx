@@ -1,10 +1,10 @@
 var Preview = React.createClass({
   componentDidMount: function() {
-    document.addEventListener('keydown', (event) => {
+    document.addEventListener('keydown', function(event) {
       if(this.props.visualization !== null && (event.keyCode === 27 || event.key === 'Escape')) {
         this.props.closePreview()
       }
-    })
+    }.bind(this))
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     return nextProps.visualization !== this.props.visualization ||

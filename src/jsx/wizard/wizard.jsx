@@ -27,11 +27,11 @@ var Wizard = React.createClass({
 
     formData.append('id', id)
 
-    generateParams.forEach((param) => {
+    generateParams.forEach(function(param) {
       if(this.state[param] !== undefined) {
         formData.append(param, this.state[param])
       }
-    })
+    }.bind(this))
 
     var request = new XMLHttpRequest()
     request.onload = this.generateFinished

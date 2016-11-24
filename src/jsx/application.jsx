@@ -63,9 +63,9 @@ var Application = React.createClass({
           </Navigation>
 
           <section id="visualizations">
-            {this.state.visualizations.map((v, index) => {
+            {this.state.visualizations.map(function(v, index) {
               return(<Visualization {... v} openPreview={this.openPreview} key={index} />)
-            })}
+            }.bind(this))}
           </section>
 
           <Preview {...this.state.preview} closePreview={this.closePreview} />

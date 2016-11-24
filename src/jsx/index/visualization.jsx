@@ -12,11 +12,11 @@ var Visualization = React.createClass({
     var currentVersion = this.props.versions[0]
 
     if(this.state.currentVersionID !== 'latest') {
-      this.props.versions.forEach((version) => {
+      this.props.versions.forEach(function(version) {
         if(version.version === this.state.currentVersionID) {
           currentVersion = version
         }
-      })
+      }.bind(this))
     }
 
     var title = []
