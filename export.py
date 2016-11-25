@@ -18,15 +18,12 @@ import meta
 def export_still():
     export_directory = bpy.path.abspath("//")
     image_directory = path.join(export_directory, "rendered_frames")
-
+    pixel_image = glob(path.join(image_directory, "*.png"))[0]
 
     ffmpeg_input_options = [
         library.FFMPEG,
         "-y",
-        "-f", "image2",
-        "-pattern_type", "glob",
-        "-framerate", "24",
-        "-i", path.join(image_directory, "*.png")
+        "-i", pixel_image
     ]
 
     export_png(ffmpeg_input_options, export_directory)
