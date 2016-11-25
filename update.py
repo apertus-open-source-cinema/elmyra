@@ -136,8 +136,8 @@ def import_scene(import_scene,
     # TODO: This imports also camera, lights, etc. ...
     # TODO: Conceptually this imports one object, the code is like if there
     #       were many objects imported though, unclean, unclear.
-    
-    filepath = path.join("imports", import_scene, "imported.blend")
+
+    filepath = path.join(path.dirname(path.realpath(__file__)), "imports", import_scene, "imported.blend")
 
     with bpy.data.libraries.load(filepath) as (data_from, data_to):
         data_to.objects = data_from.objects
