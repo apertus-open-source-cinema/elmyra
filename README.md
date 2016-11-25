@@ -21,9 +21,9 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
 
 ## Try the Preview Release
 
-- Download for your OS and unzip: &nbsp;[`Windows`](http://files.apertus.org/elmyra/elmyra-ead300d-windows.zip)
- &nbsp;[`macOS`](http://files.apertus.org/elmyra/elmyra-ead300d-macos.zip)
- &nbsp;[`Linux`](http://files.apertus.org/elmyra/elmyra-ead300d-linux.zip)
+- Download for your OS and unzip: &nbsp;[`Windows`](http://files.apertus.org/elmyra/elmyra-f421733-windows.zip)
+ &nbsp;[`macOS`](http://files.apertus.org/elmyra/elmyra-f421733-macos.zip)
+ &nbsp;[`Linux`](http://files.apertus.org/elmyra/elmyra-f421733-linux.zip)
 
 - On **Windows**: Open the `elmyra` directory and double click `elmyra.bat`
 

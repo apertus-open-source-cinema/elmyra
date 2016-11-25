@@ -1,6 +1,6 @@
 # Specifications for bundled dependencies in `lib/`
 
-**The paths to the dependencies' executables need to be updated in the launchers located under `src/[platform]` for every change!**
+**The paths to the dependencies' executables need to be updated in the launchers and library modules located under `src/[platform]` for every change!**
 
 The officially maintained library bundle is available at http://files.apertus.org/elmyra/elmyra-lib.zip
 
