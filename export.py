@@ -103,15 +103,15 @@ def export_animation():
     export_directory = bpy.path.abspath("//")
     image_directory = path.join(export_directory, "rendered_frames")
     rendered_frames = natsorted(glob(path.join(image_directory, "*.png")))
-    concat_file = path.join(export_directory, "concat.txt")
-    font_file = path.join(path.dirname(__file__), 'lib', 'elmyra', 'oxygen-mono.ttf')
+    concat_file = path.join(export_directory, "export.concat").replace("\\", "/") # POSIX style paths required on all platforms
+    font_file = path.join(path.dirname(__file__), 'lib', 'elmyra', 'oxygen-mono.ttf').replace("\\", "/") # POSIX style paths required on all platforms
     frame_duration = 1.0/24.0
 
     with open(concat_file, "w") as file:
         file.write("ffconcat version 1.0\n\n")
 
         for index, frame in enumerate(rendered_frames):
-            filepath = path.join("rendered_frames", path.basename(frame))
+            filepath = path.join("rendered_frames", path.basename(frame)).replace("\\", "/") # POSIX style paths required on all platforms
 
             # Use the first available frame from the start of the animation
             if index == 0:
