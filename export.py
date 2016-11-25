@@ -11,6 +11,7 @@ from zipfile import ZipFile
 
 import subprocess
 
+import library
 import meta
 
 
@@ -20,7 +21,7 @@ def export_still():
 
 
     ffmpeg_input_options = [
-        "ffmpeg",
+        library.FFMPEG,
         "-y",
         "-f", "image2",
         "-pattern_type", "glob",
@@ -164,7 +165,7 @@ def export_mp4(concat_file, filter_string, export_directory):
     export_file = path.join(export_directory, "exported.mp4")
 
     subprocess.run([
-        "ffmpeg",
+        library.FFMPEG,
         "-y",
         "-f", "concat",
         "-i", concat_file,
@@ -194,7 +195,7 @@ def export_ogv(concat_file, filter_string, export_directory):
     export_file = path.join(export_directory, "exported.ogv")
 
     subprocess.run([
-        "ffmpeg",
+        library.FFMPEG,
         "-y",
         "-f", "concat",
         "-i", concat_file,
@@ -223,7 +224,7 @@ def export_webm(concat_file, filter_string, export_directory):
     export_file = path.join(export_directory, "exported.webm")
 
     subprocess.run([
-        "ffmpeg",
+        library.FFMPEG,
         "-y",
         "-f", "concat",
         "-i", concat_file,
@@ -260,7 +261,7 @@ def export_gif(concat_file, filter_string, export_directory):
 
     palette_file = path.join(export_directory, "palette.png")
     subprocess.run([
-        "ffmpeg",
+        library.FFMPEG,
         "-y",
         "-f", "concat",
         "-i", concat_file,
@@ -270,7 +271,7 @@ def export_gif(concat_file, filter_string, export_directory):
 
     export_file = path.join(export_directory, "exported.gif")
     subprocess.run([
-        "ffmpeg",
+        library.FFMPEG,
         "-y",
         "-f", "concat",
         "-i", concat_file,

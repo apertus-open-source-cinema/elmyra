@@ -9,6 +9,8 @@ from natsort import natsorted
 from os import makedirs, path, remove
 from time import strftime
 
+import library
+
 
 GENERATE_SCRIPT = path.join(path.dirname(__file__), "blender_generate.py")
 IMPORT_SCRIPT = path.join(path.dirname(__file__), "blender_import.py")
@@ -55,7 +57,7 @@ def import_model():
         url = path.abspath(upload_filepath)
 
     blender_call = [
-        "blender",
+        library.BLENDER,
         "--background",
         "--python",
         IMPORT_SCRIPT,
@@ -84,7 +86,7 @@ def import_preview(id):
 @app.route("/generate", methods=["POST"])
 def generate():
     blender_call = [
-        "blender",
+        library.BLENDER,
         "--background",
         "--python",
         GENERATE_SCRIPT,
@@ -136,7 +138,7 @@ def visualizations():
 @app.route("/vis/<visualization>/upload", methods=["POST"])
 def upload(visualization):
     blender_call = [
-        "blender",
+        library.BLENDER,
         "--background",
         "--python",
         UPDATE_SCRIPT,
@@ -165,7 +167,7 @@ def upload(visualization):
 @app.route("/vis/<visualization>/update", methods=["POST"])
 def update(visualization):
     blender_call = [
-        "blender",
+        library.BLENDER,
         "--background",
         "--python",
         UPDATE_SCRIPT,

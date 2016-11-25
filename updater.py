@@ -4,6 +4,7 @@ from glob import glob
 from os import path
 from subprocess import call
 
+import library
 
 UPDATE_SCRIPT = path.join(path.dirname(__file__), 'blender_update.py')
 DEFAULT_INTERVAL_SECONDS = 60 * 15 # 15 minutes (as seconds)
@@ -12,7 +13,7 @@ LOOP = False
 
 def update(id):
     call([
-        "blender",
+        library.BLENDER,
         "--background",
         "--python", UPDATE_SCRIPT,
         "--",

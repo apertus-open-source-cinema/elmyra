@@ -10,6 +10,7 @@ from time import time
 
 import subprocess
 
+import library
 import meta
 
 
@@ -48,7 +49,7 @@ def render_frame(render_directory,
         result_filepath = path.join(render_directory, result_filename)
 
         ffmpeg_call = [
-            "ffmpeg",
+            library.FFMPEG,
             "-y",
             "-i", existing_frame,
             "-i", cache_filepath,
@@ -83,7 +84,7 @@ def render_frame(render_directory,
 
     thumbnail_filepath = path.join(render_directory, "..", "thumbnail.png")
     subprocess.run([
-        "ffmpeg",
+        library.FFMPEG,
         "-y",
         "-f", "image2",
         "-i", result_filepath,

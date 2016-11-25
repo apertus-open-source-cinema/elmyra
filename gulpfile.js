@@ -37,6 +37,7 @@ gulp.task('clean', function() {
     'static/css',
     'static/fonts',
     'static/js',
+    'library.py',
     '*.run',
     '*.bat',
   ])
@@ -109,19 +110,23 @@ gulp.task('js', function() {
         .pipe(gulp.dest('static/js/'))
 })
 
-gulp.task('launcher', function() {
+gulp.task('platform-resources', function() {
+  var platform
+
   if(release === 'windows' || release === null && process.platform === 'win32') {
-    return gulp.src('src/windows/elmyra.bat').pipe(gulp.dest('.'))
+    platform = 'windows'
   } else if(release === 'macos' || release === null && process.platform === 'darwin') {
-    return gulp.src('src/macos/elmyra.run').pipe(gulp.dest('.'))
+    platform = 'macos'
   } else if(release === 'linux' || release === null && process.platform === 'linux') {
-    return gulp.src('src/linux/elmyra.run').pipe(gulp.dest('.'))
+    platform = 'linux'
   }
+
+  return gulp.src('src/' + platform + '/*').pipe(gulp.dest('.'))
 })
 
 gulp.task(
   'build',
-  gulp.series('clean', gulp.parallel('css', 'fonts', 'js', 'launcher'))
+  gulp.series('clean', gulp.parallel('css', 'fonts', 'js', 'platform-resources'))
 )
 
 gulp.task('build-windows', gulp.series('configure-windows', 'build'))

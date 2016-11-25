@@ -7,6 +7,7 @@ from subprocess import Popen, PIPE
 import signal
 import sys
 
+import library
 import server
 
 
@@ -23,7 +24,7 @@ def start_server():
 
 def start_renderer():
     renderer_args = [
-        "blender",
+        library.BLENDER,
         "--background",
         "--python", RENDERER_SCRIPT,
         "--",
