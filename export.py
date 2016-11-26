@@ -226,8 +226,9 @@ def export_webm(concat_file, filter_string, export_directory):
         "-f", "concat",
         "-i", concat_file,
         "-filter_complex", filter_string,
-        "-c:v", "libvpx",
+        "-c:v", "libvpx-vp9",
         "-crf", "4",
+        "-speed", "1",
         "-b:v", "32M",
         export_file
     ])
