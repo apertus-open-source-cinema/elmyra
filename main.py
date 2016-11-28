@@ -38,15 +38,15 @@ def start_renderer():
 if __name__ == '__main__':
 
     def terminate(signum, frame):
-        renderer.terminate()
-        renderer.wait()
-        server.terminate()
-        server.join()
+        renderer_process.terminate()
+        renderer_process.wait()
+        server_process.terminate()
+        server_process.join()
 
         sys.exit(0)
 
     signal.signal(signal.SIGINT, terminate)
     signal.signal(signal.SIGTERM, terminate)
 
-    renderer = start_renderer()
-    server = start_server()
+    renderer_process = start_renderer()
+    server_process = start_server()
