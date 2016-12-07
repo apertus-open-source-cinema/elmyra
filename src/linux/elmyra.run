@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo "Elmyra is going live on localhost:5000 - You can stop it by pressing [Ctrl]+[C]"
-
-./lib/linux/blender-2.78a-linux-glibc211-x86_64/2.78/python/bin/python3.5m main.py $1

@@ -11,8 +11,11 @@ from zipfile import ZipFile
 
 import subprocess
 
-import library
+from common import platform_library
 import meta
+
+
+library = platform_library()
 
 
 def export_still():
@@ -21,7 +24,7 @@ def export_still():
     pixel_image = glob(path.join(image_directory, "*.png"))[0]
 
     ffmpeg_input_options = [
-        library.FFMPEG,
+        library["ffmpeg"],
         "-y",
         "-i", pixel_image
     ]
@@ -162,7 +165,7 @@ def export_mp4(concat_file, filter_string, export_directory):
     export_file = path.join(export_directory, "exported.mp4")
 
     subprocess.run([
-        library.FFMPEG,
+        library["ffmpeg"],
         "-y",
         "-f", "concat",
         "-i", concat_file,
@@ -192,7 +195,7 @@ def export_ogv(concat_file, filter_string, export_directory):
     export_file = path.join(export_directory, "exported.ogv")
 
     subprocess.run([
-        library.FFMPEG,
+        library["ffmpeg"],
         "-y",
         "-f", "concat",
         "-i", concat_file,
@@ -221,7 +224,7 @@ def export_webm(concat_file, filter_string, export_directory):
     export_file = path.join(export_directory, "exported.webm")
 
     subprocess.run([
-        library.FFMPEG,
+        library["ffmpeg"],
         "-y",
         "-f", "concat",
         "-i", concat_file,
@@ -259,7 +262,7 @@ def export_gif(concat_file, filter_string, export_directory):
 
     palette_file = path.join(export_directory, "palette.png")
     subprocess.run([
-        library.FFMPEG,
+        library["ffmpeg"],
         "-y",
         "-f", "concat",
         "-i", concat_file,
@@ -269,7 +272,7 @@ def export_gif(concat_file, filter_string, export_directory):
 
     export_file = path.join(export_directory, "exported.gif")
     subprocess.run([
-        library.FFMPEG,
+        library["ffmpeg"],
         "-y",
         "-f", "concat",
         "-i", concat_file,

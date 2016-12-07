@@ -18,8 +18,8 @@ var Preview = React.createClass({
       return null
     } else {
       var content
-      var url = location.origin + '/vis/' +
-                this.props.visualization.title + '/' + this.props.versionID +
+      var url = location.origin + '/' +
+                this.props.visualization.id + '/' + this.props.versionID +
                 '?seed=' + Date.now()
 
       if(this.props.visualization.mediaType === 'animation') {

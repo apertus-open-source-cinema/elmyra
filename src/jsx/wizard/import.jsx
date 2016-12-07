@@ -18,7 +18,7 @@ var Import = React.createClass({
   importFailed: function(event) {
     alert('Failed to import the visualization.\n\nMake sure the URL directly points to a download of your 3D model. Especially\nwhen pasting a URL from github make sure to copy the raw link to the file\nand not the link to the page that shows the model in the browser! also\nmake sure to include http(s):// in the url!')
 
-    console.error('/import')
+    console.error('/api/import')
 
     this.setState({ stage: 'failed' })
   },
@@ -51,7 +51,7 @@ var Import = React.createClass({
     var request = new XMLHttpRequest()
     request.onload = this.importFinished
     request.onerror = this.importFailed
-    request.open('POST', '/import')
+    request.open('POST', '/api/import')
     request.responseType = 'json'
     request.send(formData)
   },
@@ -61,7 +61,7 @@ var Import = React.createClass({
   importFailed: function(event) {
     alert('Failed to import the visualization.\n\nMake sure the URL directly points to a download of your 3D model. Especially\nwhen pasting a URL from github make sure to copy the raw link to the file\nand not the link to the page that shows the model in the browser! also\nmake sure to include http(s):// in the url!')
 
-    console.error('/import', status, error.toString())
+    console.error('/api/import', status, error.toString())
 
     this.setState({ stage: 'failed' })
   },
@@ -78,7 +78,7 @@ var Import = React.createClass({
       var request = new XMLHttpRequest()
       request.onload = this.importFinished
       request.onerror = this.importFailed
-      request.open('POST', '/import')
+      request.open('POST', '/api/import')
       request.responseType = 'json'
       request.send(formData)
     }
@@ -99,7 +99,7 @@ var Import = React.createClass({
     var request = new XMLHttpRequest()
     request.onload = this.importFinished
     request.onerror = this.importFailed
-    request.open('POST', '/import')
+    request.open('POST', '/api/import')
     request.responseType = 'json'
     request.send(formData)
   },
@@ -155,7 +155,7 @@ var Import = React.createClass({
               <input type="file"
                      id="select-file-dialog"
                      style={{display: 'none'}}
-                     accept=".3ds, .blend, .dae, .fbx, .obj, .ply, .stl"
+                     accept=".3ds,.blend,.dae,.fbx,.obj,.ply,.stl"
                      onChange={this.selectFileSubmit} />
 
               <button className={import_btn_classes}

@@ -10,7 +10,6 @@ __pycache__
 /tmp/
 /uploads/*
 /visualizations/
-/library.py
-/*.bat
-/*.run
+/library.json
+/*.log
 .tags*

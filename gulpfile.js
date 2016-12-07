@@ -1,9 +1,11 @@
 var babel = require('gulp-babel'),
+    cssnano = require('gulp-cssnano'),
     concat = require('gulp-concat')
     del = require('del'),
+    fsExtra = require('fs-extra'),
     git = require('git-rev-sync'),
     gulp = require('gulp'),
-    cssnano = require('gulp-cssnano'),
+    packager = require('electron-packager'),
     streamqueue  = require('streamqueue'),
     stylus = require('gulp-stylus'),
     uglify = require('gulp-uglify'),
@@ -110,7 +112,7 @@ gulp.task('js', function() {
         .pipe(gulp.dest('static/js/'))
 })
 
-gulp.task('platform-resources', function() {
+gulp.task('platform-library', function() {
   var platform
 
   if(release === 'windows' || release === null && process.platform === 'win32') {
@@ -126,7 +128,10 @@ gulp.task('platform-resources', function() {
 
 gulp.task(
   'build',
-  gulp.series('clean', gulp.parallel('css', 'fonts', 'js', 'platform-resources'))
+  gulp.series(
+    'clean',
+    gulp.parallel('css', 'fonts', 'js', 'platform-library')
+  )
 )
 
 gulp.task('build-windows', gulp.series('configure-windows', 'build'))
@@ -140,35 +145,70 @@ gulp.task('watch', function() {
 
 gulp.task('default', gulp.series('build', 'watch'))
 
-gulp.task('zip', function() {
-  var releaseFlags = []
-  releaseFlags.push(git.short())
-  releaseFlags.push(release)
+gulp.task('package', function(callback) {
+  var options = {
+    arch: 'x64',
+    dir: '.',
+    name: 'elmyra',
+    out: './release',
+    overwrite: true,
+    prune: true,
+    foo: 'bar',
+    ignore: [
+      '^/.babelrc$',
+      '^/.gitignore$',
+      '^/.stylintrc$',
+      '^/gulpfile.js$',
+      '^/LIB_SPECS.md$',
+      '^/README.md$',
+      '^/__pycache__',
+      '^/imports/',
+      '^/lib/(macos|windows)',
+      '^/src',
+      '^/tmp/',
+      '^/uploads/',
+      '^/visualizations/'
+    ]
+  }
 
-  return streamqueue(
-           { objectMode: true },
-           gulp.src([
-             'lib/elmyra/**/*',
-             'lib/' + release + '/**/*',
-             'static/**/*',
-             'templates/**/*',
-             'LICENSE',
-             'README.md',
-             '*.py',
-             '*.run',
-             '*.bat',
-           ], { base: '.' })
-         )
-         .pipe(zip('elmyra-' + releaseFlags.join('-') + '.zip'))
-         .pipe(gulp.dest('release/'))
+  if(release === 'windows' || release === null && process.platform === 'win32') {
+    options.platform = 'win32'
+    options.icon = './icons/elmyra.ico'
+  } else if(release === 'macos' || release === null && process.platform === 'darwin') {
+    options.platform = 'darwin'
+    options.icon = './icons/elmyra.icns'
+  } else if(release === 'linux' || release === null && process.platform === 'linux') {
+    options.platform = 'linux'
+  }
+
+  packager(options, function(err, appPaths) {
+    if(err) {
+      console.log(err)
+      process.exit(1)
+    }
+
+    gulp.src(`${appPaths[0]}/**/*`, { base: appPaths[0] })
+        .pipe(zip(`elmyra-${git.short()}-${release}.zip`))
+        .pipe(gulp.dest('release/'))
+        .on('end', function() {
+          fsExtra.remove(appPaths[0], function(err) {
+            if(err) {
+              console.log(err)
+              process.exit(1)
+            }
+
+            callback()
+          })
+        })
+  })
 })
 
 gulp.task(
   'release',
   gulp.series(
-    gulp.series('build-windows', 'zip'),
-    gulp.series('build-macos', 'zip'),
-    gulp.series('build-linux', 'zip'),
+    gulp.series('build-windows', 'package'),
+    gulp.series('build-macos', 'package'),
+    gulp.series('build-linux', 'package'),
     gulp.series('build-dev')
   )
 )

@@ -1,10 +1,10 @@
 """Utility methods to ensure dependencies, setup defaults, remove, append ..."""
 
+from os import path
+import json
 
 import bpy
 from addon_utils import check
-
-from os import path
 
 LIBRARY_PATH = path.join(path.dirname(__file__), "lib", "elmyra")
 
@@ -41,6 +41,16 @@ def get_view3d_context():
             context['area'] = area
 
             return context
+
+
+def platform_library():
+    platform_library_path = 'library.json'
+
+    if path.exists(platform_library_path):
+        with open(platform_library_path) as file:
+            return json.loads(file.read())
+    else:
+        print("Platform library not found")
 
 
 def remove_object(name):

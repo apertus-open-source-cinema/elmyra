@@ -1,10 +1,10 @@
 {
-  "name": "elmyra-asset-pipeline",
+  "name": "elmyra",
   "version": "1.0.0",
-  "description": "Elmyra development asset pipeline",
-  "main": "gulpfile.js",
+  "description": "A blender-based rapid iterative visualization system",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron main.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,9 @@
   "devDependencies": {
     "babel-preset-react": "^6.16.0",
     "del": "^2.2.2",
+    "electron-packager": "^8.3.0",
+    "electron-prebuilt": "^1.4.10",
+    "fs-extra": "^1.0.0",
     "git-rev-sync": "^1.8.0",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-babel": "^6.1.2",
@@ -29,5 +32,15 @@
     "gulp-util": "^3.0.7",
     "gulp-zip": "^3.2.0",
     "streamqueue": "^1.1.1"
+  },
+  "dependencies": {
+    "async": "^2.1.4",
+    "body-parser": "^1.15.2",
+    "case": "^1.4.2",
+    "express": "^4.14.0",
+    "moment": "^2.17.0",
+    "multer": "^1.2.0",
+    "uuid": "^3.0.1",
+    "winston": "^2.3.0"
   }
 }

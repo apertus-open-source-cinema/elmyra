@@ -19,9 +19,9 @@ var DownloadOption = React.createClass({
 
       return(
         <li>
-          <a href={'/vis/' + this.props.title + '/' + this.props.currentVersionID + '/' + this.props.format}
+          <a href={'/' + this.props.id + '/' + this.props.currentVersionID + '/' + this.props.format}
              title={this.formatTooltips[this.props.format]}
-             download={this.props.title + '.' + this.props.format}>
+             download={this.props.id + '.' + this.props.format}>
             {this.props.format} {fileSize}
             </a>
           </li>
@@ -41,7 +41,7 @@ var DownloadOption = React.createClass({
 var DownloadButton = React.createClass({
   render: function() {
     var blendOption = <li>
-      <a href={'/vis/' + this.props.title + '/' + this.props.currentVersionID + '/blend'}
+      <a href={'/' + this.props.id + '/' + this.props.currentVersionID + '/blend'}
          download
          title="Download this visualization's source blender file">
         blend

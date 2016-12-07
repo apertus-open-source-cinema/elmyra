@@ -42,7 +42,7 @@ var Visualization = React.createClass({
     } else {
       var invalidate_cache = '?' + moment(currentVersion.lastRender).unix()
 
-      previewImage = <img src={'/vis/' + currentVersion.title + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
+      previewImage = <img src={'/' + currentVersion.id + '/' + this.state.currentVersionID + '/thumbnail' + invalidate_cache}
                           title={title.join('\n')} />
     }
 
@@ -80,7 +80,7 @@ var Visualization = React.createClass({
         <div className="menu">
           <div className="header">
             <h5 className="title">
-              {currentVersion.title} {processing}
+              {currentVersion.id} {processing}
             </h5>
             <span className="version">
               <VersionButton {... currentVersion}

@@ -10,8 +10,11 @@ from time import time
 
 import subprocess
 
-import library
+from common import platform_library
 import meta
+
+
+library = platform_library()
 
 
 SAMPLES_INITIAL = 8
@@ -49,7 +52,7 @@ def render_frame(render_directory,
         result_filepath = path.join(render_directory, result_filename)
 
         ffmpeg_call = [
-            library.FFMPEG,
+            library["ffmpeg"],
             "-y",
             "-i", existing_frame,
             "-i", cache_filepath,
@@ -84,7 +87,7 @@ def render_frame(render_directory,
 
     thumbnail_filepath = path.join(render_directory, "..", "thumbnail.png")
     subprocess.run([
-        library.FFMPEG,
+        library["ffmpeg"],
         "-y",
         "-f", "image2",
         "-i", result_filepath,

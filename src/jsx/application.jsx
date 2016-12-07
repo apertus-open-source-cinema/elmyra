@@ -4,7 +4,7 @@ var Application = React.createClass({
     var request = new XMLHttpRequest()
     request.onload = this.loadFinished
     request.onerror = this.loadFailed
-    request.open('GET', '/visualizations')
+    request.open('GET', '/api/visualizations')
     request.responseType = 'json'
     request.send()
   },
@@ -23,7 +23,7 @@ var Application = React.createClass({
     setInterval(this.loadFromServer, this.refreshInterval)
   },
   loadFailed: function(event) {
-    console.error('/visualizations')
+    console.error('/api/visualizations')
   },
   loadFinished: function(event) {
     this.setState({ visualizations: event.target.response.visualizations })

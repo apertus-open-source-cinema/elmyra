@@ -23,22 +23,23 @@ var Wizard = React.createClass({
      'modifierSectionLevelFrom', 'modifierSectionLevelTo'
     ]
 
-    var formData = new FormData()
+    var requestData = {}
 
-    formData.append('id', id)
+    requestData['id'] = id
 
     generateParams.forEach(function(param) {
       if(this.state[param] !== undefined) {
-        formData.append(param, this.state[param])
+        requestData[param] = this.state[param]
       }
     }.bind(this))
 
     var request = new XMLHttpRequest()
     request.onload = this.generateFinished
     request.onerror = this.generateFailed
-    request.open('POST', '/generate')
+    request.open('POST', '/api/generate')
+    request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
     request.responseType = 'json'
-    request.send(formData)
+    request.send(JSON.stringify(requestData))
 
     this.setState({ id: id })
   },
