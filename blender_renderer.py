@@ -41,9 +41,9 @@ def parse_custom_args():
 
 
 def render_visualization(id):
-    version.open_latest(id)
-    render.render(args.target_time, args.device)
-    export.export()
+    if version.open_latest(id):
+        render.render(args.target_time, args.device)
+        export.export()
 
 
 def render_loop():

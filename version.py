@@ -26,13 +26,18 @@ def open_latest(visualization):
                             latest_version(visualization),
                             "scene.blend")
 
-    bpy.ops.wm.open_mainfile(filepath=filepath)
+    if path.exists(filepath):
+        bpy.ops.wm.open_mainfile(filepath=filepath)
+
+        return True
+    else:
+        return False
 
 
 def save_new(visualization):
     new_version = strftime("%Y%m%dT%H%M")
     directory = path.join(VISUALIZATIONS_PATH, visualization, new_version)
-    
+
     makedirs(directory)
 
     filepath = path.join(directory, "scene.blend")
