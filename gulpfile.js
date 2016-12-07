@@ -163,7 +163,7 @@ gulp.task('package', function(callback) {
       '^/README.md$',
       '^/__pycache__',
       '^/imports/',
-      '^/lib/(macos|windows)',
+
       '^/src',
       '^/tmp/',
       '^/uploads/',
@@ -172,12 +172,15 @@ gulp.task('package', function(callback) {
   }
 
   if(release === 'windows' || release === null && process.platform === 'win32') {
-    options.platform = 'win32'
     options.icon = './icons/elmyra.ico'
+    options.ignore.push('^/lib/(macos|linux)')
+    options.platform = 'win32'
   } else if(release === 'macos' || release === null && process.platform === 'darwin') {
-    options.platform = 'darwin'
     options.icon = './icons/elmyra.icns'
+    options.ignore.push('^/lib/(linux|windows)')
+    options.platform = 'darwin'
   } else if(release === 'linux' || release === null && process.platform === 'linux') {
+    options.ignore.push('^/lib/(macos|windows)')
     options.platform = 'linux'
   }
 
