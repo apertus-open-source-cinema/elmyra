@@ -25,13 +25,15 @@ var serverLog = new (winston.Logger)({
 function createWindow() {
   win = new BrowserWindow({
     height: 720,
-    icon: path.join(__dirname, 'icons', 'elmyra.png'),
     webPreferences: {
       nodeIntegration: false
     },
     width: 1280
   })
 
+  if(process.platform !== 'darwin') {
+    win.setIcon(path.join('icons', 'elmyra.png'))
+  }
   win.setMenu(null)
   win.loadURL('http://localhost:5000')
   win.maximize()
