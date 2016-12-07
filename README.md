@@ -19,17 +19,11 @@ A blender-based rapid iterative visualization system.
 
 Want to know more? Check out the [Blender Conference Presentation](https://youtu.be/ht1hPNjQxcY?t=24s)  (23min)
 
-## Try the Preview Release
+## Download for your OS
 
-- Download for your OS and unzip: &nbsp;[`Windows`](http://files.apertus.org/elmyra/elmyra-f421733-windows.zip)
- &nbsp;[`macOS`](http://files.apertus.org/elmyra/elmyra-f421733-macos.zip)
- &nbsp;[`Linux`](http://files.apertus.org/elmyra/elmyra-f421733-linux.zip)
-
-- On **Windows**: Open the `elmyra` directory and double click `elmyra.bat`
-
-- On **macOS and Linux**: Open a terminal and run `./elmyra.run` inside the `elmyra` directory
-
-- Navigate to `http://localhost:5000/` in your browser
+- [Windows 7+ (x64)](http://files.apertus.org/elmyra/elmyra-f421733-windows.zip)
+- [macOS 10.9+ (x64)](http://files.apertus.org/elmyra/elmyra-f421733-macos.zip)
+- [Linux - Ubuntu 12.04+ / Fedora 21+ / Debian 8+ (x64)](http://files.apertus.org/elmyra/elmyra-f421733-linux.zip)
 
 ## Setting up Elmyra for Development
 
@@ -43,7 +37,7 @@ Download and unzip the [bundled dependencies and assets](http://files.apertus.or
 
 ### Development Dependencies
 
-In order to compile css and javascript for the frontend and automatically obtain the correct platform-dependent launcher scripts in the project root, you need to install [node.js](https://nodejs.org/) and [gulp 4](http://gulpjs.com/). For node.js please refer to the instructions on their website, for gulp and the remaining dependencies run this anywhere in a terminal:
+In order to compile css and javascript for the frontend and automatically configure the correct platform-dependent library paths for the various scripts, you need to install [node.js](https://nodejs.org/) and [gulp 4](http://gulpjs.com/). For node.js please refer to the instructions on their website, for gulp and the remaining dependencies run this anywhere in a terminal:
 
     sudo npm install -g gulpjs/gulp-cli
 
@@ -51,7 +45,7 @@ And inside elmyra's root directory:
 
     npm install
 
-Now you can compile and configure your development installation manually by running `gulp build`, or let gulp build and then watch for changes and recompile automatically by just running `gulp`. For development you can start `./elmyra.run` (respectively `elmyra.bat` on Windows) with an additional `--development` flag to enable debugging features on the internally used flask server.
+Now you can compile and configure your development installation manually by running `gulp build`, or let gulp build and then watch for changes and recompile automatically by just running `gulp`. For development you can start elmyra by running `npm start`.
 
 For releasing, there is a gulp task to create releases for all platforms - `gulp release` - which sequentially builds and collects all relevant files and puts them into archives tagged with platform and commit hash (e.g. `elmyra-ab349c-windows.zip`) in the `release` directory.
 
