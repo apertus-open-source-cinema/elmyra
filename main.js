@@ -40,7 +40,6 @@ function createWindow() {
 
   win.setMenu(null)
   win.loadURL('http://localhost:5000')
-  win.maximize()
 
   // win.webContents.openDevTools()
 
