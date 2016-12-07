@@ -9,8 +9,10 @@ const async = require('async'),
       path = require('path')
       uuidV4 = require('uuid/v4')
 
-var library
+// Set working directory to elmyra's root directory
+process.chdir(__dirname)
 
+var library
 var app = express()
 
 var storage = multer.diskStorage({
@@ -22,17 +24,16 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage })
 
-app.use('/static', express.static(path.join(__dirname, 'static')))
+app.use('/static', express.static('static'))
 
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'static/index.html'))
+  res.sendFile(path.join(__dirname, 'static', 'index.html'))
 })
 
 app.post('/api/generate', bodyParser.json(), function(req, res) {
   arguments = [
     '--background',
-    '--python',
-    path.join(__dirname, 'blender_generate.py'),
+    '--python', 'blender_generate.py',
     '--'
   ]
 
@@ -40,10 +41,7 @@ app.post('/api/generate', bodyParser.json(), function(req, res) {
     arguments.push(`--${Case.kebab(key)}`, req.body[key])
   }
 
-  var process = childProcess.spawn(
-    path.join(__dirname, library.blender),
-    arguments
-  )
+  var process = childProcess.spawn(library.blender, arguments)
 
   process.on('close', function() {
     res.sendStatus(200)
@@ -56,20 +54,16 @@ app.post('/api/import', upload.single('file'), function(req, res) {
 
   var arguments = [
     '--background',
-    '--python',
-    path.join(__dirname, 'blender_import.py'),
+    '--python', 'blender_import.py',
     '--',
     '--url', url,
     '--id', id
   ]
 
-  var process = childProcess.spawn(
-    path.join(__dirname, library.blender),
-    arguments
-  )
+  var process = childProcess.spawn(library.blender, arguments)
 
   process.on('close', () => {
-    fs.access(path.join(__dirname, 'imports', id), fs.F_OK, (err) => {
+    fs.access(path.join('imports', id), fs.F_OK, (err) => {
         if(!err) {
           res.json({ importId: id })
         } else {
@@ -88,18 +82,14 @@ app.get('/api/preview/:id', (req, res) => {
 app.post('/api/upload/:id', upload.single('blendfile'), (req, res) => {
   var arguments = [
     '--background',
-    '--python',
-    path.join(__dirname, 'blender_update.py'),
+    '--python', 'blender_update.py',
     '--'
   ]
 
   arguments.push('--id', req.params.id)
   arguments.push('--blend', req.file.path)
 
-  var process = childProcess.spawn(
-    path.join(__dirname, library.blender),
-    arguments
-  )
+  var process = childProcess.spawn(library.blender, arguments)
 
   process.on('close', () => {
     res.sendStatus(200)
@@ -107,16 +97,16 @@ app.post('/api/upload/:id', upload.single('blendfile'), (req, res) => {
 })
 
 app.get('/api/visualizations', (req, res) => {
-  fs.readdir(path.join(__dirname, 'visualizations'), (err, vizDirs) => {
+  fs.readdir('visualizations', (err, vizDirs) => {
     function readVersions(id, callback) {
-      fs.readdir(path.join(__dirname, 'visualizations', id), (err, verDirs) => {
+      fs.readdir(path.join('visualizations', id), (err, verDirs) => {
         function readMeta(version, callback) {
           var meta = {
             id: id,
             version: path.basename(version)
           }
 
-          var metaPath = path.join(__dirname, 'visualizations', id, version, 'meta.json')
+          var metaPath = path.join('visualizations', id, version, 'meta.json')
 
           fs.readFile(metaPath, (err, data) => {
             if(!err) {
@@ -200,7 +190,7 @@ app.get('/:id/:version/:format', (req, res) => {
 })
 
 function run(callback) {
-  fs.readFile(path.join(__dirname, 'library.json'), (err, data) => {
+  fs.readFile('library.json', (err, data) => {
     if(err) {
       console.log('Could not read library.json')
       process.exit(1)
