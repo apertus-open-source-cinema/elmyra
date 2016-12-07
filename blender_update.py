@@ -11,12 +11,16 @@ min_interval -- a minimum time to keep between updates, in seconds (optional)
 import sys
 
 from argparse import ArgumentParser
-from os import path
+from os import chdir, path
 from time import time
 
-# Manually add elmyra's directory to sys.path because
-# this script runs from blender context
-sys.path.append(path.dirname(path.realpath(__file__)))
+elmyra_root = path.dirname(path.realpath(__file__))
+
+# Make elmyra's root dir the current working directory (could be anything else)
+chdir(elmyra_root)
+
+# Add elmyra's root dir to sys.path (this script runs from blender context)
+sys.path.append(elmyra_root)
 
 import common
 import meta

@@ -13,11 +13,16 @@ import sys
 from argparse import ArgumentParser
 from glob import glob
 from natsort import natsorted
-from os import path
+from os import chdir, path
+from time import sleep
 
-# Manually add elmyra's directory to sys.path because
-# this script runs from blender context
-sys.path.append(path.dirname(path.realpath(__file__)))
+elmyra_root = path.dirname(path.realpath(__file__))
+
+# Make elmyra's root dir the current working directory (could be anything else)
+chdir(elmyra_root)
+
+# Add elmyra's root dir to sys.path (this script runs from blender context)
+sys.path.append(elmyra_root)
 
 import common
 import export
@@ -44,7 +49,6 @@ def render_visualization(id):
 def render_loop():
     while True:
         for viz in glob("visualizations/*"):
-
             for viz_priority in glob("visualizations/*"):
                 latest_version = natsorted(glob(path.join(viz_priority, "*")))[-1]
                 meta_filepath = path.join(latest_version, "meta.json")
