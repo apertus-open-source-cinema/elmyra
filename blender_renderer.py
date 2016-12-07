@@ -64,6 +64,8 @@ def render_loop():
             id = path.basename(viz)
             render_visualization(id)
 
+        sleep(1)
+
 
 args = parse_custom_args()
 common.ensure_addons()
