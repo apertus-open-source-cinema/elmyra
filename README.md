@@ -21,9 +21,9 @@ Want to know more? Check out the [Blender Conference Presentation](https://youtu
 
 ## Download for your OS
 
-- [Windows 7+ (x64)](http://files.apertus.org/elmyra/elmyra-f421733-windows.zip)
-- [macOS 10.9+ (x64)](http://files.apertus.org/elmyra/elmyra-f421733-macos.zip)
-- [Linux - Ubuntu 12.04+ / Fedora 21+ / Debian 8+ (x64)](http://files.apertus.org/elmyra/elmyra-f421733-linux.zip)
+- [Windows 7+ (x64)](http://files.apertus.org/elmyra/elmyra-05d44d5-windows.zip)
+- [macOS 10.9+ (x64)](http://files.apertus.org/elmyra/elmyra-05d44d5-macos.zip)
+- [Linux - Ubuntu 12.04+ / Fedora 21+ / Debian 8+ (x64)](http://files.apertus.org/elmyra/elmyra-05d44d5-linux.zip)
 
 ## Setting up Elmyra for Development
 
