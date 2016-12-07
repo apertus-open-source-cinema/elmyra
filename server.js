@@ -127,7 +127,7 @@ app.get('/api/visualizations', (req, res) => {
           })
         }
 
-        async.map(verDirs.sort(), readMeta, function(err, metaData) {
+        async.map(verDirs.sort().reverse(), readMeta, function(err, metaData) {
           callback(null, { versions: metaData })
         })
       })
