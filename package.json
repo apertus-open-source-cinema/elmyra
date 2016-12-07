@@ -19,8 +19,8 @@
   "devDependencies": {
     "babel-preset-react": "^6.16.0",
     "del": "^2.2.2",
+    "electron": "^1.4.10",
     "electron-packager": "^8.3.0",
-    "electron-prebuilt": "^1.4.10",
     "fs-extra": "^1.0.0",
     "git-rev-sync": "^1.8.0",
     "gulp": "gulpjs/gulp#4.0",
