@@ -40,7 +40,10 @@ app.post('/api/generate', bodyParser.json(), function(req, res) {
     arguments.push(`--${Case.kebab(key)}`, req.body[key])
   }
 
-  var process = childProcess.spawn(library.blender, arguments)
+  var process = childProcess.spawn(
+    path.join(__dirname, library.blender),
+    arguments
+  )
 
   process.on('close', function() {
     res.sendStatus(200)
@@ -60,7 +63,10 @@ app.post('/api/import', upload.single('file'), function(req, res) {
     '--id', id
   ]
 
-  var process = childProcess.spawn(library.blender, arguments)
+  var process = childProcess.spawn(
+    path.join(__dirname, library.blender),
+    arguments
+  )
 
   process.on('close', () => {
     fs.access(path.join(__dirname, 'imports', id), fs.F_OK, (err) => {
@@ -90,7 +96,10 @@ app.post('/api/upload/:id', upload.single('blendfile'), (req, res) => {
   arguments.push('--id', req.params.id)
   arguments.push('--blend', req.file.path)
 
-  var process = childProcess.spawn(library.blender, arguments)
+  var process = childProcess.spawn(
+    path.join(__dirname, library.blender),
+    arguments
+  )
 
   process.on('close', () => {
     res.sendStatus(200)

@@ -60,7 +60,10 @@ function startRenderer() {
       '--target_time', '60'
     ]
 
-    rendererProcess = childProcess.spawn(library.blender, arguments)
+    rendererProcess = childProcess.spawn(
+      path.join(__dirname, library.blender),
+      arguments
+    )
 
     rendererProcess.stdout.on('data', (data) => {
       rendererLog.info(data.toString())
