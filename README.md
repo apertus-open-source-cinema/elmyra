@@ -37,7 +37,7 @@ Download and unzip the [bundled dependencies and assets](http://files.apertus.or
 
 In order to compile css and javascript for the frontend and automatically configure the correct platform-dependent library paths for the various scripts, you need to install [node.js](https://nodejs.org/) and [gulp 4](http://gulpjs.com/). For node.js please refer to the instructions on their website, for gulp and the remaining dependencies run this anywhere in a terminal:
 
-    sudo npm install -g gulpjs/gulp-cli
+    sudo npm install -g gulp-cli
 
 And inside elmyra's root directory:
 
