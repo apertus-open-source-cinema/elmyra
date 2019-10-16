@@ -1,6 +1,5 @@
 const async = require('async'),
       bodyParser = require('body-parser'),
-      Case = require('case'),
       childProcess = require('child_process'),
       express = require('express'),
       fs = require('fs'),
@@ -8,6 +7,8 @@ const async = require('async'),
       multer  = require('multer'),
       path = require('path')
       uuidV4 = require('uuid/v4')
+
+const camelCaseToDashCase = key => key.replace(/[A-Z]/g, capital => '-' + capital.toLowerCase());
 
 // Set working directory to elmyra's root directory
 process.chdir(__dirname)
@@ -37,8 +38,8 @@ app.post('/api/generate', bodyParser.json(), function(req, res) {
     '--'
   ]
 
-  for(var key in req.body) {
-    arguments.push(`--${Case.kebab(key)}`, req.body[key])
+  for(const key in req.body) {
+    arguments.push(`--${camelCaseToDashCase(key)}`, req.body[key])
   }
 
   var process = childProcess.spawn(library.blender, arguments)
