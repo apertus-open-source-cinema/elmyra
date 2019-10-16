@@ -23,7 +23,7 @@
     "electron-packager": "^8.3.0",
     "fs-extra": "^1.0.0",
     "git-rev-sync": "^1.8.0",
-    "gulp": "gulpjs/gulp#4.0",
+    "gulp": "^4.0.2",
     "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.0",
     "gulp-cssnano": "^2.1.2",
