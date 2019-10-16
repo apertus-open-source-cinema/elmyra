@@ -148,7 +148,7 @@ var Import = React.createClass({
                      className="form-control"
                      onChange={this.changeUrl}
                      value={this.state.url}
-                     placeholder="Alternatively enter a URL, e.g. http://axiom.labs/secret-part.stl"
+                     placeholder="Alternatively enter a URL, e.g. https://axiom.labs/secret-part.stl"
                      size="32"
                      required />
 
