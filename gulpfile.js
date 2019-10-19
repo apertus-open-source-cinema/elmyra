@@ -145,15 +145,13 @@ gulp.task('watch', function() {
 
 gulp.task('default', gulp.series('build', 'watch'))
 
-gulp.task('package', function(callback) {
-  var options = {
+gulp.task('package', async callback => {
+  const options = {
     arch: 'x64',
     dir: '.',
     name: 'elmyra',
     out: './release',
     overwrite: true,
-    prune: true,
-    foo: 'bar',
     ignore: [
       '^/.babelrc$',
       '^/.gitignore$',
@@ -163,48 +161,42 @@ gulp.task('package', function(callback) {
       '^/README.md$',
       '^/__pycache__',
       '^/imports/',
-
       '^/src',
       '^/tmp/',
       '^/uploads/',
       '^/visualizations/'
     ]
-  }
+  };
 
   if(release === 'windows' || release === null && process.platform === 'win32') {
-    options.icon = './icons/elmyra.ico'
-    options.ignore.push('^/lib/(macos|linux)')
-    options.platform = 'win32'
+    options.icon = './icons/elmyra.ico';
+    options.ignore.push('^/lib/(macos|linux)');
+    options.platform = 'win32';
   } else if(release === 'macos' || release === null && process.platform === 'darwin') {
-    options.icon = './icons/elmyra.icns'
-    options.ignore.push('^/lib/(linux|windows)')
-    options.platform = 'darwin'
+    options.icon = './icons/elmyra.icns';
+    options.ignore.push('^/lib/(linux|windows)');
+    options.platform = 'darwin';
   } else if(release === 'linux' || release === null && process.platform === 'linux') {
-    options.ignore.push('^/lib/(macos|windows)')
-    options.platform = 'linux'
+    options.ignore.push('^/lib/(macos|windows)');
+    options.platform = 'linux';
   }
 
-  packager(options, function(err, appPaths) {
-    if(err) {
-      console.log(err)
-      process.exit(1)
-    }
+  const appPaths = await packager(options);
 
-    gulp.src(`${appPaths[0]}/**/*`, { base: appPaths[0] })
-        .pipe(zip(`elmyra-${git.short()}-${release}.zip`))
-        .pipe(gulp.dest('release/'))
-        .on('end', function() {
-          fsExtra.remove(appPaths[0], function(err) {
-            if(err) {
-              console.log(err)
-              process.exit(1)
-            }
+  gulp.src(`${appPaths[0]}/**/*`, { base: appPaths[0] })
+      .pipe(zip(`elmyra-${git.short()}-${release}.zip`))
+      .pipe(gulp.dest('release/'))
+      .on('end', () => {
+        fsExtra.remove(appPaths[0], err => {
+          if(err) {
+            console.log(err);
+            process.exit(1);
+          }
 
-            callback()
-          })
-        })
-  })
-})
+          callback();
+        });
+      });
+});
 
 gulp.task(
   'release',

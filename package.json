@@ -19,8 +19,8 @@
   "devDependencies": {
     "babel-preset-react": "^6.16.0",
     "del": "^2.2.2",
-    "electron": "^1.4.10",
-    "electron-packager": "^8.3.0",
+    "electron": "^6.0.12",
+    "electron-packager": "^14.0.6",
     "fs-extra": "^1.0.0",
     "git-rev-sync": "^1.8.0",
     "gulp": "^4.0.2",
@@ -34,7 +34,6 @@
     "streamqueue": "^1.1.1"
   },
   "dependencies": {
-    "async": "^2.1.4",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "moment": "^2.17.0",

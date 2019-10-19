@@ -1,12 +1,11 @@
-const async = require('async'),
-      bodyParser = require('body-parser'),
-      childProcess = require('child_process'),
-      express = require('express'),
-      fs = require('fs'),
-      moment = require('moment'),
-      multer  = require('multer'),
-      path = require('path')
-      uuidV4 = require('uuid/v4')
+const bodyParser = require('body-parser');
+const childProcess = require('child_process');
+const express = require('express');
+const fs = require('fs');
+const moment = require('moment');
+const multer = require('multer');
+const path = require('path');
+const uuidV4 = require('uuid/v4');
 
 const camelCaseToDashCase = key => key.replace(/[A-Z]/g, capital => '-' + capital.toLowerCase());
 
@@ -98,37 +97,37 @@ app.post('/api/upload/:id', upload.single('blendfile'), (req, res) => {
 })
 
 app.get('/api/visualizations', (req, res) => {
-  fs.readdir('visualizations', (err, vizDirs) => {
-    function readVersions(id, callback) {
-      fs.readdir(path.join('visualizations', id), (err, verDirs) => {
-        function readMeta(version, callback) {
-          var meta = {
+  fs.readdir('visualizations', async (err, vizDirs) => {
+    const readVersions = id => new Promise(resolve => {
+      fs.readdir(path.join('visualizations', id), async (err, verDirs) => {
+        const readMeta = version => new Promise(resolve => {
+          const meta = {
             id: id,
             version: path.basename(version)
-          }
+          };
 
-          var metaPath = path.join('visualizations', id, version, 'meta.json')
+          const metaPath = path.join('visualizations', id, version, 'meta.json');
 
           fs.readFile(metaPath, (err, data) => {
             if(!err) {
-              Object.assign(meta, JSON.parse(data))
+              Object.assign(meta, JSON.parse(data));
             }
 
-            callback(null, meta)
-          })
-        }
+            resolve(meta);
+          });
+        });
 
-        async.map(verDirs.sort().reverse(), readMeta, function(err, metaData) {
-          callback(null, { versions: metaData })
-        })
-      })
-    }
+        const metaData = await Promise.all(verDirs.sort().reverse().map(readMeta));
 
-    async.map(vizDirs, readVersions, function(err, versions) {
-      res.json({ visualizations: versions })
-    })
-  })
-})
+        resolve({ versions: metaData });
+      });
+    });
+
+    const versions = await Promise.all(vizDirs.map(readVersions));
+
+    res.json({ visualizations: versions });
+  });
+});
 
 function serveMedia(res, id, unresolvedVersion, format) {
   var vizPath = path.join(__dirname, 'visualizations', id)
