@@ -1,9 +1,9 @@
-const {app, BrowserWindow} = require('electron'),
-      childProcess = require('child_process'),
-      fs = require('fs'),
-      path = require('path'),
-      server = require('./server.js'),
-      winston = require('winston')
+const { app, BrowserWindow } = require('electron');
+const childProcess = require('child_process');
+const fs = require('fs');
+const path = require('path');
+const server = require('./server.js');
+const winston = require('winston');
 
 // Set working directory to elmyra's root directory
 process.chdir(__dirname)
@@ -12,16 +12,16 @@ var rendererProcess
 
 let win
 
-var rendererLog = new (winston.Logger)({
+const rendererLog = winston.createLogger({
   transports: [
-    new (winston.transports.File)({ filename: 'renderer.log' })
+    new winston.transports.File({ filename: 'renderer.log' })
   ]
 })
 
-var serverLog = new (winston.Logger)({
+const serverLog = winston.createLogger({
   transports: [
-    new (winston.transports.Console)(),
-    new (winston.transports.File)({ filename: 'server.log' })
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'server.log' })
   ]
 })
 
