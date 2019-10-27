@@ -4,12 +4,10 @@ __pycache__
 /lib/
 /node_modules/
 /release/
-/static/css/
-/static/fonts/
-/static/js/
+/static/styles.css*
+/static/scripts.js*
 /tmp/
 /uploads/*
 /visualizations/
 /library.json
 /*.log
-.tags*
