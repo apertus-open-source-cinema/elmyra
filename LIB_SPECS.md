@@ -33,6 +33,6 @@ These **addons** need to be installed additionally:
 
 Also, very importantly an empty `config/` folder needs to be created in blender's `2.78/` directory, as to make elmyra's blender ignore the system blender and any addons that might be redundantly installed (and thus conflicting). See [Q/A on Blender Stackexchange](http://blender.stackexchange.com/questions/48392/make-blender-unaware-of-user-system-installed-add-ons)
 
-## FFMpeg 3.2+ or recent snapshot build from git
+## FFmpeg 4.2.1+ or recent snapshot build from git
 
 This refers to the executables (`ffmpeg`, `ffplay`, etc. though only `ffmpeg` itself is needed) and not to the `libav*` C libraries.
