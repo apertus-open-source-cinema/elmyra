@@ -35,17 +35,13 @@ Download and unzip the [bundled dependencies and assets](http://files.apertus.or
 
 ### Development Dependencies
 
-In order to compile css and javascript for the frontend and automatically configure the correct platform-dependent library paths for the various scripts, you need to install [node.js](https://nodejs.org/) and [gulp 4](http://gulpjs.com/). For node.js please refer to the instructions on their website, for gulp and the remaining dependencies run this anywhere in a terminal:
-
-    sudo npm install -g gulp-cli
-
-And inside elmyra's root directory:
+Install [node.js](https://nodejs.org/), go to elmyra's root directory and run:
 
     npm install
 
-Now you can compile and configure your development installation manually by running `gulp build`, or let gulp build and then watch for changes and recompile automatically by just running `gulp`. For development you can start elmyra by running `npm start`.
+Now you can compile and configure your development build by running `npm run build-dev` and then start elmyra by running `npm start`.
 
-For releasing, there is a gulp task to create releases for all platforms - `gulp release` - which sequentially builds and collects all relevant files and puts them into archives tagged with platform and commit hash (e.g. `elmyra-ab349c-windows.zip`) in the `release` directory. Note that for the windows packaging to succeed on non-windows platforms, `wine` needs to be installed first (On most Linuxes this can be done through the package manager, on macOS through homebrew).
+For releasing, there is a task to create releases for all platforms - `npm run package-all` - which sequentially builds and collects all relevant files and puts them into archives tagged with platform and commit hash (e.g. `elmyra-ab349c-windows.zip`) in the `release` directory. Note that for the windows packaging to succeed on non-windows platforms, `wine` needs to be installed first (On most Linuxes this can be done through the package manager, on macOS through homebrew).
 
 ## Acknowledgements
 
