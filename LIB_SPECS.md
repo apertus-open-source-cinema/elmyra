@@ -11,7 +11,6 @@ The officially maintained library bundle is available at http://files.apertus.or
 The blender python environment needs additional packages installed:
 
 - `certifi`
-- `flask` (including dependencies: werkzeug, jinja2, itsdangerous, markupsafe - check yourself!)
 - `natsort`
 
 These packages go into:
