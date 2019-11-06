@@ -150,12 +150,12 @@ function serveMedia(res, id, unresolvedVersion, format) {
       fs.readFile(metaPath, (err, data) => {
         const meta = JSON.parse(data);
 
+        // TODO: Given that after removal of web3d, the mediaType currently only is 'still' or 'animation'
+        //       this could be changed to an 'isAnimation' type boolean flag throughout the codebase.
         if(meta.mediaType === 'still') {
           sendMedia('exported.png');
-        } else if(meta.mediaType === 'animation') {
+        } else /* if(meta.mediaType === 'animation') */ {
           sendMedia('exported.mp4');
-        } else if(meta.mediaType === 'web3d') {
-          sendMedia('exported.html');
         }
       })
     } else if(format === 'thumbnail') {

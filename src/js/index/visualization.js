@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Octicon, { DeviceCamera, DeviceCameraVideo, DeviceMobile, Zap } from '@primer/octicons-react';
+import Octicon, { DeviceCamera, DeviceCameraVideo, Zap } from '@primer/octicons-react';
 import React from 'react';
 
 import DownloadButton from './download_button.js';
@@ -77,12 +77,9 @@ export default class Visualization extends React.Component {
     if(currentVersion.mediaType === 'still') {
       overlayClasses = 'overlay still';
       overlayIcon = <Octicon icon={DeviceCamera} />;
-    } else if(currentVersion.mediaType === 'animation') {
+    } else /* if(currentVersion.mediaType === 'animation') */ {
       overlayClasses = 'overlay animation';
       overlayIcon = <Octicon icon={DeviceCameraVideo} />;
-    } else if(currentVersion.mediaType === 'web3d') {
-      overlayClasses = 'overlay web3d';
-      overlayIcon = <Octicon icon={DeviceMobile} />;
     }
 
     return(

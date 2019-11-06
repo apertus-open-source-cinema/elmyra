@@ -36,20 +36,6 @@ export default class MediaType extends React.Component {
             </button>
           </div>
         </div>
-
-        <div className="option">
-          <h1>Web3D</h1>
-
-          <div className="description">
-            An interactive WebGL based 3D browser widget.
-          </div>
-
-          <div>
-            <button className="btn btn-primary" onClick={this.props.navigate.bind(null, MediaResolution, { mediaType: 'web3d' })}>
-              Choose
-            </button>
-          </div>
-        </div>
       </main>
     );
   }

@@ -31,10 +31,7 @@ def write(attributes):
 
 
 def write_media_info():
-    if bpy.context.scene.render.engine == "BLEND4WEB":
-        media_length = 0
-        media_type = "web3d"
-    elif bpy.context.scene.frame_end > bpy.context.scene.frame_start:
+    if bpy.context.scene.frame_end > bpy.context.scene.frame_start:
         num_frames = bpy.context.scene.frame_end - bpy.context.scene.frame_start
         media_length = round(num_frames / bpy.context.scene.render.fps)
         media_type = "animation"

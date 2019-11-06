@@ -345,32 +345,8 @@ def export_svg_sequence(image_directory, export_directory):
         })
 
 
-def export_web3d():
-    meta.write({"processing": "Exporting HTML"})
-    benchmark = time()
-
-    export_directory = bpy.path.abspath("//")
-    export_filepath = path.join(export_directory, "exported.html")
-
-    bpy.ops.export_scene.b4w_html(filepath=export_filepath)
-
-    filesize = path.getsize(export_filepath)
-    meta.write({
-        "processing": False,
-        "html": {
-            "filePath": "exported.html",
-            "exported": datetime.now().isoformat(),
-            "processingTime": time() - benchmark,
-            "fileSize": filesize
-        }
-    })
-
-
 def export():
-    if bpy.context.scene.render.engine == "BLEND4WEB":
-        export_web3d()
+    if bpy.context.scene.frame_end > bpy.context.scene.frame_start:
+        export_animation()
     else:
-        if bpy.context.scene.frame_end > bpy.context.scene.frame_start:
-            export_animation()
-        else:
-            export_still()
+        export_still()

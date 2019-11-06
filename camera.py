@@ -17,28 +17,6 @@ def align_info():
     return center, radius
 
 
-def user(options):
-    pass
-    # bpy.ops.object.camera_add()
-    # bpy.context.scene.camera = bpy.data.objects["Camera"]
-    #
-    # location = options['location']
-    # rotation = options['rotation']
-    # focal_length = options['lens']['focal_length']
-    # lens_type = options['lens']['type']
-    #
-    # bpy.data.objects["Camera"].data.clip_end = 300
-    #
-    # bpy.context.scene.camera.location[0] = location[0]
-    # bpy.context.scene.camera.location[1] = location[1]
-    # bpy.context.scene.camera.location[2] = location[2]
-    # bpy.context.scene.camera.rotation_euler[0] = rotation[0]
-    # bpy.context.scene.camera.rotation_euler[1] = rotation[1]
-    # bpy.context.scene.camera.rotation_euler[2] = rotation[2]
-    # bpy.context.scene.camera.data.lens = focal_length
-    # bpy.context.scene.camera.data.type = lens_type
-
-
 def fixed(options):
     # TODO: Let the user position the camera in the browser, use his values
     center, radius = align_info()
@@ -148,7 +126,6 @@ def dolly(options):
 
 def setup(options):
     function = {
-        "user": user,
         "fixed": fixed,
         "turntable": turntable,
         "helix": helix,

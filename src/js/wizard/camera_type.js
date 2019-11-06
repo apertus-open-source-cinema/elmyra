@@ -55,22 +55,6 @@ export default class CameraType extends React.Component {
             </div>
           </div>
         : null}
-
-        {this.props.mediaType === 'web3d' ?
-          <div className="option">
-            <h1>User Controlled</h1>
-
-            <div className="description">
-              The user can freely move the camera around by moving the mouse or utilizing the keyboard.
-            </div>
-
-            <div>
-              <button className="btn btn-primary" onClick={this.props.navigate.bind(null, StyleType, { cameraType: 'user' })}>
-                Choose
-              </button>
-            </div>
-          </div>
-        : null}
       </main>
     );
   }

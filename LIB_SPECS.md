@@ -19,15 +19,6 @@ These packages go into:
 - `Contents/Resources/2.78/python/lib/python3.5/site-packages/` (macOS)
 - `2.78/python/lib/site-packages/` (Windows)
 
-### Additional addons
-
-These **addons** need to be installed additionally:
-- **Blend4Web (16.10)**
-
-  The *add-on* version, **not** the *sdk-free* version
-
-  Available from https://www.blend4web.com/
-
 ### Isolate from system blender
 
 Also, very importantly an empty `config/` folder needs to be created in blender's `2.78/` directory, as to make elmyra's blender ignore the system blender and any addons that might be redundantly installed (and thus conflicting). See [Q/A on Blender Stackexchange](http://blender.stackexchange.com/questions/48392/make-blender-unaware-of-user-system-installed-add-ons)

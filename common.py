@@ -28,7 +28,7 @@ def append_from_library(blend, directory, item):
 def ensure_addons():
     # TODO: Persist addons being enabled as user settings (otherwise overhead!)
 
-    for addon in ('blend4web', 'render_freestyle_svg'):
+    for addon in ('render_freestyle_svg'):
         is_enabled, is_loaded = check(addon)
         if not is_enabled:
             bpy.ops.wm.addon_enable(module=addon)

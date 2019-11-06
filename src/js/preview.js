@@ -29,10 +29,8 @@ export default class Preview extends React.Component {
       content = <video autoPlay controls>
         <source src={url} />
       </video>;
-    } else if(this.props.visualization.mediaType === 'still') {
+    } else /* if(this.props.visualization.mediaType === 'still') */ {
       content = <img src={url} />;
-    } else {
-      content = <iframe id="web3d-iframe" src={url}></iframe>;
     }
 
     return(

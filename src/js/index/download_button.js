@@ -20,8 +20,7 @@ const FORMAT_TOOLTIPS = {
   'webm': 'An alternative, open format',
   'gif': 'Bad quality but biggest fun factor',
   'png.zip': 'Larger filesizes but lossless, supports transparency - great for reduced, graphic designs',
-  'svg.zip': 'Vector-based line graphic - only available for illustrated/line-based styles',
-  'html': 'Full website with embedded interactive Blend4Web 3D viewer'
+  'svg.zip': 'Vector-based line graphic - only available for illustrated/line-based styles'
 };
 
 class DownloadOption extends React.Component {
@@ -89,7 +88,7 @@ export default class DownloadButton extends React.Component {
           <DownloadOption {...this.props} format="svg.zip" />
         </div>
       ;
-    } else if(this.props.mediaType === 'still') {
+    } else /* if(this.props.mediaType === 'still') */ {
       downloadOptions =
         <div className="dropdown-menu">
           <div className="dropdown-header">
@@ -109,21 +108,6 @@ export default class DownloadButton extends React.Component {
             <Octicon icon={FileCode} /> Vector Files
           </div>
           <DownloadOption {...this.props} format="svg" />
-        </div>
-      ;
-    } else if(this.props.mediaType === 'web3d') {
-      downloadOptions =
-        <div className="dropdown-menu">
-          <div className="dropdown-header">
-            <Octicon icon={FileBinary} /> 3D Scene Files
-          </div>
-          {blendOption}
-          <div className="dropdown-divider" />
-
-          <div className="dropdown-header">
-            <Octicon icon={FileMedia} /> Website
-          </div>
-          <DownloadOption {...this.props} format="html" />
         </div>
       ;
     }

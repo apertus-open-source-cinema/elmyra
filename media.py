@@ -14,8 +14,6 @@ def setup(media_type, width, height, length):
 
     ... for animations, enables animated seed for cycles, sets the fps to
     24 and the fps_base to 1.
-
-    ... for web3d, sets the engine to BLEND4WEB.
     """
 
     bpy.context.scene.render.resolution_percentage = 100
@@ -34,7 +32,3 @@ def setup(media_type, width, height, length):
 
         # different for weird framerates (23.9243924 stuffies you know)
         bpy.context.scene.render.fps_base = 1
-
-    elif media_type == "web3d":
-
-        bpy.context.scene.render.engine = 'BLEND4WEB'
