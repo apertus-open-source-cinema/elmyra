@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 app.post('/api/generate', bodyParser.json(), (req, res) => {
   arguments = [
     '--background',
-    '--python', 'blender_generate.py',
+    '--python', path.join(__dirname, 'blender_generate.py'),
     '--'
   ];
 
@@ -65,7 +65,7 @@ app.post('/api/import', upload.single('file'), (req, res) => {
 
   const arguments = [
     '--background',
-    '--python', 'blender_import.py',
+    '--python', path.join(__dirname, 'blender_import.py'),
     '--',
     '--url', url,
     '--id', id
@@ -98,7 +98,7 @@ app.get('/api/preview/:id', (req, res) => {
 app.post('/api/upload/:id', upload.single('blendfile'), (req, res) => {
   const arguments = [
     '--background',
-    '--python', 'blender_update.py',
+    '--python', path.join(__dirname, 'blender_update.py'),
     '--'
   ];
 

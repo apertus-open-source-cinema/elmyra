@@ -58,7 +58,7 @@ const startRenderer = () => {
 
     arguments = [
       '--background',
-      '--python', 'blender_renderer.py',
+      '--python', path.join(__dirname, 'blender_renderer.py'),
       '--',
       '--device', 'GPU',
       '--target_time', '60'
