@@ -23,7 +23,6 @@ def fixed(options):
 
     bpy.ops.object.camera_add()
 
-
     bpy.data.objects["Camera"].data.clip_start = 0.01
     bpy.data.objects["Camera"].data.clip_end = radius * 9
     bpy.context.scene.camera = bpy.data.objects["Camera"]
@@ -120,16 +119,11 @@ def helix(options):
             kp.interpolation = "LINEAR"
 
 
-def dolly(options):
-    pass
-
-
 def setup(options):
     function = {
         "fixed": fixed,
         "turntable": turntable,
-        "helix": helix,
-        "dolly": dolly
+        "helix": helix
     }[options.camera_type]
 
     function(options)
