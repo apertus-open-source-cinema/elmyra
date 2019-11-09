@@ -34,10 +34,8 @@ These are the blender files and image/font file assets Elmyra imports when it ge
 
 - `embed.blend`
 - `environment.hdr`
-- `helix.blend`
 - `illustrated.blend`
 - `preview-widgets.blend`
 - `realistic.blend`
 - `realtime.blend`
 - `section.blend`
-- `turntable.blend`
