@@ -39,12 +39,6 @@ def fixed(options):
 
     bpy.ops.view3d.camera_to_view_selected(view3d_context)
 
-    # Select camera and move back PROBABLY DROPPABLE
-    ## bpy.ops.object.select_camera(context)
-    ## bpy.ops.transform.translate(context,
-    ## value=(10, 0, 0), constraint_axis=(False, False, True),
-    ## constraint_orientation='LOCAL')
-
 
 def turntable(options):
     center, radius = align_info()
