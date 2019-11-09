@@ -32,10 +32,8 @@ This refers to the executables (`ffmpeg`, `ffplay`, etc. though only `ffmpeg` it
 
 These are the blender files and image/font file assets Elmyra imports when it generates or updates visualizations. They are located inside `lib/elmyra/` and documented here for overview and development reference purposes.
 
-- `embed.blend`
 - `environment.hdr`
 - `illustrated.blend`
 - `preview-widgets.blend`
 - `realistic.blend`
-- `realtime.blend`
 - `section.blend`

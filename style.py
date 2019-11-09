@@ -37,25 +37,8 @@ def setup_realistic():
     bpy.context.scene.world = realistic_world
 
 
-def setup_realtime():
-    append_from_library("realtime", "Material", "Object")
-    append_from_library("realtime", "World", "realtime")
-
-    realtime_material = bpy.data.materials["Object"]
-    for obj in bpy.data.objects:
-        if obj.type == 'MESH':
-            obj.data.materials.append(realtime_material)
-
-    realtime_world = bpy.data.worlds["realtime"]
-    bpy.context.scene.world = realtime_world
-
-    append_from_library("realtime", "Object", "Plane")
-
-
 def setup(style_type):
     if style_type == "illustrated":
         setup_illustrated()
-    elif style_type == "realistic":
+    else: # style_type == "realistic"
         setup_realistic()
-    elif style_type == "realtime":
-        setup_realtime()
