@@ -1,4 +1,4 @@
 {
-  "blender": "lib/linux/blender-2.78a-linux-glibc211-x86_64/blender",
+  "blender": "lib/linux/blender-2.80-linux-glibc217-x86_64/blender",
   "ffmpeg": "lib/linux/ffmpeg-4.2.1-amd64-static/ffmpeg"
 }
