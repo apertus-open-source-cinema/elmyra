@@ -124,8 +124,6 @@ def export_browser_preview(import_preview):
                              axis_up="Z",
                              use_triangles=True)
 
-import pprint
-
 
 def import_scene(import_scene,
                  orient_flip_horizontally,
