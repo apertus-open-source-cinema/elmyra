@@ -25,7 +25,7 @@ def import_model(url, import_id):
 
     makedirs(import_dir)
 
-    import_file = path.join(import_dir, "source{}".format(extension))
+    import_file = path.join(import_dir, f"source{extension}")
     import_preview = path.join(import_dir, "preview.obj")
     import_scene = path.join(import_dir, "imported.blend")
 
@@ -195,7 +195,7 @@ def get_hash(data):
 
 def temp_write(data, data_hash):
     tmp_dirpath = path.join(path.dirname(__file__), 'tmp')
-    filepath = path.join(tmp_dirpath, ".{0}.stl".format(data_hash))
+    filepath = path.join(tmp_dirpath, f".{data_hash}.stl")
 
     with open(filepath, "wb") as file:
         file.write(data)

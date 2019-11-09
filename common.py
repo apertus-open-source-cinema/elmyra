@@ -10,7 +10,7 @@ LIBRARY_PATH = path.join(path.dirname(__file__), "lib", "elmyra")
 
 
 def append_from_library(blend, directory, item):
-    blend_exp = "{0}.blend".format(blend)
+    blend_exp = f"{blend}.blend"
 
     # TODO: Which of the two now? Also: relative path without a reference location?
     # filepath = "//" + path.join(blend_exp, directory, '')

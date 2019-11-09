@@ -57,7 +57,7 @@ def render_frame(render_directory,
             "-i", existing_frame,
             "-i", cache_filepath,
             "-filter_complex",
-            "[1:v][0:v]blend=all_expr='A*{0}+B*{1}'".format(alpha, 1 - alpha),
+            f"[1:v][0:v]blend=all_expr='A*{alpha}+B*{1 - alpha}'",
             result_filepath
         ]
 

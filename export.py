@@ -128,11 +128,10 @@ def export_animation():
 
             # Write out the number of frames to interpolate (or exactly one)
             for _ in range(next_number - number):
-                file.write("file {}\n".format(filepath))
-                file.write("duration {}\n".format(frame_duration))
+                file.write(f"file {filepath}\n")
+                file.write(f"duration {frame_duration}\n")
 
-    size_string = "{0}x{1}".format(bpy.context.scene.render.resolution_x,
-                                   bpy.context.scene.render.resolution_y)
+    size_string = f"{bpy.context.scene.render.resolution_x}x{bpy.context.scene.render.resolution_y}"
 
     filter_string = ("color=c=black:s=" + size_string + " [black];"
                      "[black][0:v] overlay=shortest=1")
