@@ -42,7 +42,21 @@ app.post('/api/generate', bodyParser.json(), (req, res) => {
   }
 
   const process = childProcess.spawn(library.blender, arguments);
-  process.on('close', () => res.sendStatus(200));
+  const output = [];
+
+  process.stdout.on('data', data => output.push(data));
+  process.stderr.on('data', data => output.push(data));
+
+  process.on('close', () => {
+    fs.access(path.join('visualizations', req.body.id), fs.F_OK, err => {
+        if(!err) {
+          res.sendStatus(200);
+        } else {
+          res.status(500)
+             .send(`The spawned childprocess for blender_generate.py failed\n\nArguments:\n${arguments.join('\n')}\n\nOutput:\n${output.join('\n')}`);
+        }
+    });
+  });
 });
 
 app.post('/api/import', upload.single('file'), (req, res) => {
@@ -58,13 +72,18 @@ app.post('/api/import', upload.single('file'), (req, res) => {
   ];
 
   const process = childProcess.spawn(library.blender, arguments);
+  const output = [];
+
+  process.stdout.on('data', data => output.push(data));
+  process.stderr.on('data', data => output.push(data));
 
   process.on('close', () => {
     fs.access(path.join('imports', id), fs.F_OK, err => {
         if(!err) {
           res.json({ importId: id });
         } else {
-          res.sendStatus(404); // TODO: should be 500 rather
+          res.status(500)
+             .send(`The spawned childprocess for blender_import.py failed\n\nArguments:\n${arguments.join('\n')}\n\nOutput:\n${output.join('\n')}`);
         }
     });
   });
