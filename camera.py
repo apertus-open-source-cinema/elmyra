@@ -120,10 +120,9 @@ def helix(options):
 
 
 def setup(options):
-    function = {
-        "fixed": fixed,
-        "turntable": turntable,
-        "helix": helix
-    }[options.camera_type]
-
-    function(options)
+    if options.camera_type == "fixed":
+        fixed(options)
+    elif options.camera_type == "turntable":
+        turntable(options)
+    else: # options.camera_type == "helix"
+        helix(options)
