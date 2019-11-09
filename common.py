@@ -50,7 +50,7 @@ def platform_library():
         with open(platform_library_path) as file:
             return json.loads(file.read())
     else:
-        print("Platform library not found")
+        raise FileNotFoundError("Platform library (library.json) not found")
 
 
 def remove_object(name):
