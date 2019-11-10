@@ -25,6 +25,7 @@ const serverLog = winston.createLogger({
 
 const createWindow = () => {
   win = new BrowserWindow({
+    autoHideMenuBar: true,
     height: 720,
     webPreferences: {
       nodeIntegration: false
@@ -36,7 +37,7 @@ const createWindow = () => {
     win.setIcon(path.join('icons', 'elmyra.png'));
   }
 
-  win.setMenu(null);
+  win.setMenuBarVisibility(false);
   win.loadURL('http://localhost:5000');
 
   // Un/comment for instant debugging
