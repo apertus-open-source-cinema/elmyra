@@ -1,13 +1,7 @@
 __pycache__
-/imports/*
-/imports/!.gitkeep
+/.cache/
+/build/
 /lib/
 /node_modules/
-/release/
-/static/styles.css*
-/static/scripts.js*
-/tmp/
-/uploads/*
-/visualizations/
-/library.json
-/*.log
+/src/rust/library.rs
+/target/

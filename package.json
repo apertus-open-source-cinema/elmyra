@@ -1,53 +1,40 @@
 {
-  "name": "elmyra",
-  "version": "1.0.0",
-  "description": "A blender-based rapid iterative visualization system",
-  "main": "main.js",
-  "scripts": {
-    "build-dev": "node build.js build-dev",
-    "package-all": "npm run package-all",
-    "package-lib": "node build.js package-lib",
-    "package-linux": "node build.js package-linux",
-    "package-macos": "node build.js package-macos",
-    "package-windows": "node build.js package-windows",
-    "start": "electron main.js"
+  "author": "Simon Repp <simon@fdpl.io>",
+  "bugs": {
+    "url": "https://github.com/apertus-open-source-cinema/elmyra/issues"
   },
+  "description": "A blender-based rapid iterative visualization system",
+  "dependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "@primer/octicons-react": "^9.4.0",
+    "archiver": "^3.1.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "bootstrap": "^4.4.1",
+    "clipboard": "^2.0.4",
+    "fs-extra": "^8.1.0",
+    "git-rev-sync": "^2.0.0",
+    "jquery": "^3.4.1",
+    "moment": "^2.24.0",
+    "parcel-bundler": "^1.12.4",
+    "popper.js": "^1.16.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "sass": "^1.25.0",
+    "three": "^0.113.2"
+  },
+  "homepage": "https://github.com/apertus-open-source-cinema/elmyra#readme",
+  "license": "GPL-3.0-or-later",
+  "main": "main.js",
+  "name": "elmyra",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/apertus-open-source-cinema/elmyra.git"
   },
-  "author": "The AXIOM Project",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/apertus-open-source-cinema/elmyra/issues"
+  "scripts": {
+    "package": "node build.js package",
+    "package-lib": "node build.js package-lib"
   },
-  "homepage": "https://github.com/apertus-open-source-cinema/elmyra#readme",
-  "devDependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/preset-react": "^7.7.0",
-    "@primer/octicons-react": "^9.2.0",
-    "archiver": "^3.1.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "bootstrap": "^4.3.1",
-    "clipboard": "^2.0.4",
-    "electron": "^7.1.1",
-    "electron-packager": "^14.1.0",
-    "fs-extra": "^8.1.0",
-    "git-rev-sync": "^1.12.0",
-    "jquery": "^3.4.1",
-    "parcel-bundler": "^1.12.4",
-    "popper.js": "^1.16.0",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "sass": "^1.23.3",
-    "three": "^0.110.0"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "moment": "^2.24.0",
-    "multer": "^1.4.2",
-    "uuid": "^3.3.3",
-    "winston": "^3.2.1"
-  }
+  "version": "1.0.0"
 }

@@ -1,0 +1,3 @@
+import os
+
+FFMPEG_EXECUTABLE = os.environ['ELMYRA_FFMPEG_EXECUTABLE']

@@ -1,0 +1,26 @@
+[package]
+authors = ["Simon Repp <simon@fdpl.io>"]
+build = "src/rust/build.rs"
+edition = "2018"
+license = "GPL-3.0-or-later"
+name = "elmyra"
+publish = false
+version = "0.1.0"
+
+[build-dependencies]
+serde = "1.0.104"
+serde_derive = "1.0.104"
+serde_json = "1.0.48"
+
+[dependencies]
+process_path = "0.1.1"
+rocket = "0.4.2"
+rocket_contrib = "0.4.2"
+serde = "1.0.104"
+serde_derive = "1.0.104"
+serde_json = "1.0.48"
+uuid = { features = ["v4"], version = "0.8.1" }
+
+[[bin]]
+name = "elmyra"
+path = "src/rust/main.rs"
