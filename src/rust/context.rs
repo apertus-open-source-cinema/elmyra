@@ -26,8 +26,8 @@ impl Context {
                                        .unwrap()
                                        .to_path_buf();
 
-        let data_dir = match args.data_dir {
-            Some(ref path) => PathBuf::from(path),
+        let data_dir = match &args.data_dir {
+            Some(path) => PathBuf::from(path),
             None => runtime_dir.to_path_buf()
         };
 
@@ -41,9 +41,15 @@ impl Context {
             }
         }
 
-        // TODO: Override via argument
-        let blender_executable = runtime_dir.join(library::BLENDER);
-        let ffmpeg_executable = runtime_dir.join(library::FFMPEG);
+        let blender_executable = match &args.blender_path {
+            Some(path) => PathBuf::from(path),
+            None => runtime_dir.join(library::BLENDER)
+        };
+
+        let ffmpeg_executable = match &args.ffmpeg_path {
+            Some(path) => PathBuf::from(path),
+            None => runtime_dir.join(library::FFMPEG)
+        };
 
         Context {
             blender_executable,
