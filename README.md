@@ -23,25 +23,35 @@ Includes a ready to run executable, no setup whatsoever needed!
 For a quick introduction watch the [Elmyra Screencast](https://www.youtube.com/watch?v=l8x8Kz1T1uc), also linked above. (8min)  
 For more project history and background check out the [Blender Conference 2015 Presentation](https://youtu.be/ht1hPNjQxcY?t=24s) . (23min)
 
-## Developer Documentation
+## Building from source
 
-### Source code
+### Get the source code
 
     git clone https://github.com/apertus-open-source-cinema/elmyra.git
 
-### Bundled dependencies and assets
+### Download the bundled dependencies and assets
 
 Download and unzip the [bundled dependencies and assets](http://files.apertus.org/elmyra/elmyra-lib.zip) and put the `lib` folder inside Elmyra's root directory.
 
-### Development Dependencies
+### Install language dependencies
 
-Install [node.js](https://nodejs.org/), go to elmyra's root directory and run:
+Install [rustup](https://rustup.rs/) and [node.js](https://nodejs.org/).
 
-    npm install
+Inside elmyra's root directory run the following:
 
-Now you can compile and configure your development build by running `npm run build-dev` and then start elmyra by running `npm start`.
+```
+rustup install nightly
+rustup override set nightly
+npm install
+```
 
-For releasing, there is a task to create releases for all platforms - `npm run package-all` - which sequentially builds and collects all relevant files and puts them into archives tagged with platform and commit hash (e.g. `elmyra-ab349c-windows.zip`) in the `release` directory. Note that for the windows packaging to succeed on non-windows platforms, `wine` needs to be installed first (On most Linuxes this can be done through the package manager, on macOS through homebrew).
+### Build it
+
+By running `npm run package` you can now create a build for your platform. The
+finished build will be placed under `build/elmyra-[platform]-[arch]/` and to
+start it you simply execute the `elmyra` binary. By default the server listens
+on all network interfaces and the automatically assigned port is shown in the
+terminal output right on startup.
 
 ## Acknowledgements
 
