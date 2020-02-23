@@ -83,7 +83,7 @@ fn read_versions(directory: &Path) -> Result<Vec<Version>, String> {
             }
 
             Ok(versions)
-        },
+        }
         Err(_) => return Err("Could not read visualization directory.".to_string())
     }
 }
