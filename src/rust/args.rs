@@ -7,6 +7,10 @@ pub struct Args {
     #[clap(default_value = "0.0.0.0", long = "address", short = "a")]
     pub address: String,
 
+    /// The directory to store visualization files and rendered material in, by default elmyra's runtime directory (= the one where the executable and bundled resources are located) is used.
+    #[clap(long = "data-dir")]
+    pub data_dir: Option<String>,
+
     /// By default elmyra runs a renderer process in the background, this option disables it.
     #[clap(long = "disable-rendering")]
     pub disable_rendering: bool,

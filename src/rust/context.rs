@@ -26,9 +26,8 @@ impl Context {
                                        .unwrap()
                                        .to_path_buf();
 
-        let mock_runtime_dir_option: Option<String> = None;
-        let data_dir = match mock_runtime_dir_option {
-            Some(path) => PathBuf::from(path),
+        let data_dir = match args.data_dir {
+            Some(ref path) => PathBuf::from(path),
             None => runtime_dir.to_path_buf()
         };
 
