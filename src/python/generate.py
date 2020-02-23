@@ -26,8 +26,6 @@ from lib import common, camera, media, meta, modifier, style, update, version
 def parse_custom_args():
     parser = ArgumentParser(prog="Elmyra Generate Params")
 
-    parser.add_argument('--data-dir', required=True)
-
     parser.add_argument("--id", required=True)
     parser.add_argument("--import-id", required=True)
 
@@ -58,14 +56,11 @@ def parse_custom_args():
 
 args = parse_custom_args()
 
-import_dir = path.join(args.data_dir, "imports", args.import_id)
-visualization_dir = path.join(args.data_dir, "visualizations", args.id)
-
 common.ensure_addons()
 common.empty_scene()
 common.setup_scene_defaults()
 
-update.import_scene(import_dir,
+update.import_scene(args.import_id,
                     args.orient_flip_horizontally,
                     args.orient_flip_vertically,
                     args.orient_rotate_x,
@@ -81,5 +76,5 @@ style.setup(args.style_type)
 modifier.setup(args)
 camera.setup(args)
 
-version.save_new(visualization_dir)
+version.save_new(args.id)
 meta.write_media_info()

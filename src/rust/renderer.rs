@@ -9,7 +9,6 @@ pub fn start(context: &Context) {
     // command.stderr(Stdio::piped());
     // command.stdout(Stdio::piped());
 
-    command.arg("--data-dir").arg(&context.data_dir);
     command.arg("--device").arg("CPU");  // TODO: CLI option to toggle between CPU/GPU
     command.arg("--target-time").arg(60.to_string());  // TODO: CLI option to specify target render time
 

@@ -23,7 +23,6 @@ from lib import common, update
 def parse_custom_args():
     parser = ArgumentParser(prog='Elmyra Import Params')
 
-    parser.add_argument('--data-dir', required=True)
     parser.add_argument('--import-id', required=True)
     parser.add_argument('--url', required=True)
     parser.add_argument('--format', required=True)
@@ -32,7 +31,7 @@ def parse_custom_args():
 
     return parser.parse_args(custom_args)
 
-arguments = parse_custom_args()
+args = parse_custom_args()
 
 common.empty_scene()
-update.import_model(arguments)
+update.import_model(args)

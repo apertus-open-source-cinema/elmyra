@@ -5,9 +5,11 @@ from natsort import natsorted
 from os import makedirs, path
 from time import strftime
 
+from lib.context import VISUALIZATIONS_DIR
+
 
 def latest_version_dir(visualization_dir):
-    versions_glob = path.join(visualization_dir, "*")
+    versions_glob = path.join(visualization_dir, '*')
     version_dirs = glob(versions_glob)
 
     return natsorted(version_dirs)[-1]
@@ -15,7 +17,7 @@ def latest_version_dir(visualization_dir):
 
 def open_latest(visualization_dir):
     version_dir = latest_version_dir(visualization_dir)
-    blend_file = path.join(version_dir, "scene.blend")
+    blend_file = path.join(version_dir, 'scene.blend')
 
     if path.exists(blend_file):
         bpy.ops.wm.open_mainfile(filepath=blend_file)
@@ -25,10 +27,10 @@ def open_latest(visualization_dir):
         return False
 
 
-def save_new(visualization_dir):
-    version = strftime("%Y%m%dT%H%M")
-    version_dir = path.join(visualization_dir, version)
-    scene_file = path.join(version_dir, "scene.blend")
+def save_new(id):
+    version = strftime('%Y%m%dT%H%M')
+    version_dir = path.join(VISUALIZATIONS_DIR, id, version)
+    scene_file = path.join(version_dir, 'scene.blend')
 
     makedirs(version_dir)
 

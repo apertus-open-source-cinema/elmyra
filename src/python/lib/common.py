@@ -6,22 +6,15 @@ import json
 import bpy
 from addon_utils import check
 
-LIBRARY_PATH = path.join(path.dirname(__file__), '../../lib/elmyra')  # TODO: This has to be based on runtime_dir instead?
+from lib.context import LIBRARY_DIR
 
 
 def append_from_library(blend, directory, item):
-    blend_exp = f"{blend}.blend"
+    resource_path = path.join(LIBRARY_DIR, f"{blend}.blend", directory, '')
 
-    # TODO: Which of the two now? Also: relative path without a reference location?
-    # filepath = "//" + path.join(blend_exp, directory, '')
-    filepath = path.join(LIBRARY_PATH, blend_exp, directory, '')
-
-    filename = item
-    directory = path.join(LIBRARY_PATH, blend_exp, directory, '')
-
-    bpy.ops.wm.append(filepath=filepath,
-                      directory=directory,
-                      filename=filename,
+    bpy.ops.wm.append(filepath=resource_path,
+                      directory=resource_path,
+                      filename=item,
                       autoselect=False)
 
 

@@ -1,11 +1,11 @@
-"""
+'''
 Updates the scene from a blendfile or by trying to update from the original URLs
 
 Custom arguments:
 id -- the visualization identifier (required)
 blend -- a path to a blendfile to replace the current scene with (optional)
 min_interval -- a minimum time to keep between updates, in seconds (optional)
-"""
+'''
 
 
 import sys
@@ -24,11 +24,10 @@ from lib import common, meta, update, version
 
 
 def parse_custom_args():
-    parser = ArgumentParser(prog="Elmyra Update Params")
-    parser.add_argument("--data-dir", required=True)
-    parser.add_argument("--id", required=True)
-    parser.add_argument("--blend", default=None)
-    parser.add_argument("--min-interval", type=int, default=None)
+    parser = ArgumentParser(prog='Elmyra Update Params')
+    parser.add_argument('--id', required=True)
+    parser.add_argument('--blend', default=None)
+    parser.add_argument('--min-interval', type=int, default=None)
 
     custom_args = sys.argv[sys.argv.index('--') + 1:]
 
@@ -49,8 +48,8 @@ else:
 
     if args.min_interval:
         meta = meta.get()
-        if "lastUpdate" in meta:
-            run_updates = time() - meta["lastUpdate"] < args.min_interval
+        if 'lastUpdate' in meta:
+            run_updates = time() - meta['lastUpdate'] < args.min_interval
 
     if run_updates:
         version.open_latest(args.id)
@@ -63,4 +62,4 @@ else:
             version.save_new(args.id)
             meta.write_media_info()
     else:
-        meta.write({"lastUpdate": time()})
+        meta.write({ 'lastUpdate': time() })

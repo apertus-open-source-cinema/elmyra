@@ -11,7 +11,7 @@ from time import time
 import subprocess
 
 from lib import meta
-from lib.ffmpeg import FFMPEG_EXECUTABLE
+from lib.context import FFMPEG_EXECUTABLE
 
 
 SAMPLES_INITIAL = 8

@@ -11,7 +11,6 @@ pub fn upload(context: State<Context>, id: String, file: Data) -> Result<(), &st
 
     let mut command = context.blender_script_with_env("python/update.py");
 
-    command.arg("--data-dir").arg(&context.data_dir);
     command.arg("--id").arg(&id);
     // command.arg("--blend").arg(&id)  upload path ?  //   arguments.push('--blend', request.file.path);
 

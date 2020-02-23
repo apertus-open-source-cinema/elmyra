@@ -33,7 +33,6 @@ pub fn generate(context: State<Context>, parameters: Json<Parameters>) -> Result
 
     command.arg("--id").arg(&parameters.id);
     command.arg("--import-id").arg(&parameters.importId);
-    command.arg("--data-dir").arg(&context.data_dir);
     command.arg("--media-animated").arg(if parameters.mediaAnimated { "true" } else { "false" });
     command.arg("--media-height").arg(parameters.mediaHeight.to_string());
     if let Some(length) = parameters.mediaLength { command.arg("--media-length").arg(length.to_string()); }

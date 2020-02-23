@@ -7,17 +7,18 @@ from shutil import copyfile
 
 from lib import meta
 from lib.common import append_from_library, remove_object, get_view3d_context
+from lib.context import DATA_DIR, IMPORTS_DIR
 
 
-def import_model(arguments):
+def import_model(args):
     # TODO: Add a detailed error feedback path to the web interface (e.g. url 404ed etc.)
 
-    upload_file = path.join(arguments.data_dir, arguments.url)
-    import_dir = path.join(arguments.data_dir, 'imports', arguments.import_id)
+    upload_file = path.join(DATA_DIR, args.url)
+    import_dir = path.join(IMPORTS_DIR, args.import_id)
 
     makedirs(import_dir)
 
-    import_file = path.join(import_dir, f"source.{arguments.format}")
+    import_file = path.join(import_dir, f"source.{args.format}")
     import_preview = path.join(import_dir, "preview.obj")
     import_scene = path.join(import_dir, "imported.blend")
 
@@ -26,7 +27,7 @@ def import_model(arguments):
     if path.exists(upload_file):
         copyfile(upload_file, import_file)
     else:
-        request = requests.get(arguments.url)
+        request = requests.get(args.url)
 
         if request.status_code == requests.codes.ok:
             with open(import_file, "wb") as file:
@@ -35,7 +36,7 @@ def import_model(arguments):
             return False
 
     # TODO: Look in detail at each format, add more, tweak, remove as necessary
-    if arguments.format == "blend":
+    if args.format == "blend":
         # TODO: See .obj notes
 
         with bpy.data.libraries.load(import_file) as (data_from, data_to):
@@ -47,15 +48,15 @@ def import_model(arguments):
                 bpy.context.view_layer.objects.active = obj
                 obj.select_set(True)
 
-    elif arguments.format == "stl":
+    elif args.format == "stl":
         bpy.ops.import_mesh.stl(filepath=import_file)
-    elif arguments.format == "ply":
+    elif args.format == "ply":
         bpy.ops.import_mesh.ply(filepath=import_file)
-    elif arguments.format == "3ds":
+    elif args.format == "3ds":
         bpy.ops.import_scene.autodesk_3ds(filepath=import_file)
-    elif arguments.format == "fbx":
+    elif args.format == "fbx":
         bpy.ops.import_scene.fbx(filepath=import_file)
-    elif arguments.format == "obj":
+    elif args.format == "obj":
         bpy.ops.import_scene.obj(filepath=import_file)
 
         # TODO: After obj import everything imported is SELECTED but not ACTIVE
@@ -66,7 +67,7 @@ def import_model(arguments):
         #       Also this confronts elmyra with a weakness in design:
         #       Being centered around one object only ...
         #       Needs thinking.
-    elif arguments.format == 'dae':
+    elif args.format == 'dae':
         bpy.ops.wm.collada_import(filepath=import_file)
     else:
         return False
@@ -75,7 +76,7 @@ def import_model(arguments):
     bpy.ops.object.modifier_add(type='EDGE_SPLIT')
 
     bpy.context.active_object['elmyra-hash'] = get_hash_url(import_file)
-    bpy.context.active_object['elmyra-url'] = arguments.url
+    bpy.context.active_object['elmyra-url'] = args.url
 
     bpy.ops.wm.save_as_mainfile(filepath=import_scene)
 
@@ -118,7 +119,7 @@ def export_browser_preview(import_preview):
                              use_triangles=True)
 
 
-def import_scene(import_dir,
+def import_scene(import_id,
                  orient_flip_horizontally,
                  orient_flip_vertically,
                  orient_rotate_x,
@@ -128,7 +129,7 @@ def import_scene(import_dir,
     # TODO: Conceptually this imports one object, the code is like if there
     #       were many objects imported though, unclean, unclear.
 
-    blend_file = path.join(import_dir, 'imported.blend')
+    blend_file = path.join(IMPORTS_DIR, import_id, 'imported.blend')
 
     with bpy.data.libraries.load(blend_file) as (data_from, data_to):
         data_to.objects = data_from.objects

@@ -13,7 +13,7 @@ from zipfile import ZipFile
 import subprocess
 
 from lib import meta
-from lib.ffmpeg import FFMPEG_EXECUTABLE
+from lib.context import FFMPEG_EXECUTABLE
 
 
 def export_still():

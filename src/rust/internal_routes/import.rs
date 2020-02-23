@@ -72,7 +72,6 @@ fn import(
 ) -> Result<Json<ImportResponse>, String> {
     let mut command = context.blender_script_with_env("python/import.py");
 
-    command.arg("--data-dir").arg(&context.data_dir);
     command.arg("--url").arg(&url);
     command.arg("--format").arg(&format);
     command.arg("--import-id").arg(&import_id);

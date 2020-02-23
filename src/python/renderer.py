@@ -24,11 +24,10 @@ chdir(elmyra_root)
 sys.path.append(elmyra_root)
 
 from lib import common, export, meta, render, version
-
+from lib.context import VISUALIZATIONS_DIR
 
 def parse_custom_args():
     parser = ArgumentParser(prog='Elmyra Renderer Params')
-    parser.add_argument('--data-dir', required=True)
     parser.add_argument('--device', default='CPU')
     parser.add_argument('--target-time', type=int, default=60)
 
@@ -37,10 +36,8 @@ def parse_custom_args():
     return parser.parse_args(custom_args)
 
 
-def find_unrendered(visualizations_dir):
-    visualizations_glob = path.join(visualizations_dir, '*')
-
-    for visualization_dir in glob(visualizations_glob):
+def find_unrendered():
+    for visualization_dir in visualization_dirs():
         latest_version_dir = version.latest_version_dir(visualization_dir)
         meta_dict = meta.read(latest_version_dir)
 
@@ -55,16 +52,14 @@ def render_visualization(visualization_dir, target_time, device):
         export.export()
 
 
-def render_visualizations(visualizations_dir, target_time, device):
-    visualizations_glob = path.join(visualizations_dir, '*')
-
-    for visualization_dir in glob(visualizations_glob):
+def render_visualizations(target_time, device):
+    for visualization_dir in visualization_dirs():
 
         # Before regularly rendering the next visualization this
         # loop determines if there is another visualization with a higher
         # priority (= not yet rendered) and renders that first
         while True:
-            unrendered_visualization_dir = find_unrendered(visualizations_dir)
+            unrendered_visualization_dir = find_unrendered()
 
             if unrendered_visualization_dir:
                 render_visualization(unrendered_visualization_dir, target_time, device)
@@ -74,13 +69,15 @@ def render_visualizations(visualizations_dir, target_time, device):
         render_visualization(visualization_dir, target_time, device)
 
 
+def visualization_dirs():
+    pattern = path.join(VISUALIZATIONS_DIR, '*')
+
+    return glob(pattern)
 
 
 args = parse_custom_args()
 common.ensure_addons()
 
-visualizations_dir = path.join(args.data_dir, 'visualizations')
-
 while True:
-    render_visualizations(visualizations_dir, args.target_time, args.device)
+    render_visualizations(args.target_time, args.device)
     sleep(1)
