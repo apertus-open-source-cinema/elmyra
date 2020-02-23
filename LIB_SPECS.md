@@ -4,9 +4,9 @@ The officially maintained library bundle is available at https://files.apertus.o
 
 ## Platform dependencies (blender, ffmpeg)
 
-**The paths to the dependencies' executables need to be updated in the launchers and library modules located under `src/[platform]` for every update!**
+**The paths to the dependencies' executables need to be updated in the `src/[platform]/paths.json` manifests for every update!**
 
-### Blender 2.8
+### Blender 2.80
 
 #### Additional Python packages
 
