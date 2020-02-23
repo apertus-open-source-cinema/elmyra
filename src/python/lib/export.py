@@ -1,4 +1,5 @@
-"""Methods for exporting to different formats"""
+'''Methods for exporting to different formats'''
+
 import bpy
 
 from datetime import datetime
@@ -32,7 +33,7 @@ def export_still():
 
 
 def export_jpg(ffmpeg_input_options, export_directory):
-    meta.write({"processing": "Exporting JPG"})
+    meta.write({ "processing": "Exporting JPG" })
     benchmark = time()
 
     export_file = path.join(export_directory, "exported.jpg")
@@ -53,7 +54,7 @@ def export_jpg(ffmpeg_input_options, export_directory):
 
 
 def export_png(ffmpeg_input_options, export_directory):
-    meta.write({"processing": "Exporting PNG"})
+    meta.write({ "processing": "Exporting PNG" })
     benchmark = time()
 
     export_file = path.join(export_directory, "exported.png")
@@ -77,7 +78,7 @@ def export_svg(image_directory, export_directory):
     vector_input_files = glob(path.join(image_directory, "*.svg"))
 
     if len(vector_input_files) > 0:
-        meta.write({"processing": "Exporting SVG"})
+        meta.write({ "processing": "Exporting SVG" })
         benchmark = time()
 
         export_file = path.join(export_directory, "exported.svg")
@@ -155,7 +156,7 @@ def export_animation():
 
 
 def export_mp4(concat_file, filter_string, export_directory):
-    meta.write({"processing": "Exporting MP4"})
+    meta.write({ "processing": "Exporting MP4" })
     benchmark = time()
 
     export_file = path.join(export_directory, "exported.mp4")
@@ -185,7 +186,7 @@ def export_mp4(concat_file, filter_string, export_directory):
 
 
 def export_ogv(concat_file, filter_string, export_directory):
-    meta.write({"processing": "Exporting OGV"})
+    meta.write({ "processing": "Exporting OGV" })
     benchmark = time()
 
     export_file = path.join(export_directory, "exported.ogv")
@@ -214,7 +215,7 @@ def export_ogv(concat_file, filter_string, export_directory):
 
 
 def export_webm(concat_file, filter_string, export_directory):
-    meta.write({"processing": "Exporting WEBM"})
+    meta.write({ "processing": "Exporting WEBM" })
     benchmark = time()
 
     export_file = path.join(export_directory, "exported.webm")
@@ -247,7 +248,7 @@ def export_webm(concat_file, filter_string, export_directory):
 def export_gif(concat_file, filter_string, export_directory):
     """Export a GIF from the input frames, scaled down to 720p"""
 
-    meta.write({"processing": "Exporting GIF"})
+    meta.write({ "processing": "Exporting GIF" })
     benchmark = time()
 
     # GIF encoding technique taken from
@@ -292,7 +293,7 @@ def export_gif(concat_file, filter_string, export_directory):
 def export_png_sequence(image_directory, export_directory):
     """Export all input frames as PNGs inside a ZIP"""
 
-    meta.write({"processing": "Exporting PNG Sequence"})
+    meta.write({ "processing": "Exporting PNG Sequence" })
     benchmark = time()
 
     raster_input_files = glob(path.join(image_directory, "*.png"))
@@ -319,7 +320,7 @@ def export_svg_sequence(image_directory, export_directory):
     vector_input_files = glob(path.join(image_directory, "*.svg"))
 
     if len(vector_input_files) > 0:
-        meta.write({"processing": "Exporting SVG Sequence"})
+        meta.write({ "processing": "Exporting SVG Sequence" })
         benchmark = time()
 
         export_file = path.join(export_directory, "exported.svg.zip")
