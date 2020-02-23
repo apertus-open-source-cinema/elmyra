@@ -29,8 +29,8 @@ pub struct Meta {
     pub jpg: Option<FormatMeta>,
     pub png: Option<FormatMeta>,
     pub svg: Option<FormatMeta>,
-    #[serde(rename(serialize = "png.zip"))]
+    #[serde(rename = "png.zip")]
     pub png_zip: Option<FormatMeta>,
-    #[serde(rename(serialize = "svg.zip"))]
+    #[serde(rename = "svg.zip")]
     pub svg_zip: Option<FormatMeta>
 }
