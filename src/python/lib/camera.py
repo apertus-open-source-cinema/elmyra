@@ -2,7 +2,7 @@ import bpy
 from functools import reduce
 from mathutils import Vector
 
-from lib.common import append_from_library, get_view3d_context
+from lib.common import get_view3d_context
 
 
 def align_info():

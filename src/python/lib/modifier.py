@@ -11,21 +11,21 @@ def section(options):
 
     axis = options.modifier_section_axis
 
-    append_from_library("section", "NodeTree", "section")
-    section_node_group = bpy.data.node_groups["section"]
+    append_from_library('section', 'NodeTree', 'section')
+    section_node_group = bpy.data.node_groups['section']
 
     for mat in bpy.data.materials:
-        section_node_group_node = mat.node_tree.nodes.new("ShaderNodeGroup")
-        section_node_group_node.node_tree = bpy.data.node_groups["section"]
+        section_node_group_node = mat.node_tree.nodes.new('ShaderNodeGroup')
+        section_node_group_node.node_tree = bpy.data.node_groups['section']
 
-        if options.modifier_type == "animated-cross-section":
+        if options.modifier_type == 'animated-cross-section':
             bpy.context.scene.frame_current = 1
             section_node_group_node.inputs[axis].default_value = options.modifier_section_level_from
-            section_node_group_node.inputs[axis].keyframe_insert("default_value")
+            section_node_group_node.inputs[axis].keyframe_insert('default_value')
 
             bpy.context.scene.frame_current = bpy.context.scene.frame_end
             section_node_group_node.inputs[axis].default_value = options.modifier_section_level_to
-            section_node_group_node.inputs[axis].keyframe_insert("default_value")
+            section_node_group_node.inputs[axis].keyframe_insert('default_value')
 
             for fc in section_node_group_node.inputs[axis].id_data.animation_data.action.fcurves:
                 fc.extrapolation = 'LINEAR'
@@ -43,14 +43,14 @@ def section(options):
                         surface_shader = link.from_node
 
         mat.node_tree.links.new(surface_shader.outputs[0],
-                                section_node_group_node.inputs["Shader"])
+                                section_node_group_node.inputs['Shader'])
 
-        mat.node_tree.links.new(section_node_group_node.outputs["Shader"],
-                                output_material_node.inputs["Surface"])
+        mat.node_tree.links.new(section_node_group_node.outputs['Shader'],
+                                output_material_node.inputs['Surface'])
 
 
 def setup(options):
-    if options.modifier_type == "none":
+    if options.modifier_type == 'none':
         pass
-    elif options.modifier_type in ("cross-section", "animated-cross-section"):
+    elif options.modifier_type in ('cross-section', 'animated-cross-section'):
         section(options)

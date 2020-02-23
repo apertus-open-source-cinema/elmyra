@@ -1,4 +1,4 @@
-"""Utility methods to ensure dependencies, setup defaults, remove, append ..."""
+'''Utility methods to ensure dependencies, setup defaults, remove, append ...'''
 
 from os import path
 import json
@@ -51,7 +51,7 @@ def get_view3d_context():
 
 
 def remove_object(name):
-    bpy.ops.object.select_all(action="DESELECT")
+    bpy.ops.object.select_all(action='DESELECT')
     bpy.data.objects[name].select_set(True)
     bpy.ops.object.delete()
 
