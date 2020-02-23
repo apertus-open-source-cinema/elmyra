@@ -53,6 +53,9 @@ start it you simply execute the `elmyra` binary. By default the server listens
 on all network interfaces and the automatically assigned port is shown in the
 terminal output right on startup.
 
+Use `./elmyra --help` to read up on available command line options like server
+address and port, as well as more advanced/exotic configuration options.
+
 ## Acknowledgements
 
 Elmyra could not have been brought to life without the heart that beats at its core - [Blender](http://blender.org) - and its incredibly helpful and inspiring community; It would not even closely be what it is without [FFmpeg](http://ffmpeg.org) and its hardworking volunteer force; and in the first place, it could not have been conceived without the individuals and organizations that created this open, enabling environment for it to grow in - the AXIOM project. Thanks so much everyone!
