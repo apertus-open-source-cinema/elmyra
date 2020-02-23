@@ -24,8 +24,8 @@ export default function Visualization({ openPreview, visualization }) {
     title.push(`${meta.mediaWidth}x${meta.mediaHeight}`);
   }
 
-  if(meta.minimumSamples !== null) {
-    title.push(`${meta.minimumSamples}samples`);
+  if(meta.lastRenderedSamples !== null) {
+    title.push(`${meta.lastRenderedSamples} samples`);
   }
 
   if(meta.mediaAnimated) {
