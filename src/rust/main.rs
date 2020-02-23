@@ -30,8 +30,8 @@ fn main() {
     let context = Context::initialize(&args);
 
     let config = Config::build(ENVIRONMENT)
-                        .address("0.0.0.0")
-                        .port(8080)  // TODO: CLI option for specifying port (and one for the address)
+                        .address(&args.address)
+                        .port(args.port)
                         .finalize()
                         .unwrap();
 
