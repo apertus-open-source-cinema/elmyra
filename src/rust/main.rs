@@ -53,7 +53,7 @@ fn main() {
     let static_dir = context.runtime_dir.join("static");
 
     if !args.disable_rendering {
-        renderer::start(&context);
+        renderer::start(&args, &context);
     }
 
     rocket::custom(config)

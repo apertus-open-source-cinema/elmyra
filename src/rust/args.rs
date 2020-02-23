@@ -1,4 +1,21 @@
-use clap::Clap;
+use clap::{arg_enum, Clap};
+
+arg_enum! {
+    #[derive(Debug)]
+    pub enum RenderDevice {
+        Cpu,
+        Gpu
+    }
+}
+
+impl RenderDevice {
+    pub fn to_str(&self) -> &str {
+        match self {
+            Self::Cpu => "CPU",
+            Self::Gpu => "GPU"
+        }
+    }
+}
 
 #[derive(Clap, Debug)]
 pub struct Args {
@@ -25,6 +42,14 @@ pub struct Args {
 
     /// Which port to listen on.
     #[clap(default_value = "8080", short = "p", long = "port")]
-    pub port: u16
+    pub port: u16,
+
+    /// Customize how many seconds the renderer should spend on each visualization (they are rendered in turns) - note that this is a mininum suggestion: if a single rendering action takes longer than the target time, the renderer only moves to the next visualization when the action has completed.
+    #[clap(case_insensitive = true, default_value = "CPU", long = "render-device", possible_values = &RenderDevice::variants())]
+    pub render_device: RenderDevice,
+
+    /// Customize how many seconds the renderer should spend on each visualization (they are rendered in turns) - note that this is a mininum suggestion: if a single rendering action takes longer than the target time, the renderer only moves to the next visualization when the action has completed.
+    #[clap(default_value = "60", long = "render-target-time")]
+    pub render_target_time: usize
 
 }
