@@ -17,10 +17,10 @@ const SUPPORTED_FORMATS: &[&str] = &[
     "stl"
 ];
 
-#[allow(non_snake_case)]
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ImportResponse {
-    importId: String
+    import_id: String
 }
 
 #[derive(FromForm)]
@@ -82,7 +82,7 @@ fn import(
         Ok(output) => {
             if output.status.success() {
                 if context.data_dir.join(import_file).exists() {
-                    Ok(Json(ImportResponse { importId: import_id }))
+                    Ok(Json(ImportResponse { import_id: import_id }))
                 } else {
                     let blender_output = process::debug_output(output);
                     Err(format!("The blender child process did not produce the required output.\n\n{}", blender_output))

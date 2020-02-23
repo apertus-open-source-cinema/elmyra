@@ -3,18 +3,7 @@ use rocket::State;
 use std::path::Path;
 
 use crate::context::Context;
-
-#[allow(non_snake_case)]
-pub struct Meta {
-    mediaAnimated: bool
-}
-
-// "mediaWidth": bpy.context.scene.render.resolution_x,
-// "mediaHeight": bpy.context.scene.render.resolution_y,
-// "mediaLength":  media_length,
-// "mediaAnimated": media_animated,
-// "mediaFps": bpy.context.scene.render.fps,
-// "mediaFrameCount": bpy.context.scene.frame_end
+use crate::meta::Meta;
 
 // TODO: format checking as in import.rs
 
@@ -74,9 +63,9 @@ fn serve_version(
             // fs.readFile(metaPath, (err, data) => {
 
             // TODO: Elsewhere in the system meta.mediaType is used, whereas now we reduce down to just is_animation - adapt
-            let mock_meta = Meta { mediaAnimated: true }; //   const meta = JSON.parse(data);
+            // let mock_meta = Meta { media_animated: true }; //   const meta = JSON.parse(data);
 
-            if mock_meta.mediaAnimated {
+            if true { // mock_meta.media_animated
                 send_media("exported.mp4".to_string(), None)
             } else {
                 send_media("exported.png".to_string(), None)

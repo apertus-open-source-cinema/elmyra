@@ -9,6 +9,7 @@ use rocket_contrib::serve::StaticFiles;
 mod context;
 mod internal_routes;
 mod library;
+mod meta;
 mod process;
 mod public_routes;
 mod renderer;

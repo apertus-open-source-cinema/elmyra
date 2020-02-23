@@ -1,121 +1,105 @@
 import moment from 'moment';
 import Octicon, { DeviceCamera, DeviceCameraVideo, Zap } from '@primer/octicons-react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import DownloadButton from './download_button.js';
 import EmbedButton from './embed_button.js';
 import UpdateButton from './update_button.js';
 import VersionButton from './version_button.js';
 
-export default class Visualization extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { currentVersionID: 'latest' };
+export default function Visualization({ openPreview, visualization }) {
+  const [versionID, setVersionID] = useState('latest');
+
+  const preview = () => openPreview(visualization, versionID);
+
+  const version = versionID === 'latest' ?
+                  visualization.versions[0] :
+                  visualization.versions.find(iterated => iterated.id === versionID);
+
+  const { meta } = version;
+
+  const title = [];
+
+  if(meta.mediaWidth !== null && meta.mediaHeight !== null) {
+    title.push(`${meta.mediaWidth}x${meta.mediaHeight}`);
   }
 
-  changeVersion = versionID => {
-    this.setState({ currentVersionID: versionID });
+  if(meta.minimumSamples !== null) {
+    title.push(`${meta.minimumSamples}samples`);
   }
 
-  preview = () => {
-    this.props.openPreview(this.props.versions[0], this.state.currentVersionID);
+  if(meta.mediaAnimated) {
+    const duration = moment.duration(meta.mediaLength, 'seconds');
+    title.push(moment.utc(duration.asMilliseconds()).format("mm:ss"));
   }
 
-  render() {
-    let currentVersion = this.props.versions[0];
+  let previewImage;
+  const previewClasses = ['preview'];
+  if(meta.lastRender === null) {
+    previewClasses.push('pending');
+    previewImage = 'Rendering soon';
+  } else {
+    const lastRender = moment(meta.lastRender).unix();
+    previewImage = <img src={`/${visualization.id}/${versionID}/thumbnail?${lastRender}`}
+                        title={title.join('\n')} />;
+  }
 
-    if(this.state.currentVersionID !== 'latest') {
-      this.props.versions.forEach(version => {
-        if(version.version === this.state.currentVersionID) {
-          currentVersion = version;
-        }
-      });
+  let processing;
+  if(typeof(meta.processing) === 'string') {
+    previewClasses.push('active');
+    processing =
+      <span style={{ color: 'rgb(255, 153, 0)', cursor: 'help', position: 'relative', top: '-2px' }}
+            title={meta.processing} >
+        <Octicon icon={Zap} />
+      </span>
+    ;
+
+    if(meta.lastRender === null) {
+      previewImage = 'Now rendering';
     }
+  }
 
-    const title = [];
+  let overlayClasses, overlayIcon;
+  if(meta.mediaAnimated) {
+    overlayClasses = 'overlay animation';
+    overlayIcon = <Octicon icon={DeviceCameraVideo} />;
+  } else {
+    overlayClasses = 'overlay still';
+    overlayIcon = <Octicon icon={DeviceCamera} />;
+  }
 
-    if(currentVersion.mediaWidth !== undefined && currentVersion.mediaHeight !== undefined) {
-      title.push(`${currentVersion.mediaWidth}x${currentVersion.mediaHeight}`);
-    }
+  return(
+    <div className="visualization">
+      <div className={previewClasses.join(' ')}>
+        <a onClick={meta.lastRender === null ? null : preview}>
+          {previewImage}
+        </a>
 
-    if(currentVersion.minimumSamples !== undefined) {
-      title.push(`${currentVersion.minimumSamples}samples`);
-    }
-
-    if(currentVersion.mediaAnimated) {
-      const duration = moment.duration(currentVersion.mediaLength, 'seconds');
-      title.push(moment.utc(duration.asMilliseconds()).format("mm:ss"));
-    }
-
-    let previewImage;
-    const previewClasses = ['preview'];
-    if(currentVersion.lastRender === undefined) {
-      previewClasses.push('pending');
-      previewImage = 'Rendering soon';
-    } else {
-      const invalidate_cache = `?${moment(currentVersion.lastRender).unix()}`;
-      previewImage = <img src={`/${currentVersion.id}/${this.state.currentVersionID}/thumbnail${invalidate_cache}`}
-                          title={title.join('\n')} />;
-    }
-
-    let processing;
-    if(typeof(currentVersion.processing) === "string") {
-      previewClasses.push('active');
-      processing =
-        <span style={{ color: 'rgb(255, 153, 0)', cursor: 'help', position: 'relative', top: '-2px' }}
-              title={currentVersion.processing} >
-          <Octicon icon={Zap} />
+        <span className={overlayClasses}>
+          {overlayIcon}
         </span>
-      ;
+      </div>
 
-      if(currentVersion.lastRender === undefined) {
-        previewImage = 'Now rendering';
-      }
-    }
-
-    let overlayClasses, overlayIcon;
-    if(currentVersion.mediaAnimated) {
-      overlayClasses = 'overlay animation';
-      overlayIcon = <Octicon icon={DeviceCameraVideo} />;
-    } else {
-      overlayClasses = 'overlay still';
-      overlayIcon = <Octicon icon={DeviceCamera} />;
-    }
-
-    return(
-      <div className="visualization">
-        <div className={previewClasses.join(' ')}>
-          <a onClick={currentVersion.lastRender === undefined ? null : this.preview}>
-            {previewImage}
-          </a>
-
-          <span className={overlayClasses}>
-            {overlayIcon}
+      <div className="menu">
+        <div className="header">
+          <h5 className="title">
+            {visualization.id} {processing}
+          </h5>
+          <span className="version">
+            <VersionButton setVersionID={setVersionID}
+                           versionID={versionID}
+                           versions={visualization.versions} />
           </span>
         </div>
 
-        <div className="menu">
-          <div className="header">
-            <h5 className="title">
-              {currentVersion.id} {processing}
-            </h5>
-            <span className="version">
-              <VersionButton {...currentVersion}
-                             currentVersionID={this.state.currentVersionID}
-                             versions={this.props.versions}
-                             changeVersion={this.changeVersion} />
-            </span>
-          </div>
-
-          {/* TODO: Show render quality in conjunction with samples */}
-          {/* TODO: <ProcessingState {... currentVersion} />*/}
-          <div className="controls">
-            <DownloadButton {...currentVersion} currentVersionID={this.state.currentVersionID} />
-            <EmbedButton {...currentVersion} currentVersionID={this.state.currentVersionID} />
-            <UpdateButton {...currentVersion} currentVersionID={this.state.currentVersionID} />
-          </div>
+        {/* TODO: Show render quality in conjunction with samples */}
+        {/* TODO: <ProcessingState {... meta} />*/}
+        <div className="controls">
+          <DownloadButton version={version} visualization={visualization} />
+          <EmbedButton versionID={versionID} visualization={visualization} />
+          <UpdateButton visualization={visualization} />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }

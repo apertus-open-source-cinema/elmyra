@@ -33,11 +33,7 @@ export default function Application() {
   }, []);
 
   const openPreview = (visualization, versionID) => {
-    setPreview({ visualization: visualization, versionID: versionID });
-  };
-
-  const closePreview = () => {
-    setPreview({ visualization: null, versionID: null });
+    setPreview({ versionID: versionID, visualization: visualization });
   };
 
   if(wizard)
@@ -56,12 +52,13 @@ export default function Application() {
       </Navigation>
 
       <section id="visualizations">
-        {visualizations.map((versions, index) =>
-          <Visualization openPreview={openPreview} key={index} versions={versions} />
+        {visualizations.map((visualization, index) =>
+          <Visualization openPreview={openPreview} key={index} visualization={visualization} />
         )}
       </section>
 
-      <Preview {...preview} closePreview={closePreview} />
+      <Preview {...preview}
+               closePreview={() => setPreview({ versionID: null, visualization: null })} />
     </div>
   );
 }

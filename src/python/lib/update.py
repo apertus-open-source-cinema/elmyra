@@ -296,6 +296,6 @@ def update_models():
             if update_object(obj):
                 updates_occurred = True
 
-    meta.write({ 'processing': False })
+    meta.write({ 'processing': None })
 
     return updates_occurred

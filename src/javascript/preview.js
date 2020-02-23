@@ -3,7 +3,7 @@ import React from 'react';
 export default class Preview extends React.Component {
   componentDidMount() {
     document.addEventListener('keydown', event => {
-      if(this.props.visualization !== null && (event.keyCode === 27 || event.key === 'Escape')) {
+      if(this.props.visualization !== null && event.key === 'Escape') {
         this.props.closePreview();
       }
     });
@@ -22,7 +22,7 @@ export default class Preview extends React.Component {
     if(this.props.visualization === null)
       return null;
 
-    const url = `${location.origin}/${this.props.visualization.id}/${this.props.versionID}?seed=${Date.now()}`;
+    const url = `${location.origin}/${this.props.visualization.id}/${this.props.versionID}?${Date.now()}`;
 
     let content;
     if(this.props.visualization.mediaAnimated) {

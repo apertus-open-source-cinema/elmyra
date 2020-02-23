@@ -43,7 +43,7 @@ def export_jpg(ffmpeg_input_options, export_directory):
 
     filesize = path.getsize(export_file)
     meta.write({
-        "processing": False,
+        "processing": None,
         "jpg": {
             "filePath": "exported.jpg",
             "exported": datetime.now().isoformat(),
@@ -64,7 +64,7 @@ def export_png(ffmpeg_input_options, export_directory):
 
     filesize = path.getsize(export_file)
     meta.write({
-        "processing": False,
+        "processing": None,
         "png": {
             "filePath": "exported.png",
             "exported": datetime.now().isoformat(),
@@ -87,7 +87,7 @@ def export_svg(image_directory, export_directory):
 
         filesize = path.getsize(export_file)
         meta.write({
-            "processing": False,
+            "processing": None,
             "svg": {
                 "filePath": "exported.svg",
                 "exported": datetime.now().isoformat(),
@@ -175,7 +175,7 @@ def export_mp4(concat_file, filter_string, export_directory):
 
     filesize = path.getsize(export_file)
     meta.write({
-        "processing": False,
+        "processing": None,
         "mp4": {
             "filePath": "exported.mp4",
             "exported": datetime.now().isoformat(),
@@ -204,7 +204,7 @@ def export_ogv(concat_file, filter_string, export_directory):
 
     filesize = path.getsize(export_file)
     meta.write({
-        "processing": False,
+        "processing": None,
         "ogv": {
             "filePath": "exported.ogv",
             "exported": datetime.now().isoformat(),
@@ -235,7 +235,7 @@ def export_webm(concat_file, filter_string, export_directory):
 
     filesize = path.getsize(export_file)
     meta.write({
-        "processing": False,
+        "processing": None,
         "webm": {
             "filePath": "exported.webm",
             "exported": datetime.now().isoformat(),
@@ -280,7 +280,7 @@ def export_gif(concat_file, filter_string, export_directory):
 
     filesize = path.getsize(export_file)
     meta.write({
-        "processing": False,
+        "processing": None,
         "gif": {
             "filePath": "exported.gif",
             "exported": datetime.now().isoformat(),
@@ -306,7 +306,7 @@ def export_png_sequence(image_directory, export_directory):
 
     filesize = path.getsize(export_file)
     meta.write({
-        "processing": False,
+        "processing": None,
         "png.zip": {
             "filePath": "exported.png.zip",
             "exported": datetime.now().isoformat(),
@@ -332,7 +332,7 @@ def export_svg_sequence(image_directory, export_directory):
 
         filesize = path.getsize(export_file)
         meta.write({
-            "processing": False,
+            "processing": None,
             "svg.zip": {
                 "filePath": "exported.svg.zip",
                 "exported": datetime.now().isoformat(),

@@ -23,102 +23,101 @@ const FORMAT_TOOLTIPS = {
   'svg.zip': 'Vector-based line graphic - only available for illustrated/line-based styles'
 };
 
-class DownloadOption extends React.Component {
-  render() {
-    if(this.props[this.props.format]) {
-      const fileSize =
-        <span className="text-muted">
-          ({filesize(this.props[this.props.format].fileSize)})
-        </span>
-      ;
-
-      return(
-        <a className="dropdown-item"
-           download={`${this.props.id}.${this.props.format}`}
-           href={`/${this.props.id}/${this.props.currentVersionID}/${this.props.format}`}
-           title={FORMAT_TOOLTIPS[this.props.format]} >
-          {this.props.format} {fileSize}
-        </a>
-      );
-    } else {
-      return(
-        <div className="dropdown-item disabled"
-             title="Not available (yet)">
-          {this.props.format}
-        </div>
-      );
-    }
-  }
-}
-
-export default class DownloadButton extends React.Component {
-  render() {
-    const blendOption =
-      <a className="dropdown-item"
-         download
-         href={`/${this.props.id}/${this.props.currentVersionID}/blend`}
-         title="Download this visualization's source blender file">
-        blend
-      </a>
-    ;
-
-    let downloadOptions;
-    if(this.props.mediaAnimated) {
-      downloadOptions =
-        <div className="dropdown-menu">
-          <div className="dropdown-header">
-            <Octicon icon={FileBinary} /> 3D Scene Files
-          </div>
-          {blendOption}
-          <div className="dropdown-divider" />
-
-          <div className="dropdown-header">
-            <Octicon icon={TriangleRight} /> Video Files
-          </div>
-          <DownloadOption {...this.props} format="mp4" />
-          <DownloadOption {...this.props} format="ogv" />
-          <DownloadOption {...this.props} format="webm" />
-          <DownloadOption {...this.props} format="gif" />
-          <div className="dropdown-divider" />
-
-          <div className="dropdown-header">
-            <Octicon icon={FileZip} /> All Frames as Images
-          </div>
-          <DownloadOption {...this.props} format="png.zip" />
-          <DownloadOption {...this.props} format="svg.zip" />
-        </div>
-      ;
-    } else {
-      downloadOptions =
-        <div className="dropdown-menu">
-          <div className="dropdown-header">
-            <Octicon icon={FileBinary} /> 3D Scene Files
-          </div>
-          {blendOption}
-          <div className="dropdown-divider" />
-
-          <div className="dropdown-header">
-            <Octicon icon={FileMedia} /> Image Files
-          </div>
-          <DownloadOption {...this.props} format="png" />
-          <DownloadOption {...this.props} format="jpg" />
-          <div className="dropdown-divider" />
-
-          <div className="dropdown-header">
-            <Octicon icon={FileCode} /> Vector Files
-          </div>
-          <DownloadOption {...this.props} format="svg" />
-        </div>
-      ;
-    }
-
+function DownloadOption({ format, version, visualization }) {
+  if(version.meta[format] === null) {
     return(
-      <div className="dropdown">
-        <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <Octicon icon={DesktopDownload} /> Download
-        </a>
-        {downloadOptions}
+      <div className="dropdown-item disabled"
+           title="Not available (yet)">
+        {format}
       </div>
     );
   }
+
+
+  const fileSize =
+    <span className="text-muted">
+      ({filesize(version.meta[format].fileSize)})
+    </span>
+  ;
+
+  return(
+    <a className="dropdown-item"
+       download={`${visualization.id}.${format}`}
+       href={`/${visualization.id}/${version}/${format}`}
+       title={FORMAT_TOOLTIPS[format]} >
+      {format} {fileSize}
+    </a>
+  );
+}
+
+export default function DownloadButton({ version, visualization }) {
+  console.log(visualization);
+
+  const blendOption =
+    <a className="dropdown-item"
+       download
+       href={`/${visualization.id}/${version}/blend`}
+       title="Download this visualization's source blender file">
+      blend
+    </a>
+  ;
+
+  let downloadOptions;
+  if(version.meta.mediaAnimated) {
+    downloadOptions =
+      <div className="dropdown-menu">
+        <div className="dropdown-header">
+          <Octicon icon={FileBinary} /> 3D Scene Files
+        </div>
+        {blendOption}
+        <div className="dropdown-divider" />
+
+        <div className="dropdown-header">
+          <Octicon icon={TriangleRight} /> Video Files
+        </div>
+        <DownloadOption format="mp4" version={version} visualization={visualization} />
+        <DownloadOption format="ogv" version={version} visualization={visualization} />
+        <DownloadOption format="webm" version={version} visualization={visualization} />
+        <DownloadOption format="gif" version={version} visualization={visualization} />
+        <div className="dropdown-divider" />
+
+        <div className="dropdown-header">
+          <Octicon icon={FileZip} /> All Frames as Images
+        </div>
+        <DownloadOption format="png.zip" version={version} visualization={visualization} />
+        <DownloadOption format="svg.zip" version={version} visualization={visualization} />
+      </div>
+    ;
+  } else {
+    downloadOptions =
+      <div className="dropdown-menu">
+        <div className="dropdown-header">
+          <Octicon icon={FileBinary} /> 3D Scene Files
+        </div>
+        {blendOption}
+        <div className="dropdown-divider" />
+
+        <div className="dropdown-header">
+          <Octicon icon={FileMedia} /> Image Files
+        </div>
+        <DownloadOption format="png" version={version} visualization={visualization} />
+        <DownloadOption format="jpg" version={version} visualization={visualization} />
+        <div className="dropdown-divider" />
+
+        <div className="dropdown-header">
+          <Octicon icon={FileCode} /> Vector Files
+        </div>
+        <DownloadOption format="svg" version={version} visualization={visualization} />
+      </div>
+    ;
+  }
+
+  return(
+    <div className="dropdown">
+      <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <Octicon icon={DesktopDownload} /> Download
+      </a>
+      {downloadOptions}
+    </div>
+  );
 }
