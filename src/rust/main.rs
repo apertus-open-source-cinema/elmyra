@@ -3,9 +3,11 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate serde_derive;
 
+use clap::Clap;
 use rocket::config::{Config, Environment};
 use rocket_contrib::serve::StaticFiles;
 
+mod args;
 mod context;
 mod internal_routes;
 mod library;
@@ -14,6 +16,7 @@ mod process;
 mod public_routes;
 mod renderer;
 
+use args::Args;
 use context::Context;
 
 #[cfg(debug_assertions)]
@@ -23,7 +26,8 @@ const ENVIRONMENT: Environment = Environment::Development;
 const ENVIRONMENT: Environment = Environment::Production;
 
 fn main() {
-    let context = Context::initialize();
+    let args: Args = Args::parse();
+    let context = Context::initialize(&args);
 
     let config = Config::build(ENVIRONMENT)
                         .address("0.0.0.0")
@@ -48,7 +52,9 @@ fn main() {
 
     let static_dir = context.runtime_dir.join("static");
 
-    renderer::start(&context);  // TODO: CLI option to opt-in/out of running the renderer background process
+    if !args.disable_rendering {
+        renderer::start(&context);
+    }
 
     rocket::custom(config)
            .manage(context)

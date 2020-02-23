@@ -3,12 +3,12 @@
 //! Also creates necessary directories within the data directory if they don't exist.
 
 use std::{
-    env,
     fs,
     path::PathBuf,
     process::Command
 };
 
+use crate::args::Args;
 use crate::library;
 
 pub struct Context {
@@ -19,14 +19,15 @@ pub struct Context {
 }
 
 impl Context {
-    pub fn initialize() -> Context {
+    pub fn initialize(args: &Args) -> Context {
         let runtime_dir = process_path::get_executable_path()
                                        .expect("The runtime directory (where also the executable lies) could not be determined.")
                                        .parent()
                                        .unwrap()
                                        .to_path_buf();
 
-        let data_dir = match env::args().nth(1) {
+        let mock_runtime_dir_option: Option<String> = None;
+        let data_dir = match mock_runtime_dir_option {
             Some(path) => PathBuf::from(path),
             None => runtime_dir.to_path_buf()
         };
