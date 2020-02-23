@@ -2,16 +2,19 @@
 //! based on the process environment context and/or optional command line arguments.
 //! Also creates necessary directories within the data directory if they don't exist.
 
-use std::fs;
-use std::env;
-use std::path::PathBuf;
+use std::{
+    env,
+    fs,
+    path::PathBuf,
+    process::Command
+};
 
 use crate::library;
 
 pub struct Context {
-    pub blender_executable: PathBuf,
+    blender_executable: PathBuf,
     pub data_dir: PathBuf,
-    pub ffmpeg_executable: PathBuf,
+    ffmpeg_executable: PathBuf,
     pub runtime_dir: PathBuf
 }
 
@@ -48,5 +51,19 @@ impl Context {
             ffmpeg_executable,
             runtime_dir
         }
+    }
+
+    pub fn blender_script_with_env(&self, script: &str) -> Command {
+        let mut command = Command::new(&self.blender_executable);
+
+        command.env("ELMYRA_DATA_DIR", &self.data_dir);
+        command.env("ELMYRA_FFMPEG_EXECUTABLE", &self.ffmpeg_executable);
+        command.env("ELMYRA_RUNTIME_DIR", &self.runtime_dir);
+
+        command.arg("--background");
+        command.arg("--python").arg(self.runtime_dir.join(script));
+        command.arg("--");
+
+        command
     }
 }

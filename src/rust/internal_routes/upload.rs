@@ -1,6 +1,5 @@
 use rocket::Data;
 use rocket::State;
-use std::process::Command;
 
 use crate::context::Context;
 
@@ -10,11 +9,8 @@ pub fn upload(context: State<Context>, id: String, file: Data) -> Result<(), &st
     // destination: path.join(appDataDir, 'uploads'),
     //   callback(null, uuidV4() + path.extname(file.originalname));
 
-    let mut command = Command::new(&context.blender_executable);
+    let mut command = context.blender_script_with_env("python/update.py");
 
-    command.arg("--background");
-    command.arg("--python").arg(context.runtime_dir.join("python/update.py"));
-    command.arg("--");
     command.arg("--data-dir").arg(&context.data_dir);
     command.arg("--id").arg(&id);
     // command.arg("--blend").arg(&id)  upload path ?  //   arguments.push('--blend', request.file.path);

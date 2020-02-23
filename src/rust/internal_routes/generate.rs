@@ -1,6 +1,5 @@
 use rocket::State;
 use rocket_contrib::json::Json;
-use std::process::Command;
 
 use crate::context::Context;
 use crate::process;
@@ -30,11 +29,8 @@ pub struct Parameters {
 
 #[post("/generate", data = "<parameters>", rank = 2)]
 pub fn generate(context: State<Context>, parameters: Json<Parameters>) -> Result<(), String> {
-    let mut command = Command::new(&context.blender_executable);
+    let mut command = context.blender_script_with_env("python/generate.py");
 
-    command.arg("--background");
-    command.arg("--python").arg(context.runtime_dir.join("python/generate.py"));
-    command.arg("--");
     command.arg("--id").arg(&parameters.id);
     command.arg("--import-id").arg(&parameters.importId);
     command.arg("--data-dir").arg(&context.data_dir);

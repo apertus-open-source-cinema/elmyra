@@ -2,7 +2,6 @@ use rocket::Data;
 use rocket::State;
 use rocket::request::Form;
 use rocket_contrib::json::Json;
-use std::process::Command;
 use uuid::Uuid;
 
 use crate::process;
@@ -71,11 +70,8 @@ fn import(
     format: String,
     url: String
 ) -> Result<Json<ImportResponse>, String> {
-    let mut command = Command::new(&context.blender_executable);
+    let mut command = context.blender_script_with_env("python/import.py");
 
-    command.arg("--background");
-    command.arg("--python").arg(context.runtime_dir.join("python/import.py"));
-    command.arg("--");
     command.arg("--data-dir").arg(&context.data_dir);
     command.arg("--url").arg(&url);
     command.arg("--format").arg(&format);
