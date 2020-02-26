@@ -33,7 +33,6 @@ function DownloadOption({ format, version, visualization }) {
     );
   }
 
-
   const fileSize =
     <span className="text-muted">
       ({filesize(version.meta[format].fileSize)})
@@ -43,7 +42,7 @@ function DownloadOption({ format, version, visualization }) {
   return(
     <a className="dropdown-item"
        download={`${visualization.id}.${format}`}
-       href={`/${visualization.id}/${version}/${format}`}
+       href={`/${visualization.id}/${version.id}/${format}`}
        title={FORMAT_TOOLTIPS[format]} >
       {format} {fileSize}
     </a>
@@ -54,7 +53,7 @@ export default function DownloadButton({ version, visualization }) {
   const blendOption =
     <a className="dropdown-item"
        download
-       href={`/${visualization.id}/${version}/blend`}
+       href={`/${visualization.id}/${version.id}/blend`}
        title="Download this visualization's source blender file">
       blend
     </a>
