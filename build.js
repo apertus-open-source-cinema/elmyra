@@ -83,21 +83,6 @@ const rust = () => new Promise((resolve, reject) => {
 });
 
 const package = async platform => {
-  switch(platform) {
-    case 'linux': {
-      options.ignore.push('^/lib/(macos|windows)');
-      break;
-    }
-    case 'macos': {
-      options.ignore.push('^/lib/(linux|windows)');
-      break;
-    }
-    case 'windows': {
-      options.ignore.push('^/lib/(macos|linux)');
-      break;
-    }
-  }
-
   await new Promise((resolve, reject) => {
     const zipPath = path.join(__dirname, `build/elmyra-${git.short()}-${PLATFORM}.zip`);
     const output = fs.createWriteStream(zipPath);
@@ -126,7 +111,7 @@ const build = async () => {
   const requested = process.argv.slice(2);
 
   if(requested.length === 0) {
-    console.log('No build steps requested (all|clean|css|js|python|rust|package|package-lib) - you can provide multiple to mix and match them however needed.');
+    console.log('No build steps requested (all|clean|css|js|python|rust|library|package|package-lib) - you can provide multiple to mix and match them however needed.');
     return;
   }
 
