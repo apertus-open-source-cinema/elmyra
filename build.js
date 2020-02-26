@@ -55,8 +55,15 @@ const javascript = async () => {
 };
 
 const library = () => Promise.all([
-  fsExtra.copy(path.join(__dirname, `lib/${PLATFORM}`), path.join(PLATFORM_BUILD_DIR, `lib/${PLATFORM}`)),
-  fsExtra.copy(path.join(__dirname, 'lib/elmyra'), path.join(PLATFORM_BUILD_DIR, 'lib/elmyra'))
+  fsExtra.copy(
+    path.join(__dirname, `lib/${PLATFORM}`),
+    path.join(PLATFORM_BUILD_DIR, `lib/${PLATFORM}`),
+    { filter: src => !src.match(new RegExp(`/${PLATFORM}\/paths\.json$`)) }
+  ),
+  fsExtra.copy(
+    path.join(__dirname, 'lib/elmyra'),
+    path.join(PLATFORM_BUILD_DIR, 'lib/elmyra')
+  )
 ]);
 
 const python = () => fsExtra.copy(path.join(__dirname, 'src/python'), path.join(PLATFORM_BUILD_DIR, 'python'));
