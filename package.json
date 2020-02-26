@@ -36,6 +36,5 @@
     "build": "node build.js all",
     "package": "node build.js package",
     "package-lib": "node build.js package-lib"
-  },
-  "version": "1.0.0"
+  }
 }
