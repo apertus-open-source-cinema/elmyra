@@ -47,7 +47,7 @@ npm install
 
 ### Build it
 
-By running `npm run package` you can now create a build for your platform. The
+By running `npm run build` you can now create a build for your platform. The
 finished build will be placed under `build/elmyra-[platform]-[arch]/` and to
 start it you simply execute the `elmyra` binary. By default the server listens
 on all network interfaces and the automatically assigned port is shown in the

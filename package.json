@@ -33,6 +33,7 @@
     "url": "git+https://github.com/apertus-open-source-cinema/elmyra.git"
   },
   "scripts": {
+    "build": "node build.js all",
     "package": "node build.js package",
     "package-lib": "node build.js package-lib"
   },
