@@ -14,7 +14,7 @@ Includes a ready to run executable, no setup whatsoever needed!
 
 ## What is Elmyra?
 
-- **Visualization Wizard** - Create rendered or interactive presentations of your CAD work in the browser
+- **Visualization Wizard** - Create animations and static renderings of your CAD work in the browser
 - **Automated Rendering** - Get drafts immediately, and high-quality versions later, automatically
 - **Continuous Deployment** - Embed visualizations via URLs that always deliver up-to-date material
 - **Blender Inside** - If [Blender](https://www.blender.org/) can render it, Elmyra can as well, because that's at its core
