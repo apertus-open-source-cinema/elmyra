@@ -1,12 +1,10 @@
 use rocket::response::NamedFile;
 use rocket::State;
 use std::fs;
-use std::path::PathBuf;
 
 use crate::context::Context;
 use crate::meta::Meta;
 
-// TODO: format checking as in import.rs
 // TODO: Sanitize paths
 
 #[get("/<id>/<version>", rank = 3)]
@@ -15,7 +13,7 @@ pub fn visualization(
     id: String,
     version: String
 ) -> Result<Option<NamedFile>, String> {
-    serve_media(context.data_dir.join("visualizations").join(id), &version, None)
+    serve_media(context, id, version, None)
 }
 
 #[get("/<id>/<version>/<format>", rank = 3)]
@@ -25,16 +23,17 @@ pub fn visualization_with_format(
     version: String,
     format: String
 ) -> Result<Option<NamedFile>, String> {
-    serve_media(context.data_dir.join("visualizations").join(id), &version, Some(&format))
+    serve_media(context, id, version, Some(&format))
 }
 
 fn serve_media(
-    visualization_dir: PathBuf,
-    version: &str,
+    context: State<Context>,
+    id: String,
+    version: String,
     optional_format: Option<&str>
 ) -> Result<Option<NamedFile>, String> {
     if version == "latest" {
-        match visualization_dir.read_dir() {
+        match context.data_dir.join("visualizations").join(&id).read_dir() {
             Ok(read_dir) => {
                 let mut versions = vec![];
 
@@ -47,27 +46,40 @@ fn serve_media(
 
                 versions.sort();
 
-                serve_version(visualization_dir.join(versions.last().unwrap()), optional_format)
+                serve_version(context, id, versions.last().unwrap().to_string(), optional_format)
             }
             Err(_) => return Err("Could not read visualization directory.".to_string())
         }
     } else {
-        serve_version(visualization_dir.join(version), optional_format)
+        serve_version(context, id, version, optional_format)
     }
 }
 
 fn serve_version(
-    version_dir: PathBuf,
+    context: State<Context>,
+    id: String,
+    version: String,
     optional_format: Option<&str>
 ) -> Result<Option<NamedFile>, String> {
     match optional_format {
         Some(format) => match format {
-            "thumbnail" => send_media(version_dir.join("thumbnail.png"), None),
-            "blend" => send_media(version_dir.join("scene.blend"), Some("{id}.blend".to_string())),
-            _ => send_media(version_dir.join("exported.{format}"), Some("{id}.{format}".to_string()))  // TODO: Consider hardcoding all options
+            "thumbnail" => send_media(context, id, version, "thumbnail", "png", false),
+            "blend" => send_media(context, id, version, "scene", "blend", true),
+            "png" => send_media(context, id, version, "exported", "mp4", true),
+            "jpg" => send_media(context, id, version, "exported", "jpg", true),
+            "svg" => send_media(context, id, version, "exported", "svg", true),
+            "mp4" => send_media(context, id, version, "exported", "mp4", true),
+            "ogv" => send_media(context, id, version, "exported", "ogv", true),
+            "webm" => send_media(context, id, version, "exported", "webm", true),
+            "gif" => send_media(context, id, version, "exported", "gif", true),
+            "png.zip" => send_media(context, id, version, "exported", "png.zip", true),
+            "svg.zip" => send_media(context, id, version, "exported", "svg.zip", true),
+            _ => return Err("Unknown format requested.".to_string())
         }
         None => {
-            match fs::read_to_string(version_dir.join("meta.json")) {
+            let meta_file = context.data_dir.join("visualizations").join(&id).join(&version).join("meta.json");
+
+            match fs::read_to_string(meta_file) {
                 Ok(meta_json) => {
                     let meta: Meta = match serde_json::from_str(&meta_json) {
                         Ok(meta) => meta,
@@ -75,9 +87,9 @@ fn serve_version(
                     };
 
                     if meta.media_animated {
-                        send_media(version_dir.join("exported.mp4"), None)
+                        send_media(context, id, version, "exported", "mp4", false)
                     } else {
-                        send_media(version_dir.join("exported.png"), None)
+                        send_media(context, id, version, "exported", "png", false)
                     }
                 }
                 Err(_) => return Err("Could not read meta.".to_string())
@@ -86,11 +98,23 @@ fn serve_version(
     }
 }
 
-fn send_media(file: PathBuf, download_filename: Option<String>) -> Result<Option<NamedFile>, String> {
-    dbg!(&file);
+fn send_media(
+    context: State<Context>,
+    id: String,
+    version: String,
+    base_name: &str,
+    format: &str,
+    download: bool
+) -> Result<Option<NamedFile>, String> {
+    let extended_name = format!("{}.{}", base_name, format);
+    let file = context.data_dir.join("visualizations").join(&id).join(&version).join(extended_name);
 
-    match download_filename {
-        Some(download_filename) => Ok(NamedFile::open(file).ok()),  // TODO: Send with content disposition download filename header thingy
-        None => Ok(NamedFile::open(file).ok())
+    if download {
+        // TODO: Send with content disposition download filename header thingy
+        let _download_filename = format!("{}.{}", id, format);
+
+        Ok(NamedFile::open(file).ok())
+    } else {
+        Ok(NamedFile::open(file).ok())
     }
 }
