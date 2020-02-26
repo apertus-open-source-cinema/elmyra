@@ -4,7 +4,6 @@ import bpy
 
 from datetime import datetime
 from glob import glob
-from natsort import natsorted
 from os import path
 from shutil import copy
 from time import time
@@ -100,7 +99,7 @@ def export_svg(image_directory, export_directory):
 def export_animation():
     export_directory = bpy.path.abspath("//")
     image_directory = path.join(export_directory, "rendered_frames")
-    rendered_frames = natsorted(glob(path.join(image_directory, "*.png")))
+    rendered_frames = sorted(glob(path.join(image_directory, "*.png")))
     concat_file = path.join(export_directory, "export.concat").replace("\\", "/") # POSIX style paths required on all platforms
     font_file = path.join(path.dirname(__file__), 'lib', 'elmyra', 'oxygen-mono.ttf').replace("\\", "/") # POSIX style paths required on all platforms
     frame_duration = 1.0/24.0

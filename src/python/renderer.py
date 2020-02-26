@@ -7,12 +7,10 @@ target_time -- the minimum time to render, in seconds (default 60)
 '''
 
 
-import json
 import sys
 
 from argparse import ArgumentParser
 from glob import glob
-from natsort import natsorted
 from os import chdir, path
 from time import sleep
 

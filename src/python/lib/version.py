@@ -1,7 +1,6 @@
 import bpy
 
 from glob import glob
-from natsort import natsorted
 from os import makedirs, path
 from time import strftime
 
@@ -10,9 +9,9 @@ from lib.context import VISUALIZATIONS_DIR
 
 def latest_version_dir(visualization_dir):
     versions_glob = path.join(visualization_dir, '*')
-    version_dirs = glob(versions_glob)
+    ascending_version_dirs = sorted(glob(versions_glob))
 
-    return natsorted(version_dirs)[-1]
+    return ascending_version_dirs[-1]
 
 
 def open_latest(visualization_dir):

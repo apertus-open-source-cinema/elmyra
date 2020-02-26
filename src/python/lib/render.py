@@ -4,7 +4,6 @@ import bpy
 
 from glob import glob
 from datetime import datetime
-from natsort import natsorted
 from os import makedirs, path, remove, rename
 from time import time
 
@@ -116,7 +115,7 @@ def render(target_time, device):
     last = bpy.context.scene.frame_end
     total_frames = last - first + 1
 
-    rendered_frames = natsorted(glob(path.join(render_directory, "*.png")))
+    rendered_frames = sorted(glob(path.join(render_directory, "*.png")))
     requested_frames = []
 
     if len(rendered_frames) < total_frames:
