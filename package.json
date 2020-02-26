@@ -20,7 +20,7 @@
     "popper.js": "^1.16.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "sass": "^1.25.0",
+    "sass": "^1.26.1",
     "three": "^0.113.2"
   },
   "homepage": "https://github.com/apertus-open-source-cinema/elmyra#readme",
