@@ -51,8 +51,6 @@ function DownloadOption({ format, version, visualization }) {
 }
 
 export default function DownloadButton({ version, visualization }) {
-  console.log(visualization);
-
   const blendOption =
     <a className="dropdown-item"
        download
