@@ -21,6 +21,7 @@ These are the blender files and image/font file assets Elmyra imports when it ge
 
 - `environment.hdr`
 - `illustrated.blend`
+- `oxygen-mono.ttf`
 - `preview-widgets.blend`
 - `realistic.blend`
 - `section.blend`
