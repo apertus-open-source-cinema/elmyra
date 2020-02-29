@@ -15,6 +15,7 @@ mod meta;
 mod process;
 mod public_routes;
 mod renderer;
+mod uuid;
 
 use args::Args;
 use context::Context;

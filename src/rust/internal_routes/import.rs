@@ -2,10 +2,10 @@ use rocket::Data;
 use rocket::State;
 use rocket::request::Form;
 use rocket_contrib::json::Json;
-use uuid::Uuid;
 
 use crate::process;
 use crate::context::Context;
+use crate::uuid;
 
 const SUPPORTED_FORMATS: &[&str] = &[
     "3ds",
@@ -38,7 +38,7 @@ pub fn import_from_file(
         return Err("The supplied file format is not supported.".to_string());
     }
 
-    let import_id = generate_import_id();
+    let import_id = uuid::generate();
     let upload_path = format!("upload/{}.{}", import_id, format);
 
     match file.stream_to_file(context.data_dir.join(&upload_path)) {
@@ -57,11 +57,7 @@ pub fn import_from_url(
         return Err("The supplied file format is not supported.".to_string());
     }
 
-    import(context, generate_import_id(), format, form.url.clone())
-}
-
-fn generate_import_id() -> String {
-    Uuid::new_v4().to_simple().to_string()
+    import(context, uuid::generate(), format, form.url.clone())
 }
 
 fn import(
