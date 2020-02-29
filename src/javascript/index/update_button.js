@@ -16,17 +16,15 @@ export default function UpdateButton({ visualization }) {
   };
 
   const uploadSubmit = () => {
-    const file = document.getElementById(`${visualization.id}-upload`).files[0];
-
-    const formData = new FormData();
-    formData.append('blendfile', file);
+    const file = document.querySelector(`#${visualization.id}-upload`)
+                         .files[0];
 
     const request = new XMLHttpRequest();
-    request.onload = this.uploadFinished;
-    request.onerror = this.uploadFailed;
+    request.onload = uploadFinished;
+    request.onerror = uploadFailed;
     request.open('POST', `/__internal/upload/${visualization.id}`);
     request.responseType = 'json';
-    request.send(formData);
+    request.send(file);
   };
 
   const updateFailed = event => {

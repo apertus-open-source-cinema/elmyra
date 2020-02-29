@@ -6,7 +6,7 @@ import json
 import bpy
 from addon_utils import check
 
-from lib.context import LIBRARY_DIR
+from lib.context import LIBRARY_DIR, UPLOAD_DIR
 
 
 def append_from_library(blend, directory, item):
@@ -49,10 +49,6 @@ def remove_object(name):
     bpy.ops.object.delete()
 
 
-def open_scene(blend_path):
-    bpy.ops.wm.open_mainfile(filepath=blend_path)
-
-
 def setup_scene_defaults():
     bpy.context.scene.render.engine = 'CYCLES'
 
@@ -67,3 +63,9 @@ def setup_scene_defaults():
 
     for mat in bpy.data.materials:
         mat.use_nodes = True
+
+
+def open_upload(id):
+    scene_path = path.join(UPLOAD_DIR, f"{id}.blend")
+
+    bpy.ops.wm.open_mainfile(filepath=scene_path)

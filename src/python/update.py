@@ -26,7 +26,7 @@ from lib import common, meta, update, version
 def parse_custom_args():
     parser = ArgumentParser(prog='Elmyra Update Params')
     parser.add_argument('--id', required=True)
-    parser.add_argument('--blend', default=None)
+    parser.add_argument('--upload-id', default=None)
     parser.add_argument('--min-interval', type=int, default=None)
 
     custom_args = sys.argv[sys.argv.index('--') + 1:]
@@ -39,8 +39,8 @@ args = parse_custom_args()
 
 common.ensure_addons()
 
-if args.blend:
-    common.open_scene(args.blend)
+if args.upload_id:
+    common.open_upload(args.upload_id)
     version.save_new(args.id)
     meta.write_media_info()
 else:
