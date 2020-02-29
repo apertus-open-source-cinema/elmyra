@@ -31,10 +31,20 @@ impl Context {
             None => runtime_dir.to_path_buf()
         };
 
-        for dir in &["imports", "upload", "visualizations"] {
+        for (dir, disposable_content) in &[
+            ("imports", true),
+            ("upload", true),
+            ("visualizations", false)
+        ] {
             let required_dir = data_dir.join(dir);
 
-            if required_dir.is_dir() { continue }
+            if required_dir.is_dir() {
+                if *disposable_content {
+                    fs::remove_dir_all(&required_dir).ok();
+                } else {
+                    continue
+                }
+            }
 
             if let Err(err) = fs::create_dir(required_dir) {
                 panic!("Could not create the required '{}' directory inside the data directory {}, received error: {}", dir, data_dir.display(), err)
