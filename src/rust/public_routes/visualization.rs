@@ -31,7 +31,7 @@ fn serve_media(
     optional_format: Option<&str>
 ) -> Result<Option<NamedFile>, String> {
     if id.contains("..") || version.contains("..") {
-        return Err("(o_ _)ﾉ彡☆");
+        return Err("(o_ _)ﾉ彡☆".to_string());
     }
 
     if version == "latest" {
