@@ -7,10 +7,8 @@ import EmbedButton from './embed_button.js';
 import UpdateButton from './update_button.js';
 import VersionButton from './version_button.js';
 
-export default function Visualization({ openPreview, visualization }) {
+export default function Visualization({ setPreview, visualization }) {
   const [versionID, setVersionID] = useState('latest');
-
-  const preview = () => openPreview(visualization, versionID);
 
   const version = versionID === 'latest' ?
                   visualization.versions[0] :
@@ -71,7 +69,7 @@ export default function Visualization({ openPreview, visualization }) {
   return(
     <div className="visualization">
       <div className={previewClasses.join(' ')}>
-        <a onClick={meta.lastRender === null ? null : preview}>
+        <a onClick={meta.lastRender === null ? null : () => setPreview({ version, versionID, visualization })}>
           {previewImage}
         </a>
 

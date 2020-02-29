@@ -8,10 +8,7 @@ import Wizard from './wizard/wizard.js';
 const REFRESH_INTERVAL = 2000;
 
 export default function Application() {
-  const [preview, setPreview] = useState({
-    visualization: null,
-    versionID: null
-  });
+  const [preview, setPreview] = useState(null);
   const [wizard, showWizard] = useState(false);
   const [visualizations, setVisualizations] = useState([]);
 
@@ -32,10 +29,6 @@ export default function Application() {
     return () => clearInterval(interval);
   }, []);
 
-  const openPreview = (visualization, versionID) => {
-    setPreview({ versionID: versionID, visualization: visualization });
-  };
-
   if(wizard)
     return(
       <div id="application">
@@ -53,12 +46,18 @@ export default function Application() {
 
       <section id="visualizations">
         {visualizations.map((visualization, index) =>
-          <Visualization openPreview={openPreview} key={index} visualization={visualization} />
+          <Visualization key={index}
+                         setPreview={setPreview}
+                         visualization={visualization} />
         )}
       </section>
 
-      <Preview {...preview}
-               closePreview={() => setPreview({ versionID: null, visualization: null })} />
+      {preview !== null ?
+        <Preview setPreview={setPreview}
+                 version={preview.version}
+                 versionID={preview.versionID}
+                 visualization={preview.visualization} />
+      : null}
     </div>
   );
 }

@@ -1,42 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export default class Preview extends React.Component {
-  componentDidMount() {
-    document.addEventListener('keydown', event => {
-      if(this.props.visualization !== null && event.key === 'Escape') {
-        this.props.closePreview();
-      }
-    });
-  }
+export default function Preview({ setPreview, version, versionID, visualization }) {
+  useEffect(() => {
+    const escape = event => {
+      if(event.key === 'Escape') { setPreview(null); }
+    };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.visualization !== this.props.visualization ||
-           nextProps.versionID !== this.props.versionID;
-  }
+    document.addEventListener('keydown', escape);
 
-  stopPropagation = event => {
-    event.stopPropagation();
-  }
+    return document.removeEventListener('keydown', escape);
+  });
 
-  render() {
-    if(this.props.visualization === null)
-      return null;
+  const url = `/${visualization.id}/${versionID}?${Date.now()}`;
 
-    const url = `${location.origin}/${this.props.visualization.id}/${this.props.versionID}?${Date.now()}`;
-
-    let content;
-    if(this.props.visualization.mediaAnimated) {
-      content = <video autoPlay controls>
-        <source src={url} />
-      </video>;
-    } else {
-      content = <img src={url} />;
-    }
-
-    return(
-      <div id="preview" onClick={this.props.closePreview} >
-        <div id="preview-content" onClick={this.stopPropagation}>{content}</div>
+  return(
+    <div id="preview" onClick={() => setPreview(null)} >
+      <div id="preview-content" onClick={event => event.stopPropagation()}>
+        {version.meta.mediaAnimated ?
+          <video autoPlay controls>
+            <source src={url} />
+          </video>
+            :
+          <img src={url} />
+        }
       </div>
-    );
-  }
+    </div>
+  );
 }
