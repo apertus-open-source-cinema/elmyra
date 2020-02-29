@@ -32,6 +32,10 @@ fn serve_media(
     version: String,
     optional_format: Option<&str>
 ) -> Result<Option<NamedFile>, String> {
+    if id.contains("..") || version.contains("..") {
+        return Err("(o_ _)ﾉ彡☆");
+    }
+
     if version == "latest" {
         match context.data_dir.join("visualizations").join(&id).read_dir() {
             Ok(read_dir) => {
