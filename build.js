@@ -44,6 +44,7 @@ const javascript = async () => {
   const options = {
     outFile: 'scripts.js',
     outDir: path.join(PLATFORM_BUILD_DIR, 'static'),
+    minify: true,
     scopeHoist: false,
     sourceMaps: false,
     target: 'browser',
