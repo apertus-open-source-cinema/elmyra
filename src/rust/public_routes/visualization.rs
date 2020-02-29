@@ -5,8 +5,6 @@ use std::fs;
 use crate::context::Context;
 use crate::meta::Meta;
 
-// TODO: Sanitize paths
-
 #[get("/<id>/<version>", rank = 3)]
 pub fn visualization(
     context: State<Context>,
@@ -114,9 +112,11 @@ fn send_media(
     let file = context.data_dir.join("visualizations").join(&id).join(&version).join(extended_name);
 
     if download {
-        // TODO: Send with content disposition download filename header thingy
         let _download_filename = format!("{}.{}", id, format);
 
+        // TODO: Set custom response headers so that the user agent
+        //       is hinted into offering a download dialog with the
+        //       proposed _download_filename.
         Ok(NamedFile::open(file).ok())
     } else {
         Ok(NamedFile::open(file).ok())
