@@ -3,14 +3,16 @@ const Bundler = require('parcel-bundler');
 const childProcess = require('child_process');
 const fs = require('fs');
 const fsExtra = require('fs-extra');
-const git = require('git-rev-sync');
 const path = require('path');
 const sass = require('sass');
 
+const { version } = require('./package.json');
+
 const ARCH = process.arch;
 const PLATFORM = { 'linux': 'linux', 'darwin': 'macos', 'win32': 'windows' }[process.platform];
+const VERSION = version.replace(/\.0$/, '');  // truncate from SemVer to ComVer
 
-const PLATFORM_BUILD_DIR = path.join(__dirname, `build/elmyra-${PLATFORM}-${ARCH}`);
+const PLATFORM_BUILD_DIR = path.join(__dirname, `build/elmyra-${VERSION}-${PLATFORM}-${ARCH}`);
 
 const assets = () => fsExtra.copy(
   path.join(__dirname, 'src/assets/'),
@@ -92,7 +94,7 @@ const rust = () => new Promise((resolve, reject) => {
 
 const package = async platform => {
   await new Promise((resolve, reject) => {
-    const zipPath = path.join(__dirname, `build/elmyra-${git.short()}-${PLATFORM}.zip`);
+    const zipPath = `${PLATFORM_BUILD_DIR}.zip`;
     const output = fs.createWriteStream(zipPath);
     const archive = archiver('zip', { zlib: { level: 9 } });
 

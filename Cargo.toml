@@ -5,7 +5,7 @@ edition = "2018"
 license = "GPL-3.0-or-later"
 name = "elmyra"
 publish = false
-version = "0.1.0"
+version = "1.0.0"
 
 [build-dependencies]
 serde = "1.0.104"

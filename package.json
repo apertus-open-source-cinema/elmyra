@@ -13,7 +13,6 @@
     "bootstrap": "^4.4.1",
     "clipboard": "^2.0.4",
     "fs-extra": "^8.1.0",
-    "git-rev-sync": "^2.0.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "parcel-bundler": "^1.12.4",
@@ -36,5 +35,6 @@
     "build": "node build.js all",
     "package": "node build.js package",
     "package-lib": "node build.js package-lib"
-  }
+  },
+  "version": "1.0.0"
 }
