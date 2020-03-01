@@ -17,6 +17,7 @@ impl RenderDevice {
     }
 }
 
+#[clap(version = env!("CARGO_PKG_VERSION"))]
 #[derive(Clap, Debug)]
 pub struct Args {
 
