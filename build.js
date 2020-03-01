@@ -12,6 +12,8 @@ const ARCH = process.arch;
 const PLATFORM = { 'linux': 'linux', 'darwin': 'macos', 'win32': 'windows' }[process.platform];
 const VERSION = version.replace(/\.0$/, '');  // truncate from SemVer to ComVer
 
+const BINARY = PLATFORM === 'windows' ? 'elmyra.exe' : 'elmyra';
+
 const PLATFORM_BUILD_DIR = path.join(__dirname, `build/elmyra-${VERSION}-${PLATFORM}-${ARCH}`);
 
 const assets = () => fsExtra.copy(
@@ -81,8 +83,8 @@ const rust = () => new Promise((resolve, reject) => {
   cargoProcess.on('close', async code => {
     if(code === 0) {
       await fsExtra.copy(
-        path.join(__dirname, 'target/release/elmyra'),
-        path.join(PLATFORM_BUILD_DIR, 'elmyra')
+        path.join(__dirname, `target/release/${BINARY}`),
+        path.join(PLATFORM_BUILD_DIR, BINARY)
       );
 
       resolve();
