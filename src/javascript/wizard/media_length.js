@@ -11,7 +11,7 @@ export default class MediaLength extends React.Component {
   }
 
   changeLength = event => {
-    this.setState({ length: event.target.value });
+    this.setState({ length: parseInt(event.target.value) });
   }
 
   render() {
