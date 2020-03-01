@@ -1,6 +1,6 @@
 # Elmyra
 
-A blender-based rapid iterative visualization system.
+An experimental blender-based rapid iterative visualization system.
 
 [![Conference presentation video thumbnail](http://files.apertus.org/elmyra/screencast-youtube-screenshot.png?)](https://www.youtube.com/watch?v=l8x8Kz1T1uc "Elmyra Screencast")
 
@@ -14,14 +14,18 @@ Includes a ready to run executable, no setup whatsoever needed!
 
 ## What is Elmyra?
 
-- **Visualization Wizard** - Create animations and static renderings of your CAD work in the browser
-- **Automated Rendering** - Get drafts immediately, and high-quality versions later, automatically
-- **Continuous Deployment** - Embed visualizations via URLs that always deliver up-to-date material
-- **Blender Inside** - If [Blender](https://www.blender.org/) can render it, Elmyra can as well, because that's at its core
+- **Visualization Wizard** - Create animated or static visualizations from primitive 3D input files in the browser
+- **Automated Rendering** - Get a draft immediately and higher-quality versions delivered continuously over time
+- **Continuous Delivery** - Share/embed links to images/videos that always deliver up-to-date material
+- **Blender Inside** - At its core Elmyra uses [Blender](https://www.blender.org/), all visualizations can be downloaded as blender files
 - **Free & Open Source** - Developed as a part of the [AXIOM Gamma](http://apertus.org/axiom-gamma) project
 
 For a quick introduction watch the [Elmyra Screencast](https://www.youtube.com/watch?v=l8x8Kz1T1uc), also linked above. (8min)  
 For more project history and background check out the [Blender Conference 2015 Presentation](https://youtu.be/ht1hPNjQxcY?t=24s) . (23min)
+
+## Express permission to innovate
+
+Elmyra is not a finalized product idea for consumation only, but a solid, approachable codebase modeling a different paradigm of how industrial/architectural/etc. visualization can be reimagined. You are expressly invited to build on our research and development, reinvent Elmyra's vision, hack it, fork it, extend it, make it your own and share your developments with the community. We're excited to hear what you come up with and glad to help out with know-how on the codebase where we can, feel absolutely free to open an issue and ask for help.
 
 ## Building from source
 
@@ -45,7 +49,7 @@ rustup override set nightly
 npm install
 ```
 
-### Build it
+### Build and run it
 
 By running `npm run build` you can now create a build for your platform. The
 finished build will be placed under `build/elmyra-[platform]-[arch]/` and to
