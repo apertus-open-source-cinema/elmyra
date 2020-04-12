@@ -7,11 +7,10 @@ An experimental blender-based rapid iterative visualization system.
 ## Download for your OS
 
 - [Linux (x64)](http://files.apertus.org/elmyra/elmyra-1.0-linux-x64.zip)
+- [macOS (x64)](http://files.apertus.org/elmyra/elmyra-1.0-macos-x64.zip)
 - [Windows (x64)](http://files.apertus.org/elmyra/elmyra-1.0-windows-x64.zip)
 
 After extracting the `.zip` package, `cd` into the folder and run the executable with `./elmyra`. By default the server listens on all addresses and port `8080` and thus should be reachable from your browser at `localhost:8080`. Run `./elmyra --help` to see all configuration options. Note that you *don't* need to install blender or anything at all, everything comes bundled with the release package and should work out of the box. Blender data, image and video files, temporary runtime data, etc. are by default stored in folders next to the executable - this can be configured as well.
-
-Note: We're currently transitioning to a new release series - macOS and Windows downloads should be available again soon.
 
 ## What is Elmyra?
 
@@ -45,7 +44,6 @@ Install [rustup](https://rustup.rs/) and [node.js](https://nodejs.org/).
 Inside elmyra's root directory run the following:
 
 ```
-rustup install nightly
 rustup override set nightly
 npm install
 ```
