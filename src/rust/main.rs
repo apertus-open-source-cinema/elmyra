@@ -27,6 +27,8 @@ const ENVIRONMENT: Environment = Environment::Development;
 const ENVIRONMENT: Environment = Environment::Production;
 
 fn main() {
+    env_logger::init();
+
     let args: Args = Args::parse();
     let context = Context::initialize(&args);
 
