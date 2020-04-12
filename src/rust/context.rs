@@ -11,6 +11,7 @@ use std::{
 use crate::args::Args;
 use crate::library;
 
+#[derive(Clone)]
 pub struct Context {
     blender_executable: PathBuf,
     pub data_dir: PathBuf,

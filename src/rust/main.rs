@@ -56,7 +56,7 @@ fn main() {
     let static_dir = context.runtime_dir.join("static");
 
     if !args.disable_rendering {
-        renderer::start(&args, &context);
+        renderer::start(args, context.clone());
     }
 
     rocket::custom(config)
