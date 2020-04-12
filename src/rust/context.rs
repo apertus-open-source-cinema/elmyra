@@ -27,11 +27,11 @@ impl Context {
             None => match env::current_dir() {
                 Ok(path) => {
                     println!(
-                        "The runtime directory could not be determined and\
-                         the current working directory is instead assumed\
-                         to be the runtime directory. If you didn't start\
-                         the elmyra binary from its containing folder, you\
-                         should quit now and start it from there instead,\
+                        "The runtime directory could not be determined and \
+                         the current working directory is instead assumed \
+                         to be the runtime directory. If you didn't start \
+                         the elmyra binary from its containing folder, you \
+                         should quit now and start it from there instead, \
                          otherwise you will run into undefined behavior."
                     );
 
@@ -40,8 +40,8 @@ impl Context {
                 Err(_) => {
                     panic!(
                         "The runtime directory could not be determined and \
-                         the current working directory is invalid. Please\
-                         make sure to execute the elmyra binary from its\
+                         the current working directory is invalid. Please \
+                         make sure to execute the elmyra binary from its \
                          containing folder."
                     );
                 }
