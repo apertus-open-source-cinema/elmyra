@@ -115,7 +115,7 @@ const packageLibrary = () => new Promise((resolve, reject) => {
   output.on('close', resolve);
 
   archive.pipe(output);
-  archive.directory(path.join(__dirname, 'lib'), false);
+  archive.directory(path.join(__dirname, 'lib'), 'lib');
   archive.finalize();
 });
 
