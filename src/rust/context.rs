@@ -3,6 +3,7 @@
 //! Also creates necessary directories within the data directory if they don't exist.
 
 use std::{
+    env,
     fs,
     path::PathBuf,
     process::Command
@@ -21,11 +22,32 @@ pub struct Context {
 
 impl Context {
     pub fn initialize(args: &Args) -> Context {
-        let runtime_dir = process_path::get_executable_path()
-                                       .expect("The runtime directory (where also the executable lies) could not be determined.")
-                                       .parent()
-                                       .unwrap()
-                                       .to_path_buf();
+        let runtime_dir = match process_path::get_executable_path() {
+            Some(path) => path.parent().unwrap().to_path_buf(),
+            None => match env::current_dir() {
+                Ok(path) => {
+                    println!(
+                        "The runtime directory could not be determined and\
+                         the current working directory is instead assumed\
+                         to be the runtime directory. If you didn't start\
+                         the elmyra binary from its containing folder, you\
+                         should quit now and start it from there instead,\
+                         otherwise you will run into undefined behavior."
+                    );
+
+                    path
+                }
+                Err(_) => {
+                    panic!(
+                        "The runtime directory could not be determined and \
+                         the current working directory is invalid. Please\
+                         make sure to execute the elmyra binary from its\
+                         containing folder."
+                    );
+                }
+            }
+        };
+
 
         let data_dir = match &args.data_dir {
             Some(path) => PathBuf::from(path),
