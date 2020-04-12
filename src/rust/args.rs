@@ -45,7 +45,7 @@ pub struct Args {
     #[clap(default_value = "8080", short = "p", long = "port")]
     pub port: u16,
 
-    /// Customize how many seconds the renderer should spend on each visualization (they are rendered in turns) - note that this is a mininum suggestion: if a single rendering action takes longer than the target time, the renderer only moves to the next visualization when the action has completed.
+    /// Customize which computing device the renderer should use, that is: CPU or GPU
     #[clap(case_insensitive = true, default_value = "CPU", long = "render-device", possible_values = &RenderDevice::variants())]
     pub render_device: RenderDevice,
 
