@@ -20,7 +20,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "sass": "^1.26.3",
-    "three": "^0.115.0"
+    "three": "^0.125.0"
   },
   "homepage": "https://github.com/apertus-open-source-cinema/elmyra#readme",
   "license": "GPL-3.0-or-later",
